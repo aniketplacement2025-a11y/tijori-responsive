@@ -1,0 +1,12 @@
+For Creating This Folder I have the Vision to make
+the authentication UI Pages In a Separate folder
+So, It Doesn't Mix Up After Landing Page.
+
+IMP NOTE ----x---
+This Folder Contains Only UI PART of the Authentication Page
+Not anything Else Like Backend Code. For that We Build a
+separate 'services' folder.
+   ---------X---------
+
+Means Starting Of This Project Will done from the UI part
+done inside the auth folder.

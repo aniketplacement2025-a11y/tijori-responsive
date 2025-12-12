@@ -1,0 +1,39 @@
+So, what i'm having in the utilities i'm having colors.
+so over here:
+
+1. Colors:
+u can write all the colors 'which' are going to use in
+your project. 'dark' mode, white 'light' mode anything
+u can use all the colors over here:
+ i. click create a class.
+ ii. inside that define the static color so that u can
+ call these colors from any other class right so.
+
+2. Constants:
+ Constants let's say your height of the mobile screen
+ width of the mobile screen then let's say your some
+ constants, Some strings or any other some values all
+ those u things u can keep in this constraints.
+
+3. Images:
+ So, which  u have defined in the icons folder and the
+ images folder u can defined them in the 'images' folder
+
+ in the 'images' file so that u don't need to write that
+ 'asset/images' so image from any other file right u just
+  need to define all the strings over here for the assets
+ files and then u just need to call them using 'static'
+ keyword
+ or u can call it directly from the variable perfect
+ so this is about images.
+
+4. Styles:
+ let's say u are creating some button styles which u want to keep
+ constant in all your application So, U can completely
+ define it throught out the application.
+ so, that's why i always define this 'styles.dart' so, that
+ u keep all the 'styles'.
+
+ let's say 'AppBar' styles ,'Container' styles, 'button' styles.
+ Any style u can keep in 'styles.dart'.
+

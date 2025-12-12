@@ -1,0 +1,29 @@
+Inside the pages We Having two things
+tabs so, basically we have around like 50-60%
+of the applications are having this bottom
+navigation bar right at the bottom u are having some
+tabs.
+
+You can check instagram or linkedin or any other social media
+app u are having tabs so that's why we basically divide these pages
+into tabs so, in this tabs folder we are having
+
+So, Many tabs like tab1, tab2, tab3 and So on from '.dart' files.
+                   ----------X----------
+
+So, Basically In this 'pages' folder we have main file 'home.dart'
+'home.dart' is basically called from the 'main.dart' So, in 'MyApp'
+u can define 'home' So, the 'home.dart' will keep inside the pages only.
+                  ----------X----------
+
+Inside the 'pages' folder we have 'others' folder in which u keep more pages
+let's say notification, settings screen or anything else so all the ui for
+the pages for the tab will be inside 'pages' folder.
+
+Obviously u can divide this 'pages' folder on different screen like
+'feature1','feature2' and so on.
+It's your choice if u have so many screen and u want to divide your features
+accoding to screens.
+                  -----------X------------
+So, U can define one more folder called 'features' and then u can have separate features.
+

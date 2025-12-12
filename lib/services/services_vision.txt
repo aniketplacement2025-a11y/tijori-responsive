@@ -1,0 +1,45 @@
+This Is a Very IMP Folder because inside it
+Because inside it we are having 4 sub folders:
+
+1. Functions: Inside this folder u have 2 main files
+         that is 'authFunctions.dart'.
+        Now if u are working with firebase or anything
+       or any other aws authentication then all those
+      authentication function phone authentication.
+     U can write Things in 'functions -> authFunctions.dart'
+    folder.
+  ii. we have Another file name And say One more folder sub functions
+  or other functions called u can call it as 'functions.dart' or u can
+  instead of creating a file. we create a sub folder accoding to features like
+
+  Inside feature 'functions.dart' u can have u have a separate folder but basically
+  i always require this and write all my functions over here let's say you're creating.
+                  ------------X---------
+  Example:
+  U Creating a 'TodoApp' so, what are the functions crud functions
+  create, retrieve, update and delete so all those four functions u can
+  write over here.
+  Or saving user data it's function u have to save user data in
+  'Cloud firebase Collection' then u can write that function over here but all
+  the authentication function should be separate and they those function
+  i keep it in this file.
+                  -------------X----------
+                      THIS IS ABOUT FUNCTIONS
+
+2. Models: Example:
+            let's say we are working on fetching the data from an api
+            u are working with '.dart' models so, all these json models
+            everything should be kept in this models.
+        --------------IMP NOTES------------
+  So, people have seen also create one more folder in this services called 'backend'.
+  i. To integrating any sdk if they are working with apis.
+   so, all the backend stuff calling the apis they can keep in that back-end folder but
+   to keep it simple and precise i'm not going to create that 'back-end' folder.
+       ----------------X-------------------
+
+3. Providers: It basically work with provider state management or instead of providers
+        u can have 'GetX' u can have a 'block' folder and all that state management stuff
+        u can keep inside this 'providers' folder.
+
+4. Settings:  let's your theme changing settings let's say your shared preferences so
+           all those settings or let's your account settings all can be kept in this settings folder.

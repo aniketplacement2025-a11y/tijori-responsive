@@ -1,0 +1,21 @@
+So, inside 'widgets' folder we also have defined
+or divided this 'widgets' folder into two subfolders
+'features' and 'global'.
+
+Global:
+ Is going to contain all the global widgets. let's say you're
+ defining a card and that card is used allot of places so that
+ card is global card right so, that thing u can keep in global.
+
+Feature:
+ there are some widgets which are feature based.
+ let's say an instagram application and some widget
+ are being used in the home page some are used in the
+ search page.
+ Some are used in the real space some are using the
+ profile page so, all these features these are the sub
+ features u can define separate folders for these features inside
+ folders.
+
+ And All the folders u can defined the widget
+ perfect so, this is regarding widgets.
