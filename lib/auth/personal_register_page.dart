@@ -55,63 +55,92 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for proportional scaling
+    final double screenWidth = Responsive.screenWidth(context);
+    final double screenHeight = Responsive.screenHeight(context);
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+
+    // Base design dimensions (from original design - roughly 375x812 mobile)
+    final double baseWidth = 375.0;
+    final double baseHeight = 812.0;
+
+    // Scaling factors
+    final double widthScale = screenWidth / baseWidth;
+    final double heightScale = screenHeight / baseHeight;
+    // Use the smaller scale to maintain proportions without overflow
+    final double scale = widthScale < heightScale ? widthScale : heightScale;
+
+    // Scale all values proportionally
+    double scaled(double value) => value * scale;
+
+    // For tablet/desktop, limit maximum scaling to 1.2x to prevent huge elements
+    final double limitedScale = (isTablet || !isMobile)
+        ? (scale > 1.2 ? 1.2 : scale)
+        : scale;
+
     return Scaffold(
       body: OnboardingBackground(
         child: Stack(
           children: [
-            // Back Button
+            // Back Button - SCALED
             Positioned(
-              top: 24,
-              left: 12,
+              top: scaled(24) * limitedScale,
+              left: scaled(12) * limitedScale,
               child: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back_ios, color: CustomColors.black87),
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: CustomColors.black87,
+                  size: scaled(24) * limitedScale,
+                ),
               ),
             ),
 
-            //Main Content
+            // Main Content - SCALED
             Positioned(
-              top: 32,
+              top: scaled(32) * limitedScale,
               left: 0,
               right: 0,
               bottom: 0,
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+                padding: EdgeInsets.symmetric(
+                  horizontal: scaled(24) * limitedScale,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title
+                    // Title - SCALED
                     Center(
                       child: Text(
                         'Create an Account',
                         style: TextStyle(
                           fontFamily: Constants.primaryfont,
-                          fontSize: Constants.fontMedium,
+                          fontSize: Constants.getFontMedium(context) * limitedScale,
                           fontWeight: FontWeight.bold,
                           color: CustomColors.black87,
                         ),
                       ),
                     ),
 
-                    SizedBox(height: Constants.spacingLittle),
+                    SizedBox(height: Constants.getSpacingLittle(context) * limitedScale),
 
-                    //Sign In Link
+                    // Sign In Link - SCALED
                     Center(
                       child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center, // Add this line
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'I already have an account.',
                             style: TextStyle(
                               fontFamily: Constants.primaryfont,
-                              fontSize: Constants.fontSmall,
+                              fontSize: Constants.getFontSmall(context) * limitedScale,
                               color: CustomColors.black87,
                             ),
                           ),
-
+                          SizedBox(width: scaled(4) * limitedScale),
                           InkWell(
                             onTap: () {
                               print('CLICKED ON SIGN IN.');
@@ -126,7 +155,7 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                               'Sign In',
                               style: TextStyle(
                                 fontFamily: Constants.primaryfont,
-                                fontSize: Constants.fontSmall,
+                                fontSize: Constants.getFontSmall(context) * limitedScale,
                                 color: CustomColors.black87,
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
@@ -137,19 +166,19 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                       ),
                     ),
 
-                    SizedBox(height: Constants.spacingMedium),
+                    SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
 
                     // Registration Form
                     Form(
                       key: _formKey,
                       child: Column(
                         children: [
-                          // Full Name Field
+                          // Full Name Field - Note: CustomFormField should handle its own scaling
                           CustomFormField(
                             label: 'Full Name',
                             hintText: 'Enter Full Name',
                             controller: _fullNameController,
-                            suffixIcon: Icon(Icons.person), // Custom icon
+                            suffixIcon: Icon(Icons.person),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your full name';
@@ -158,23 +187,23 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                             },
                           ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
-                          //  Form Field for Phone
+                          // Phone Field
                           CustomPhoneField(),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
-                          // FORM FIELD FOR EMAIL
+                          // Email Field
                           CustomFormField(
                             label: 'Email Name',
                             hintText: 'E.g.: User@domain.com',
                             controller: _emailController,
-                            suffixIcon: Icon(Icons.email), // Custom icon
+                            suffixIcon: Icon(Icons.email),
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your full name';
+                                return 'Please enter your email';
                               }
                               if (!RegExp(
                                 r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
@@ -185,8 +214,9 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                             },
                           ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
+                          // Password Field
                           CustomPasswordField(
                             label: 'Password',
                             controller: _passwordController,
@@ -198,17 +228,16 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                             },
                           ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
-                          // Password Field
+                          // Confirm Password Field
                           CustomPasswordField(
                             label: 'Confirm Password',
                             controller: _confirmPasswordController,
                             obscureText: _obscureConfirmPassword,
                             onToggle: () {
                               setState(() {
-                                _obscureConfirmPassword =
-                                    !_obscureConfirmPassword;
+                                _obscureConfirmPassword = !_obscureConfirmPassword;
                               });
                             },
                             validator: (value) {
@@ -222,21 +251,25 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                             },
                           ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
-                          // Terms and Conditions
+                          // Terms and Conditions - SCALED
                           Row(
                             children: [
-                              Checkbox(
-                                value: _acceptItems,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _acceptItems = value ?? false;
-                                  });
-                                },
-                                activeColor: CustomColors.gradientBlue,
+                              SizedBox(
+                                width: scaled(24) * limitedScale,
+                                height: scaled(24) * limitedScale,
+                                child: Checkbox(
+                                  value: _acceptItems,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _acceptItems = value ?? false;
+                                    });
+                                  },
+                                  activeColor: CustomColors.gradientBlue,
+                                ),
                               ),
-
+                              SizedBox(width: scaled(8) * limitedScale),
                               Expanded(
                                 child: GestureDetector(
                                   onTap: () {
@@ -246,7 +279,7 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                                     'I have read and accept the terms and conditions.',
                                     style: TextStyle(
                                       fontFamily: Constants.primaryfont,
-                                      fontSize: Constants.fontLittle,
+                                      fontSize: Constants.getFontLittle(context) * limitedScale,
                                       color: CustomColors.black87,
                                     ),
                                   ),
@@ -255,35 +288,31 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                             ],
                           ),
 
-                          SizedBox(height: Constants.spacingMedium),
+                          SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
 
-                          // REGISTER BUTTON
+                          // REGISTER BUTTON - SCALED
                           Container(
                             width: double.infinity,
-                            height: 42,
+                            height: scaled(42) * limitedScale,
                             decoration: BoxDecoration(
                               color: _acceptItems
                                   ? CustomColors.gradientBlue
                                   : CustomColors.littleWhite,
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(scaled(5) * limitedScale),
                               boxShadow: [
                                 BoxShadow(
                                   color: CustomColors.lightWhite,
-                                  blurRadius: 8,
-                                  offset: Offset(0, 3),
+                                  blurRadius: scaled(8) * limitedScale,
+                                  offset: Offset(0, scaled(3) * limitedScale),
                                 ),
                               ],
                             ),
-
                             child: TextButton(
-                              onPressed: _acceptItems
-                                  ? // Navigate to OTP Verification Page
-                                    _handleRegister
-                                  : null,
+                              onPressed: _acceptItems ? _handleRegister : null,
                               child: Text(
                                 'REGISTER',
                                 style: TextStyle(
-                                  fontSize: Constants.fontSmall,
+                                  fontSize: Constants.getFontSmall(context) * limitedScale,
                                   fontFamily: Constants.primaryfont,
                                   color: CustomColors.ghostWhite,
                                 ),
@@ -291,32 +320,32 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                             ),
                           ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
-                          // Horizontal line
+                          // Horizontal line - SCALED
                           Container(
                             width: double.infinity,
-                            height: 1,
+                            height: scaled(1) * limitedScale,
                             color: CustomColors.littleWhite,
                           ),
 
-                          SizedBox(height: Constants.spacingLittle),
+                          SizedBox(height: Constants.getSpacingLittle(context) * limitedScale),
 
-                          //Social Media Section
+                          // Social Media Section - SCALED
                           Column(
                             children: [
                               Text(
                                 'Or use social media account to Sign Up',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.fontSmall,
+                                  fontSize: Constants.getFontSmall(context) * limitedScale,
                                   color: CustomColors.black87.withOpacity(0.7),
                                 ),
                               ),
 
-                              SizedBox(height: Constants.spacingSmall),
+                              SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
-                              // Social Media Buttons
+                              // Social Media Buttons - SCALED
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -329,7 +358,7 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                                     },
                                   ),
 
-                                  SizedBox(width: Constants.spacingMedium),
+                                  SizedBox(width: Constants.getSpacingMedium(context) * limitedScale),
 
                                   // GOOGLE BUTTON
                                   CustomSocialButton(
@@ -343,7 +372,7 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: Constants.spacingLarge),
+                          SizedBox(height: scaled(40) * limitedScale), // Extra bottom padding
                         ],
                       ),
                     ),

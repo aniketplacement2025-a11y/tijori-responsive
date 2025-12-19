@@ -1,6 +1,6 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
-
 import 'widgets/presentation/SplashScreen.dart';
 
 void main() {
@@ -10,38 +10,29 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tijori+',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         primarySwatch: Colors.blue,
-        fontFamily: 'Roboto',
+        fontFamily: Constants.primaryfont, // Use your font
       ),
-      home: Builder(
-          builder: (context){
-            // Initialize constants here
-            Constants.screenWidth = MediaQuery.of(context).size.width;
-            Constants.screenHeight = MediaQuery.of(context).size.height;
-            return SplashScreen();
-          },
-      ),
+      // Use builder to wrap child with layout
+      builder: (context, child) {
+        // Update constants with context
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Constants.updateFromContext(context);
+        });
+
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: MediaQuery.of(context).textScaleFactor.clamp(0.8, 1.2),
+          ),
+          child: child!,
+        );
+      },
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

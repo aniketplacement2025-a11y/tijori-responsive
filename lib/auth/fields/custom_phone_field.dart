@@ -2,112 +2,184 @@ import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/Images.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/custom_colors.dart';
+import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 
-class CustomPhoneField extends StatelessWidget{
-  // CustomPhoneField({
-  //   super.key,
-  // });
-
+class CustomPhoneField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    Constants.updateFromContext(context);
+
+    final double fieldHeight = Responsive.value<double>(
+      context,
+      mobile: 48,
+      tablet: 52,
+      desktop: 56,
+    );
+
+    final double flagSize = Responsive.value<double>(
+      context,
+      mobile: 20,
+      tablet: 22,
+      desktop: 24,
+    );
+
+    final double countryCodeWidth = Responsive.value<double>(
+      context,
+      mobile: 96,
+      tablet: 104,
+      desktop: 112,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-         children: [
-          Text(
-            'Phone Number',
-            style: TextStyle(
-              fontSize: Constants.fontSmall,
-              color: CustomColors.littleWhite,
-           ),
-          ),
-          Text(
-            ' *',
-            style: TextStyle(
-              fontSize: Constants.fontSmall,
-              color: CustomColors.red,
+          children: [
+            Text(
+              'Phone Number',
+              style: TextStyle(
+                fontSize: Constants.getFontSmall(context),
+                color: CustomColors.littleWhite,
+                fontFamily: Constants.primaryfont,
+              ),
             ),
-          ),
-         ],
+            Text(
+              ' *',
+              style: TextStyle(
+                fontSize: Constants.getFontSmall(context),
+                color: CustomColors.red,
+                fontFamily: Constants.primaryfont,
+              ),
+            ),
+          ],
         ),
 
-        SizedBox(height: Constants.spacingLittle),
+        SizedBox(height: Constants.getSpacingLittle(context)),
 
         Container(
-          height: 40, // Fixed height for better control
+          height: fieldHeight,
           decoration: BoxDecoration(
             color: CustomColors.lightWhite,
-            borderRadius: BorderRadius.circular(8),
-            // border: Border.all(
-            //   color: Colors.grey[300]!,
-            //   width: 1,
-            // )
-          ),
-          child: Row(
-          children: [
-            // Country Code Section
-           Container(
-             width: 96,
-             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-             decoration: BoxDecoration(
-               color: CustomColors.lightWhite,
-               borderRadius: BorderRadius.only(
-                 topLeft: Radius.circular(8),
-                 bottomLeft: Radius.circular(8),
-               ),
-               // border: Border(
-               //   right: BorderSide(
-               //     color: Colors.grey[300]!,
-               //     width: 1,
-               //   ),
-               // ),
-             ),
-            child:Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  Images.flagAsset,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(width: Constants.spacingSmall),
-                Text(
-                  '+965',
-                  style: TextStyle(
-                    fontSize: Constants.fontSmall,
-                    color: CustomColors.black87,
-                  ),
-                ),
-              ],
+            borderRadius: BorderRadius.circular(
+              Responsive.value<double>(
+                context,
+                mobile: 8,
+                tablet: 10,
+                desktop: 12,
+              ),
             ),
           ),
-
-            // Phone Number Input Section
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2),
-                child: TextField(
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.phone),
-                    border: InputBorder.none,
-                    hintText: '000 0000',
-                    hintStyle: TextStyle(
-                      fontSize: Constants.fontSmall,
-                      color: Colors.black87,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              // Country Code Section
+              Container(
+                width: countryCodeWidth,
+                padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.value<double>(
+                    context,
+                    mobile: 8,
+                    tablet: 10,
+                    desktop: 12,
                   ),
-                  style: TextStyle(
-                    fontSize: Constants.fontSmall,
-                    color: CustomColors.black87,
+                  vertical: Responsive.value<double>(
+                    context,
+                    mobile: 8,
+                    tablet: 10,
+                    desktop: 12,
                   ),
-                  keyboardType: TextInputType.phone,
                 ),
-               ),
-           ),
-         ],
-        ),
+                decoration: BoxDecoration(
+                  color: CustomColors.lightWhite,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                      Responsive.value<double>(
+                        context,
+                        mobile: 8,
+                        tablet: 10,
+                        desktop: 12,
+                      ),
+                    ),
+                    bottomLeft: Radius.circular(
+                      Responsive.value<double>(
+                        context,
+                        mobile: 8,
+                        tablet: 10,
+                        desktop: 12,
+                      ),
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      Images.flagAsset,
+                      width: flagSize,
+                      height: flagSize,
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(width: Constants.getSpacingSmall(context)),
+                    Text(
+                      '+965',
+                      style: TextStyle(
+                        fontSize: Constants.getFontSmall(context),
+                        color: CustomColors.black87,
+                        fontFamily: Constants.primaryfont,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Phone Number Input Section
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.value<double>(
+                      context,
+                      mobile: 8,
+                      tablet: 10,
+                      desktop: 12,
+                    ),
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(
+                        Icons.phone,
+                        size: Responsive.value<double>(
+                          context,
+                          mobile: 20,
+                          tablet: 22,
+                          desktop: 24,
+                        ),
+                      ),
+                      border: InputBorder.none,
+                      hintText: '000 0000',
+                      hintStyle: TextStyle(
+                        fontSize: Constants.getFontSmall(context),
+                        color: CustomColors.littleWhite,
+                        fontFamily: Constants.primaryfont,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: Responsive.value<double>(
+                          context,
+                          mobile: 10,
+                          tablet: 12,
+                          desktop: 14,
+                        ),
+                      ),
+                    ),
+                    style: TextStyle(
+                      fontSize: Constants.getFontSmall(context),
+                      color: CustomColors.black87,
+                      fontFamily: Constants.primaryfont,
+                    ),
+                    keyboardType: TextInputType.phone,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );

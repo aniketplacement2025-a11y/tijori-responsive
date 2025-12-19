@@ -3,6 +3,7 @@ import 'package:vkaps_it_solution_project_tijori/pages/others/projects_list_titl
 import 'package:vkaps_it_solution_project_tijori/utils/Images.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/custom_colors.dart';
+import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/contract_page_after_document.dart';
 
 class ListViewProjectCard extends StatefulWidget {
@@ -26,208 +27,291 @@ class ListViewProjectCard extends StatefulWidget {
 class _ListViewProjectCardState extends State<ListViewProjectCard> {
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+    final bool isDesktop = Responsive.isDesktop(context);
+
+    // Update constants
+    Constants.updateFromContext(context);
+
+    final double cardWidth = Responsive.value<double>(
+      context,
+      mobile: 400,
+      tablet: 450,
+      desktop: 500,
+    );
+
+    // FIXED: Use finite heights for both states
+    final double collapsedHeight = Responsive.value<double>(
+      context,
+      mobile: 56,
+      tablet: 60,
+      desktop: 64,
+    );
+
+    // FIXED: Use finite expanded height instead of null
+    final double expandedHeight = Responsive.value<double>(
+      context,
+      mobile: 280,
+      tablet: 300,
+      desktop: 320,
+    );
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-         width: 400,
-         height: widget.isExpanded ? 294 : 56,
-         margin: EdgeInsets.only(bottom: Constants.spacingSmall),
-         padding: EdgeInsets.all(Constants.fontLittle),
-         decoration: BoxDecoration(
-           color: widget.isExpanded
-               ? CustomColors.gradientBlue // Outer container white for expanded state
-             : CustomColors.ghostWhite,
-           borderRadius: BorderRadius.circular(Constants.spacingMedium),
-           boxShadow: [
-             BoxShadow(
-               color: CustomColors.blackBS1,
-               blurRadius: 1,
-               offset: Offset(0, 1),
-             ),
-           ],
-         ),
-         child: Column(
-           mainAxisAlignment: MainAxisAlignment.start,
-           crossAxisAlignment: CrossAxisAlignment.start,
-           children: [
-           // First Row: Title with icons
-           Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-             // Left side: Icon + Title
-             Row(
-               children: [
-                 // Icon
-                 Container(
-                   width: Constants.spacingHigh,
-                   height: 30,
-                   child: Image.asset(
-                    Images.projectIcon,
-                    width: Constants.spacingHigh,
-                    height: Constants.spacingHigh,
-                    fit: BoxFit.contain,
-                   ),
-                 ),
-
-                 SizedBox(width: Constants.spacingSmall),
-
-                 // Title
-                 GestureDetector(
-                  onTap: widget.onTap,
-                  child: Container(
-                    width: 200,
-                    height: 22,
-                    child: Text(
-                      widget.project['title']!,
-                      style: TextStyle(
-                        fontFamily: Constants.primaryfont,
-                        fontSize: 14,
-                        fontWeight: .bold,
-                        color: CustomColors.black87,
+      width: cardWidth,
+      height: widget.isExpanded ? expandedHeight : collapsedHeight,
+      margin: EdgeInsets.only(bottom: Constants.getSpacingSmall(context)),
+      padding: EdgeInsets.all(
+        Responsive.value<double>(
+          context,
+          mobile: Constants.getFontLittle(context),
+          tablet: Constants.getFontLittle(context) * 1.1,
+          desktop: Constants.getFontLittle(context) * 1.2,
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: widget.isExpanded
+            ? CustomColors.gradientBlue
+            : CustomColors.ghostWhite,
+        borderRadius: BorderRadius.circular(
+          Responsive.value<double>(
+            context,
+            mobile: Constants.getSpacingMedium(context),
+            tablet: Constants.getSpacingMedium(context) * 1.1,
+            desktop: Constants.getSpacingMedium(context) * 1.2,
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: CustomColors.blackBS1,
+            blurRadius: Responsive.value<double>(
+              context,
+              mobile: 1,
+              tablet: 1.5,
+              desktop: 2,
+            ),
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      child: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(), // Prevent inner scrolling
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // FIXED: Use min to fit content
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // First Row: Title with icons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Left side: Icon + Title
+                Row(
+                  children: [
+                    // Icon
+                    Container(
+                      width: Constants.getSpacingHigh(context),
+                      height: Responsive.value<double>(
+                        context,
+                        mobile: 30,
+                        tablet: 32,
+                        desktop: 34,
+                      ),
+                      child: Image.asset(
+                        Images.projectIcon,
+                        width: Constants.getSpacingHigh(context),
+                        height: Constants.getSpacingHigh(context),
+                        fit: BoxFit.contain,
                       ),
                     ),
-                  ),),
-               ],
-             ),
 
-             // Right Side : Two Icons
-             Row(
-               children: [
+                    SizedBox(width: Constants.getSpacingSmall(context)),
 
-                 GestureDetector(
-                   onTap: widget.onToggle,
-                 child: AnimatedContainer(
-                     duration: const Duration(milliseconds: 300),
-                 // First icon In Future (rotated -90 deg)
-                 child: Transform.rotate(
-                  angle: widget.isExpanded
-                   ? 180 * (3.1415926535 / 180) // In Future We rotate it angle: -90 * (3.1415926535 / 180), // -90 degrees
-                   : 0,
-                  child: Container(
-                    width: Constants.spacingHigh,
-                    height: Constants.spacingHigh,
-                    child: Image.asset(
-                      Images.bottomarrowIcon,
-                      width: Constants.spacingHigh,
-                      height: Constants.spacingHigh,
-                      fit: BoxFit.contain,
-                     ),
+                    // Title
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxWidth: Responsive.value<double>(
+                            context,
+                            mobile: 200,
+                            tablet: 220,
+                            desktop: 240,
+                          ),
+                        ),
+                        child: Text(
+                          widget.project['title']!,
+                          style: TextStyle(
+                            fontFamily: Constants.primaryfont,
+                            fontSize: Responsive.value<double>(
+                              context,
+                              mobile: 14,
+                              tablet: 15,
+                              desktop: 16,
+                            ),
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.black87,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
-                   ),
+                  ],
+                ),
+
+                // Right Side: Two Icons
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: widget.onToggle,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        child: Transform.rotate(
+                          angle: widget.isExpanded
+                              ? 180 * (3.1415926535 / 180)
+                              : 0,
+                          child: Container(
+                            width: Constants.getSpacingHigh(context),
+                            height: Constants.getSpacingHigh(context),
+                            child: Image.asset(
+                              Images.bottomarrowIcon,
+                              width: Constants.getSpacingHigh(context),
+                              height: Constants.getSpacingHigh(context),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(width: Constants.getSpacingLittle(context)),
+
+                    // Second icon
+                    Container(
+                      width: Constants.getSpacingHigh(context),
+                      height: Constants.getSpacingHigh(context),
+                      child: Image.asset(
+                        Images.menudotIcon,
+                        width: Constants.getSpacingHigh(context),
+                        height: Constants.getSpacingHigh(context),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            // Expanded Content (shown when expanded)
+            if (widget.isExpanded) ...[
+              SizedBox(height: Constants.getSpacingSmall(context)),
+
+              // Main content container with white background
+              Container(
+                width: cardWidth - 20,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      CustomColors.ghostWhite,
+                      CustomColors.white,
+                    ],
                   ),
-                 ),
+                  borderRadius: BorderRadius.circular(
+                    Responsive.value<double>(
+                      context,
+                      mobile: Constants.getFontLittle(context),
+                      tablet: Constants.getFontLittle(context) * 1.1,
+                      desktop: Constants.getFontLittle(context) * 1.2,
+                    ),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(
+                    Responsive.value<double>(
+                      context,
+                      mobile: 8,
+                      tablet: 10,
+                      desktop: 12,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // FIXED: Use min
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Contracts Section
+                      _buildContractsSection(context),
 
-                 SizedBox(width: Constants.spacingLittle),
+                      SizedBox(height: Constants.getSpacingLittle(context)),
 
-                 // Second icon
-                 Container(
-                   width: Constants.spacingHigh,
-                   height: Constants.spacingHigh,
-                   child: Image.asset(
-                     Images.menudotIcon,
-                     width: Constants.spacingHigh,
-                     height: Constants.spacingHigh,
-                     fit: BoxFit.contain,
-                   ),
-                 ),
-               ],
-             ),
-           ],
-         ),
+                      // Divider
+                      Container(
+                        width: cardWidth - 40,
+                        height: 1,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black.withOpacity(0.1),
+                            width: 1,
+                          ),
+                        ),
+                      ),
 
-         // Expanded Content (shown when expanded)
-        if(widget.isExpanded) ...[
-    SizedBox(height: Constants.spacingSmall),
+                      SizedBox(height: Constants.getSpacingLittle(context)),
 
-    // Main content container with white backgrount
-    Container(
-      width: 360,
-      height: 230, // 416 - 56 - 16 -4 (calculated)
-      decoration: BoxDecoration(
-       gradient: LinearGradient(
-       begin: Alignment.topCenter,
-       end: Alignment.bottomCenter,
-       colors: [
-         CustomColors.ghostWhite,
-         CustomColors.white,
-       ],
-     ),
-     borderRadius: .circular(Constants.fontLittle),
-    ),
-    child: Padding(
-     padding: const EdgeInsetsGeometry.all(8.0),
-     child: Column(
-         crossAxisAlignment: .start,
-           children: [
-           // Contracts Section
-           _buildContractsSection(),
-
-           SizedBox(height: Constants.spacingLittle),
-
-             // Divider
-             Container(
-               width: 360,
-               height: 0,
-               decoration: BoxDecoration(
-                 border: Border.all(
-                   color: Colors.black.withOpacity(0.1),
-                   width: 1,
-                 ),
-               ),
-             ),
-
-           SizedBox(height: Constants.spacingLittle),
-
-             // Warranties Section
-             _buildWarrantiesSection(),
-           ],
-          ),
-         ),
+                      // Warranties Section
+                      _buildWarrantiesSection(context),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
         ),
-       ],
-      ],
-     ),
+      ),
     );
   }
 
-  Widget _buildContractsSection(){
-    return Container(
-      width: 360,
-      height: 72,
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
+  Widget _buildContractsSection(BuildContext context) {
+    final double sectionWidth = Responsive.value<double>(
+      context,
+      mobile: 360,
+      tablet: 380,
+      desktop: 400,
+    );
 
+    return Container(
+      width: sectionWidth,
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // FIXED: Use min
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           // Row a: Title + Close icon
           SizedBox(
-            width: 360,
-            height: 20,
+            width: sectionWidth,
             child: Row(
-              mainAxisAlignment: .spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 // Contracts Text
-                SizedBox(
-                  width: 72,
-                  height: Constants.fontMedium,
-                  child: Text(
-                    'Contracts',
-                    style: TextStyle(
-                      fontFamily: Constants.primaryfont,
-                      fontWeight: .bold,
-                      fontSize: Constants.fontSmall,
-                      color: CustomColors.darkPink,
-                    ),
+                Text(
+                  'Contracts',
+                  style: TextStyle(
+                    fontFamily: Constants.primaryfont,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Constants.getFontSmall(context),
+                    color: CustomColors.darkPink,
                   ),
                 ),
 
                 // Close icon (pink)
                 Container(
-                  width: Constants.fontSmall,
-                  height: Constants.fontSmall,
+                  width: Constants.getFontSmall(context),
+                  height: Constants.getFontSmall(context),
                   child: Icon(
                     Icons.close,
-                    size: Constants.fontSmall,
+                    size: Constants.getFontSmall(context),
                     color: CustomColors.darkPink,
                   ),
                 ),
@@ -235,104 +319,109 @@ class _ListViewProjectCardState extends State<ListViewProjectCard> {
             ),
           ),
 
-          SizedBox(height: Constants.spacingLittle),
+          SizedBox(height: Constants.getSpacingLittle(context)),
 
           // Row 2: Contract item with icons
           SizedBox(
-            width: 300,
-            height: 18,
+            width: sectionWidth - 60,
             child: Row(
-              mainAxisAlignment: .start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // Start icon
                 Container(
-                  width: Constants.fontSmall,
-                  height: Constants.fontSmall,
+                  width: Constants.getFontSmall(context),
+                  height: Constants.getFontSmall(context),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(
+                      Responsive.value<double>(
+                        context,
+                        mobile: 4,
+                        tablet: 5,
+                        desktop: 6,
+                      ),
+                    ),
                   ),
                   child: Icon(
                     Icons.description,
                     color: CustomColors.black87,
-                    size: Constants.fontSmall,
+                    size: Constants.getFontSmall(context),
                   ),
                 ),
 
-                SizedBox(width: Constants.spacingLittle),
+                SizedBox(width: Constants.getSpacingLittle(context)),
 
                 // Contract title
-                SizedBox(
-                  width: 220,
-                  height: 28,
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
                       'Contact construction Villa Hazmi',
                       style: TextStyle(
                         fontFamily: Constants.primaryfont,
-                        fontWeight: .bold,
-                        fontSize: Constants.fontLittle,
+                        fontWeight: FontWeight.bold,
+                        fontSize: Constants.getFontLittle(context),
                         color: CustomColors.black87,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-
-                SizedBox(width: Constants.spacingLarge),
+                ),
 
                 // End Icon
-            GestureDetector(
-              onTap: () {
-                print("Arrow icon tapped");
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ContractPageAfterDocument()));
-              },
-              child: Container(
-                  width: Constants.fontMedium,
-                  height: Constants.fontMedium,
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    size: Constants.fontSmall,
-                    color: Colors.grey,
+                GestureDetector(
+                  onTap: () {
+                    print("Arrow icon tapped");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ContractPageAfterDocument(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: Constants.getFontMedium(context),
+                    height: Constants.getFontMedium(context),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      size: Constants.getFontSmall(context),
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
-               ),
               ],
             ),
           ),
 
-          SizedBox(height: Constants.spacingSmall),
+          SizedBox(height: Constants.getSpacingSmall(context)),
 
           // Row c: Remaining days
           SizedBox(
-            width: 360,
-            height: Constants.fontSmall,
+            width: sectionWidth,
             child: Row(
               children: [
-
                 // Calendar icon
                 Container(
-                  width: Constants.fontSmall,
-                  height: Constants.fontSmall,
+                  width: Constants.getFontSmall(context),
+                  height: Constants.getFontSmall(context),
                   child: Icon(
                     Icons.calendar_today,
-                    size: Constants.fontSmall,
+                    size: Constants.getFontSmall(context),
                     color: CustomColors.littleWhite,
                   ),
                 ),
 
-                SizedBox(width: Constants.spacingSmall),
+                SizedBox(width: Constants.getSpacingSmall(context)),
 
                 // Remaining days text
-                SizedBox(
-                  width: 116,
-                  height: 18,
-                  child: Text(
-                    'Remaining: 30 days',
-                    style: TextStyle(
-                      fontFamily: Constants.primaryfont,
-                      fontSize: Constants.fontLittle,
-                      color: Colors.black87,
-                    ),
+                Text(
+                  'Remaining: 30 days',
+                  style: TextStyle(
+                    fontFamily: Constants.primaryfont,
+                    fontSize: Constants.getFontLittle(context),
+                    color: CustomColors.black87,
                   ),
                 ),
-
               ],
             ),
           ),
@@ -341,121 +430,131 @@ class _ListViewProjectCardState extends State<ListViewProjectCard> {
     );
   }
 
-  Widget _buildWarrantiesSection(){
+  Widget _buildWarrantiesSection(BuildContext context) {
     return Container(
-     child: Column(
-       crossAxisAlignment: .start,
-       children: [
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // FIXED: Use min
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title + Add Button
+          SizedBox(
+            width: Responsive.value<double>(
+              context,
+              mobile: 360,
+              tablet: 380,
+              desktop: 400,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Warranties Text
+                Text(
+                  'Warranties',
+                  style: TextStyle(
+                    fontFamily: Constants.primaryfont,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Constants.getFontSmall(context),
+                    color: CustomColors.darkPink,
+                  ),
+                ),
 
-         // Title + Add Button
-         SizedBox(
-           width: 360,
-           height: 23,
-           child: Row(
-             mainAxisAlignment: .spaceBetween,
-             children: [
+                // Add button with pink background
+                Container(
+                  width: Constants.getFontMedium(context),
+                  height: Constants.getFontMedium(context),
+                  decoration: BoxDecoration(
+                    color: CustomColors.darkPink.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    size: Constants.getFontSmall(context),
+                    color: CustomColors.darkPink,
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-               // Warranties Text
-               SizedBox(
-                 width: 84,
-                 height: 20,
-                 child: Text(
-                   'Warranties',
-                   style: TextStyle(
-                     fontFamily: Constants.primaryfont,
-                     fontWeight: .bold,
-                     fontSize: Constants.fontSmall,
-                     color: CustomColors.darkPink,
-                   ),
-                 ),
-               ),
+          SizedBox(height: Constants.getSpacingSmall(context)),
 
-               // Add button with pink background
-               Container(
-                 width: Constants.fontMedium,
-                 height: Constants.fontMedium,
-                 decoration: BoxDecoration(
-                   color: CustomColors.darkPink.withOpacity(0.05),
-                   borderRadius: .circular(40),
-                 ),
-                 child: Icon(
-                   Icons.add,
-                   size: Constants.fontSmall,
-                   color: CustomColors.darkPink,
-                 ),
-               ),
-             ],
-           ),
-         ),
+          // First warranty item
+          _buildWarrantyItem(context, 'Warranty construction Villa Hazmi'),
 
-         // First warranty item
-         _buildWarrantyItem('Warranty construction Villa Hazmi'),
+          SizedBox(height: Constants.getSpacingSmall(context)),
 
-         SizedBox(height: Constants.spacingSmall),
+          // Second warranty item
+          _buildWarrantyItem(context, 'Warranty construction Villa Hazmi'),
 
-         // Second warranty item
-         _buildWarrantyItem('Warranty construction Villa Hazmi'),
-
-         SizedBox(height: Constants.spacingSmall),
-       ],
-     ),
+          SizedBox(height: Constants.getSpacingSmall(context)),
+        ],
+      ),
     );
   }
 
-  Widget _buildWarrantyItem(String title){
+  Widget _buildWarrantyItem(BuildContext context, String title) {
     return Column(
+      mainAxisSize: MainAxisSize.min, // FIXED: Use min
       children: [
-
         // Warranty item row
         SizedBox(
-          width: 360,
-          height: Constants.fontMedium,
+          width: Responsive.value<double>(
+            context,
+            mobile: 360,
+            tablet: 380,
+            desktop: 400,
+          ),
           child: Row(
-            mainAxisAlignment: .start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-
               // Start icon
               Container(
-                width: Constants.fontMedium,
-                height: Constants.fontMedium,
+                width: Constants.getFontMedium(context),
+                height: Constants.getFontMedium(context),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(
+                    Responsive.value<double>(
+                      context,
+                      mobile: 4,
+                      tablet: 5,
+                      desktop: 6,
+                    ),
+                  ),
                 ),
                 child: Icon(
                   Icons.security,
                   color: CustomColors.black87,
-                  size: Constants.fontSmall,
+                  size: Constants.getFontSmall(context),
                 ),
               ),
 
-              SizedBox(width: Constants.spacingLittle),
+              SizedBox(width: Constants.getSpacingLittle(context)),
 
               // Warranty title
-              SizedBox(
-                width: 208,
-                height: Constants.fontMedium,
-                child: Align(
-                  alignment: Alignment.centerLeft,
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
                     title,
                     style: TextStyle(
                       fontFamily: Constants.primaryfont,
                       fontWeight: FontWeight.bold,
-                      fontSize: Constants.fontLittle,
+                      fontSize: Constants.getFontLittle(context),
                       color: Colors.black,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
 
-              SizedBox(width: Constants.spacingLarge),
               // End icon
               Container(
-                width: Constants.fontMedium,
-                height: Constants.fontMedium,
-                child: const Icon(
+                width: Constants.getFontMedium(context),
+                height: Constants.getFontMedium(context),
+                child: Icon(
                   Icons.arrow_forward_ios,
-                  size: 16,
+                  size: Constants.getFontSmall(context),
                   color: Colors.grey,
                 ),
               ),
@@ -463,44 +562,42 @@ class _ListViewProjectCardState extends State<ListViewProjectCard> {
           ),
         ),
 
-        SizedBox(height: Constants.spacingLittle),
+        SizedBox(height: Constants.getSpacingLittle(context)),
 
         // Remaining days for this warranty
         SizedBox(
-          width: 320,
-          height: Constants.fontSmall,
+          width: Responsive.value<double>(
+            context,
+            mobile: 320,
+            tablet: 340,
+            desktop: 360,
+          ),
           child: Row(
             children: [
-
-              SizedBox(width: Constants.spacingLittle),
+              SizedBox(width: Constants.getSpacingLittle(context)),
 
               // Calendar icon
               Container(
-                width: Constants.fontSmall,
-                height: Constants.fontSmall,
+                width: Constants.getFontSmall(context),
+                height: Constants.getFontSmall(context),
                 child: Icon(
                   Icons.calendar_today,
-                  size: Constants.fontSmall,
+                  size: Constants.getFontSmall(context),
                   color: CustomColors.littleWhite,
                 ),
               ),
 
-              SizedBox(width: Constants.spacingSmall),
+              SizedBox(width: Constants.getSpacingSmall(context)),
 
               // Remaining days text
-              SizedBox(
-                width: 116,
-                height: 18,
-                child: Text(
-                  'Remaining: 30 days',
-                  style: TextStyle(
-                    fontFamily: Constants.primaryfont,
-                    fontSize: Constants.fontLittle,
-                    color: Colors.black87,
-                  ),
+              Text(
+                'Remaining: 30 days',
+                style: TextStyle(
+                  fontFamily: Constants.primaryfont,
+                  fontSize: Constants.getFontLittle(context),
+                  color: CustomColors.black87,
                 ),
               ),
-
             ],
           ),
         ),

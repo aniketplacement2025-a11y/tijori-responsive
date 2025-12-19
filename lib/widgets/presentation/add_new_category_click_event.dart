@@ -42,10 +42,10 @@ class AddNewCategoryClickEvent extends StatelessWidget {
         // Title + SubTitle Box
         Positioned(
             top: 72,
-            left: 5,
+            left: 10,
+            right: 10,
             child: Container(
-              width: 350,
-              height: 96,
+              alignment: .center,
               padding: EdgeInsets.only(
                 top: 20,
                 right: 10,
@@ -58,7 +58,6 @@ class AddNewCategoryClickEvent extends StatelessWidget {
                 border: Border.all(color: CustomColors.black87, width: 1),
               ),
               child: SizedBox(
-                width: 350,
                 height: 22,
                 child: Row(
                   mainAxisAlignment: .center,
@@ -113,7 +112,7 @@ class AddNewCategoryClickEvent extends StatelessWidget {
 
               // "Create the form" Text
               Positioned(
-                top: 172,
+                top: 156,
                  right: 5,
                   left: 5,
                   bottom: 10,
@@ -252,7 +251,7 @@ class AddNewCategoryClickEvent extends StatelessWidget {
                            onPressed: (){
                              print('CLICKED ON Add My Appointments');
                            },
-                           width: 350,
+                           width: 400,
                        ),
 
                      ],

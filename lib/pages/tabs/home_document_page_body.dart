@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/others/projects_list_titles.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/add_bucket_click_event.dart';
-
 import '../../utils/Images.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
+import '../../utils/responsive_media_query.dart';
 import '../../widgets/presentation/list_of_documents_selection.dart';
 import 'features/grid_view_project_card.dart';
 import 'features/list_view_project_card.dart';
@@ -22,227 +22,304 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+    final bool isDesktop = Responsive.isDesktop(context);
+
+    // Update constants
+    Constants.updateFromContext(context);
+
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: 2),
       padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: Colors.transparent, // Make it transparent
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(8),
       ),
       child: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: Constants.fontLittle),
-       child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          Row(
-            mainAxisAlignment: .spaceBetween,
-            crossAxisAlignment: .center,
-            children: [
-              // Left: Title
-              Flexible(
-                // Use Flexible instead of fixed width
-                child: Container(
-                  constraints: BoxConstraints(maxWidth: 160),
-                  child: Text(
-                    'List of documents',
-                    style: TextStyle(
-                      fontFamily: Constants.primaryfont,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.black87,
+        padding: EdgeInsets.symmetric(
+          horizontal: Responsive.value<double>(
+            context,
+            mobile: Constants.getFontLittle(context),
+            tablet: Constants.getSpacingSmall(context),
+            desktop: Constants.getSpacingMedium(context),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Left: Title
+                Flexible(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: Responsive.value<double>(
+                        context,
+                        mobile: 160,
+                        tablet: 180,
+                        desktop: 200,
+                      ),
+                    ),
+                    child: Text(
+                      'List of documents',
+                      style: TextStyle(
+                        fontFamily: Constants.primaryfont,
+                        fontSize: Responsive.value<double>(
+                          context,
+                          mobile: 18,
+                          tablet: 19,
+                          desktop: 20,
+                        ),
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.black87,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              // Right: Image + Divider + Add Button
-              Flexible(
-                // Use Flexible here too
-                child: Container(
-                  constraints: BoxConstraints(
-                    maxWidth: 140,
-                  ), // Limit max width
-                  child: Row(
-                    mainAxisAlignment: .start,
-                    crossAxisAlignment: .center,
-                    mainAxisSize: .min,
-                    children: [
-                      // Menu Image
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isGridView = !_isGridView;
-                          });
-                          print(
-                            _isGridView
-                                ? 'Switched to Grid View'
-                                : 'Switched to List View',
-                          );
-                        },
-                        child: Container(
-                          width: Constants.spacingHigh,
-                          height: 18,
-                          child: Image.asset(
-                            _isGridView
-                                ? Images.gridIcon
-                                : Images.menuIcon,
-                            width: Constants.spacingHigh,
-                            height: 18,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
+                // Right: Image + Divider + Add Button
+                Flexible(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: Responsive.value<double>(
+                        context,
+                        mobile: 140,
+                        tablet: 150,
+                        desktop: 160,
                       ),
-
-                      SizedBox(width: Constants.spacingSmall),
-
-                      // Vertical Line Divider
-                      Container(
-                        width: 1,
-                        height: Constants.fontLarge,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            right: BorderSide(
-                              color: CustomColors.blackBS1,
-                              width: 1,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Menu Image
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isGridView = !_isGridView;
+                            });
+                            print(
+                              _isGridView
+                                  ? 'Switched to Grid View'
+                                  : 'Switched to List View',
+                            );
+                          },
+                          child: Container(
+                            width: Constants.getSpacingHigh(context),
+                            height: Responsive.value<double>(
+                              context,
+                              mobile: 18,
+                              tablet: 20,
+                              desktop: 22,
+                            ),
+                            child: Image.asset(
+                              _isGridView
+                                  ? Images.gridIcon
+                                  : Images.menuIcon,
+                              width: Constants.getSpacingHigh(context),
+                              height: Responsive.value<double>(
+                                context,
+                                mobile: 18,
+                                tablet: 20,
+                                desktop: 22,
+                              ),
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
-                      ),
 
-                      SizedBox(width: Constants.spacingSmall),
+                        SizedBox(width: Constants.getSpacingSmall(context)),
 
-                      // Add Bucket Button
-                   Material(
-                    color: Colors.transparent,
-                      child: GestureDetector(
-                        onTap: () {
-                          print('Context mounted: ${context.mounted}');
-                          if (context.mounted) {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => AddBucketClickEvent()
-                                )
-                            );
-                          } else {
-                            print('Context is not mounted!');
-                          }
-                        },
-                        child: Container(
-                          height: 36,
-                          constraints: BoxConstraints(
-                            maxWidth: 120,
-                          ), // Reduced max width
-                          // width: 140,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Constants.fontLittle,
-                            vertical: 6,
-                          ),
+                        // Vertical Line Divider
+                        Container(
+                          width: 1,
+                          height: Constants.getFontLarge(context),
                           decoration: BoxDecoration(
-                            color: CustomColors.ghostWhite,
-                            borderRadius:
-                            BorderRadius.circular(6),
-                            boxShadow: [
-                              BoxShadow(
+                            border: Border(
+                              right: BorderSide(
                                 color: CustomColors.blackBS1,
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
+                                width: 1,
                               ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisSize: .min,
-                            mainAxisAlignment: .center,
-                            crossAxisAlignment: .center,
-                            children: [
-                              Container(
-                                width: Constants.fontLittle,
-                                height: Constants.fontLittle,
-                                child: Image.asset(
-                                  Images.plusIcon,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-
-                              SizedBox(
-                                width:
-                                Constants.spacingLittle,
-                              ),
-
-                              Text(
-                                'Add Bucket',
-                                style: TextStyle(
-                                  fontFamily:
-                                  Constants.primaryfont,
-                                  fontSize: 10,
-                                  fontWeight: .bold,
-                                  color: CustomColors.black87,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                     ),
-                    ],
+
+                        SizedBox(width: Constants.getSpacingSmall(context)),
+
+                        // Add Bucket Button
+                        Material(
+                          color: Colors.transparent,
+                          child: GestureDetector(
+                            onTap: () {
+                              print('Context mounted: ${context.mounted}');
+                              if (context.mounted) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => AddBucketClickEvent(),
+                                  ),
+                                );
+                              } else {
+                                print('Context is not mounted!');
+                              }
+                            },
+                            child: Container(
+                              height: Responsive.value<double>(
+                                context,
+                                mobile: 36,
+                                tablet: 38,
+                                desktop: 40,
+                              ),
+                              constraints: BoxConstraints(
+                                maxWidth: Responsive.value<double>(
+                                  context,
+                                  mobile: 120,
+                                  tablet: 130,
+                                  desktop: 140,
+                                ),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Constants.getFontLittle(context),
+                                vertical: Responsive.value<double>(
+                                  context,
+                                  mobile: 6,
+                                  tablet: 7,
+                                  desktop: 8,
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                color: CustomColors.ghostWhite,
+                                borderRadius: BorderRadius.circular(
+                                  Responsive.value<double>(
+                                    context,
+                                    mobile: 6,
+                                    tablet: 7,
+                                    desktop: 8,
+                                  ),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: CustomColors.blackBS1,
+                                    blurRadius: Responsive.value<double>(
+                                      context,
+                                      mobile: 4,
+                                      tablet: 5,
+                                      desktop: 6,
+                                    ),
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: Constants.getFontLittle(context),
+                                    height: Constants.getFontLittle(context),
+                                    child: Image.asset(
+                                      Images.plusIcon,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+
+                                  SizedBox(width: Constants.getSpacingLittle(context)),
+
+                                  Text(
+                                    'Add Bucket',
+                                    style: TextStyle(
+                                      fontFamily: Constants.primaryfont,
+                                      fontSize: Responsive.value<double>(
+                                        context,
+                                        mobile: 10,
+                                        tablet: 11,
+                                        desktop: 12,
+                                      ),
+                                      fontWeight: FontWeight.bold,
+                                      color: CustomColors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
 
-          // Row 2: "My documents of actual projects" text
-          Container(
-            width: double.infinity,
-            //height: 26,
-            child: Text(
-              'My documents created',
-              style: TextStyle(
-                fontFamily: Constants.primaryfont,
-                fontSize: Constants.fontLittle,
-                fontWeight: .w500,
-                color: CustomColors
-                    .littleWhite, // Adjust color as needed
+            // Row 2: "My documents created" text
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(
+                top: Responsive.value<double>(
+                  context,
+                  mobile: 4,
+                  tablet: 6,
+                  desktop: 8,
+                ),
+              ),
+              child: Text(
+                'My documents created',
+                style: TextStyle(
+                  fontFamily: Constants.primaryfont,
+                  fontSize: Constants.getFontLittle(context),
+                  fontWeight: FontWeight.w500,
+                  color: CustomColors.littleWhite,
+                ),
               ),
             ),
-          ),
 
-          SizedBox(height: Constants.spacingLittle),
+            SizedBox(height: Constants.getSpacingMedium(context)),
 
-          // // PROJECT CARDS - DYNAMIC LAYOUT BASED ON _isGridView
-          _isGridView
-              ? GridViewProjectCard() // Grid Layout after click
-              : Column(
-            children: ProjectsListTitles.projects.asMap().entries.map((entry) {
-              final index = entry.key;
-              final project = entry.value;
-              String title = project['title']!;
+            // PROJECT CARDS - DYNAMIC LAYOUT BASED ON _isGridView
+            _isGridView
+                ? GridViewProjectCard() // Grid Layout after click
+                : Column(
+              children: ProjectsListTitles.projects.asMap().entries.map((entry) {
+                final index = entry.key;
+                final project = entry.value;
+                String title = project['title']!;
 
-              return ListViewProjectCard(
-                project: project,
-                isExpanded: _expandedIndex == index,
-                onToggle: () {
-                  setState(() {
-                    if (_expandedIndex == index) {
-                      _expandedIndex = null; // Collapse if already expanded
-                    } else {
-                      _expandedIndex = index; // Expand this one
-                    }
-                  });
-                },
-                  onTap: (){
-                    // Naviagate to respective page
-                    Navigator.push(context, MaterialPageRoute(
+                return ListViewProjectCard(
+                  project: project,
+                  isExpanded: _expandedIndex == index,
+                  onToggle: () {
+                    setState(() {
+                      if (_expandedIndex == index) {
+                        _expandedIndex = null;
+                      } else {
+                        _expandedIndex = index;
+                      }
+                    });
+                  },
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
                         builder: (context) => ListOfDocumentsSelection(
-                            bucket_title: title
-                        )
-                    ));
-                  }
-              );
-            }).toList(),
-          ), // List layout before click
-        ],
-       ),
+                          bucket_title: title,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+
+            // Extra bottom spacing for larger screens
+            if (isTablet || isDesktop)
+              SizedBox(height: Constants.getSpacingLarge(context) * 2),
+          ],
+        ),
       ),
     );
   }

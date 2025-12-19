@@ -60,10 +60,11 @@ class _AfterCategoryOfContractConstructionSelectionShowState
             // Title + Subtitle + ChildTitle Box
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
                 width: 350,
-                height: 104,
+                height: 108,
                 padding: EdgeInsets.only(
                   top: 20,
                   right: 10,
@@ -210,7 +211,7 @@ class _AfterCategoryOfContractConstructionSelectionShowState
                     horizontal: Constants.spacingLittle,
                   ),
                   child: Column(
-                    crossAxisAlignment: .start,
+                    crossAxisAlignment: .center,
                     children: [
                       // About Contract and Icon
                       Container(
@@ -222,7 +223,7 @@ class _AfterCategoryOfContractConstructionSelectionShowState
                           borderRadius: .circular(8),
                         ),
                         child: Column(
-                          crossAxisAlignment: .start,
+                          crossAxisAlignment: .center,
                           children: [
                             Row(
                               mainAxisAlignment: .spaceBetween,
@@ -294,7 +295,8 @@ class _AfterCategoryOfContractConstructionSelectionShowState
                             Container(
                               width: double.infinity,
                               child: Column(
-                                crossAxisAlignment: .start,
+                                mainAxisAlignment: .center,
+                                crossAxisAlignment: .center,
                                 children: [
                                   // NAME OF COMPANY FORM FIELD
                                   _buildTextLabel(
@@ -604,7 +606,7 @@ class _AfterCategoryOfContractConstructionSelectionShowState
     required String Imagepath,
   }) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
           children: [
@@ -620,13 +622,13 @@ class _AfterCategoryOfContractConstructionSelectionShowState
         SizedBox(height: Constants.spacingLittle),
 
         Container(
-          width: 350,
+          alignment: .center,
           height: 36,
           padding: const EdgeInsets.only(
             top: 5,
-            right: 20,
+            right: 10,
             bottom: 5,
-            left: 20,
+            left: 10,
           ),
           decoration: BoxDecoration(
             color: const Color(0xFF000000).withOpacity(0.05), // #00000005

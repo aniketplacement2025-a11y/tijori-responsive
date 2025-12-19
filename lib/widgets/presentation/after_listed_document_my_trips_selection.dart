@@ -56,9 +56,10 @@ class _AfterListedDocumentMyTripsSelectionState
             // Title + SubTitle Box
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
+                alignment: .center,
                 height: 96,
                 padding: EdgeInsets.only(
                   top: 20,
@@ -306,7 +307,7 @@ class _AfterListedDocumentMyTripsSelectionState
                                   SizedBox(height: Constants.spacingLittle),
 
                                   Container(
-                                    width: 350,
+                                    alignment: .center,
                                     height: 255,
                                     padding: const EdgeInsets.only(
                                       top: 20,
@@ -435,6 +436,8 @@ class _AfterListedDocumentMyTripsSelectionState
                                     Imagepath: Images.calenderIcon,
                                   ),
 
+                                  SizedBox(height: Constants.spacingLittle),
+
                                   // Return Date
                                   _buildTextLabel(
                                     label: 'Return Date',
@@ -445,7 +448,7 @@ class _AfterListedDocumentMyTripsSelectionState
                                   SizedBox(height: Constants.spacingLittle),
 
                                   Container(
-                                    width: 350,
+                                    alignment: .center,
                                     height: 36,
                                     padding: const EdgeInsets.only(
                                       top: 5,
@@ -794,6 +797,8 @@ class _AfterListedDocumentMyTripsSelectionState
                                     Imagepath: Images.bottomarrowIcon,
                                   ),
 
+                                  SizedBox(height: Constants.spacingLittle),
+
                                   // 'Store location' Text
                                   _buildTextLabel(
                                     label: 'Reservation Invoice',
@@ -1019,7 +1024,7 @@ class _AfterListedDocumentMyTripsSelectionState
                                       SizedBox(height: Constants.spacingLittle),
 
                                       Container(
-                                        width: 350,
+                                        alignment: .center,
                                         height: 96,
                                         padding: const EdgeInsets.only(
                                           top: 5,
@@ -1098,7 +1103,7 @@ class _AfterListedDocumentMyTripsSelectionState
                                         },
                                       );
                                     },
-                                    width: 350,
+                                    width: 400,
                                   ),
                                 ],
                               ),
@@ -1139,7 +1144,7 @@ class _AfterListedDocumentMyTripsSelectionState
         SizedBox(height: Constants.spacingLittle),
 
         Container(
-          width: 350,
+          alignment: .center,
           height: 36,
           padding: const EdgeInsets.only(
             top: 5,

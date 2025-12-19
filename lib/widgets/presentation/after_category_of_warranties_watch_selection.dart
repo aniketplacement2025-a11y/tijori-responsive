@@ -57,10 +57,11 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
             // TITLE + SUB TITLE + CHILD SUB TITLE BOX CONTAINER
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
-                height: 104,
+                alignment: .center,
+                height: 108,
                 padding: EdgeInsets.only(
                   top: 20,
                   right: 10,
@@ -208,7 +209,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
                     horizontal: Constants.spacingLittle,
                   ),
                   child: Column(
-                    crossAxisAlignment: .start,
+                    crossAxisAlignment: .center,
                     children: [
                       // About Warranty and Icon
                       Container(
@@ -220,7 +221,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
                           borderRadius: .circular(8),
                         ),
                         child: Column(
-                          crossAxisAlignment: .start,
+                          crossAxisAlignment: .center,
                           children: [
                             Row(
                               mainAxisAlignment: .spaceBetween,
@@ -292,7 +293,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
                             Container(
                               width: double.infinity,
                               child: Column(
-                                crossAxisAlignment: .start,
+                                crossAxisAlignment: .center,
                                 children: [
                                   // NAME OF Brand FORM FIELD
                                   _buildCustomFormField(
@@ -358,6 +359,8 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
                                     Imagepath: Images.bottomarrowIcon,
                                   ),
 
+                                  SizedBox(height: Constants.spacingLittle),
+
                                   // "End date of the warranty" Text
                                   _buildTextLabel(
                                     label: 'End date of the warranty',
@@ -365,12 +368,16 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
                                     Imagepath: Images.bottomarrowIcon,
                                   ),
 
+                                  SizedBox(height: Constants.spacingLittle),
+
                                   // "Purchase location" Text
                                   _buildTextLabel(
                                     label: 'Purchase location',
                                     sublabel: 'Purchase location',
                                     Imagepath: Images.plusIcon,
                                   ),
+
+                                  SizedBox(height: Constants.spacingLittle),
 
                                   // "Country of manufacture" Text
                                   _buildTextLabel(
@@ -394,13 +401,12 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
 
                                   // Row Of "Add reminder for expiry date" and Image
                                   SizedBox(
-                                    width: 200,
                                     height: 22,
                                     child: Column(
-                                      crossAxisAlignment: .start,
+                                      crossAxisAlignment: .center,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: .center,
+                                          mainAxisAlignment: .start,
                                           children: [
                                             // Icon/Image
                                             Container(
@@ -439,7 +445,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
 
                                   // "Country of manufacture" Text
                                   Container(
-                                    width: 350,
+                                    alignment: .center,
                                     height: 36,
                                     padding: const EdgeInsets.only(
                                       top: 5,
@@ -512,7 +518,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
 
                                   // "Country of manufacture" Text
                                   Container(
-                                    width: 350,
+                                    alignment: .center,
                                     height: 36,
                                     padding: const EdgeInsets.only(
                                       top: 5,
@@ -731,7 +737,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionState
         SizedBox(height: Constants.spacingLittle),
 
         Container(
-          width: 350,
+          alignment: .center,
           height: 36,
           padding: const EdgeInsets.only(
             top: 5,

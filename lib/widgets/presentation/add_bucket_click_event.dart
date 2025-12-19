@@ -73,9 +73,10 @@ class _AddBucketClickEventState extends State<AddBucketClickEvent> {
 
             Positioned(
               top:72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
+                alignment: .center,
                 height: 108,
                 padding: EdgeInsets.only(
                   top: 20,
@@ -396,8 +397,8 @@ class _AddBucketClickEventState extends State<AddBucketClickEvent> {
 
                                // Vertical Scrollable Cards Using GridView.builder
                                Container(
-                                 width: 400,
-                                 height: 410,
+                                 alignment: .center,
+                                 height: 480,
                                  margin: EdgeInsets.symmetric(
                                    horizontal: Constants.spacingLittle,
                                    vertical: Constants.spacingLittle,

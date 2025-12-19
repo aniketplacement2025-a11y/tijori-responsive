@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../utils/responsive_media_query.dart';
 
-class ButtonWithThumsup extends StatelessWidget{
+class ButtonWithThumsup extends StatelessWidget {
   final String imagePath;
   final String buttonText;
   final VoidCallback onPressed;
@@ -8,6 +9,7 @@ class ButtonWithThumsup extends StatelessWidget{
   final double imageHeight;
   final double buttonWidth;
   final double buttonHeight;
+  final double fontSize;
   final List<Color> gradientColors;
 
   ButtonWithThumsup({
@@ -19,17 +21,18 @@ class ButtonWithThumsup extends StatelessWidget{
     this.imageHeight = 156,
     this.buttonWidth = 464,
     this.buttonHeight = 64,
+    this.fontSize = 16,
     this.gradientColors = const [
       Color(0xFF31C4EB),
       Color(0xFF0D9D99),
     ],
- });
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        /// IMAGE
+        /// IMAGE - Centered
         Container(
           width: imageWidth,
           height: imageHeight,
@@ -39,9 +42,14 @@ class ButtonWithThumsup extends StatelessWidget{
           ),
         ),
 
-        const SizedBox(height: 20),
+        SizedBox(height: Responsive.value<double>(
+          context,
+          mobile: 20,
+          tablet: 24,
+          desktop: 28,
+        )),
 
-        /// BUTTON
+        /// BUTTON - Centered
         SizedBox(
           width: buttonWidth,
           height: buttonHeight,
@@ -52,8 +60,16 @@ class ButtonWithThumsup extends StatelessWidget{
               foregroundColor: Colors.white,
               shadowColor: Colors.transparent,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(
+                  Responsive.value<double>(
+                    context,
+                    mobile: 4,
+                    tablet: 5,
+                    desktop: 6,
+                  ),
+                ),
               ),
+              padding: EdgeInsets.zero,
             ),
             child: Ink(
               decoration: BoxDecoration(
@@ -63,7 +79,14 @@ class ButtonWithThumsup extends StatelessWidget{
                   colors: gradientColors,
                   stops: [-0.5385, 1.5],
                 ),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(
+                  Responsive.value<double>(
+                    context,
+                    mobile: 4,
+                    tablet: 5,
+                    desktop: 6,
+                  ),
+                ),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black26,
@@ -78,9 +101,9 @@ class ButtonWithThumsup extends StatelessWidget{
                 alignment: Alignment.center,
                 child: Text(
                   buttonText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: 16,
+                    fontSize: fontSize,
                     color: Colors.white,
                   ),
                 ),

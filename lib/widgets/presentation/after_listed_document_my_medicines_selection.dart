@@ -66,9 +66,10 @@ class _AfterListedDocumentMyMedicinesSelectionState
             // Title + SubTitle Box
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
+                alignment: .center,
                 height: 96,
                 padding: EdgeInsets.only(
                   top: 20,
@@ -184,12 +185,13 @@ class _AfterListedDocumentMyMedicinesSelectionState
               right: 0,
               bottom: 10,
               child: Container(
+                width: double.infinity,
                 child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(
                     horizontal: Constants.spacingLittle,
                   ),
                   child: Column(
-                    crossAxisAlignment: .start,
+                    crossAxisAlignment: .center,
                     children: [
                       Row(
                         mainAxisAlignment: .spaceBetween,
@@ -353,37 +355,40 @@ class _AfterListedDocumentMyMedicinesSelectionState
                           Row(
                             children: [
                               SizedBox(width: Constants.spacingMedium),
-                              Container(
-                                width: 320,
-                                height: 108,
-                                padding: const EdgeInsets.only(
-                                  top: 5,
-                                  right: 20,
-                                  bottom: 5,
-                                  left: 20,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(
-                                    0xFF000000,
-                                  ).withOpacity(0.05), // #00000005
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: .start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Write some notes to memorize your appointment..',
-                                          style: TextStyle(
-                                            fontSize: Constants.fontLittle,
-                                            fontFamily: Constants.primaryfont,
-                                            color: CustomColors.black87,
+                              SizedBox(
+                                width: 350,
+                                child: Container(
+                                  width: 320,
+                                  height: 108,
+                                  padding: const EdgeInsets.only(
+                                    top: 5,
+                                    right: 20,
+                                    bottom: 5,
+                                    left: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(
+                                      0xFF000000,
+                                    ).withOpacity(0.05), // #00000005
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment: .start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Write some notes to memorize your Medicine..',
+                                            style: TextStyle(
+                                              fontSize: Constants.fontLittle,
+                                              fontFamily: Constants.primaryfont,
+                                              color: CustomColors.black87,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -620,37 +625,40 @@ class _AfterListedDocumentMyMedicinesSelectionState
                           Row(
                             children: [
                               SizedBox(width: Constants.spacingMedium),
-                              Container(
-                                width: 320,
-                                height: 108,
-                                padding: const EdgeInsets.only(
-                                  top: 5,
-                                  right: 20,
-                                  bottom: 5,
-                                  left: 20,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(
-                                    0xFF000000,
-                                  ).withOpacity(0.05), // #00000005
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: .start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Write some notes to memorize your Medicine..',
-                                          style: TextStyle(
-                                            fontSize: Constants.fontLittle,
-                                            fontFamily: Constants.primaryfont,
-                                            color: CustomColors.black87,
+                              SizedBox(
+                                width: 350,
+                                child: Container(
+                                  width: 320,
+                                  height: 108,
+                                  padding: const EdgeInsets.only(
+                                    top: 5,
+                                    right: 20,
+                                    bottom: 5,
+                                    left: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(
+                                      0xFF000000,
+                                    ).withOpacity(0.05), // #00000005
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment: .start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Write some notes to memorize your Medicine..',
+                                            style: TextStyle(
+                                              fontSize: Constants.fontLittle,
+                                              fontFamily: Constants.primaryfont,
+                                              color: CustomColors.black87,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -869,8 +877,8 @@ class _AfterListedDocumentMyMedicinesSelectionState
 
                               // Vertical Scrollable Card
                               Container(
-                                width: 350,
-                                height: 220,
+                                alignment: .center,
+                                height: 240,
                                 margin: EdgeInsets.symmetric(
                                   horizontal: 2,
                                   vertical: 2,
@@ -949,37 +957,39 @@ class _AfterListedDocumentMyMedicinesSelectionState
                           Row(
                             children: [
                               SizedBox(width: Constants.spacingMedium),
-                              Container(
-                                width: 320,
-                                height: 108,
-                                padding: const EdgeInsets.only(
-                                  top: 5,
-                                  right: 20,
-                                  bottom: 5,
-                                  left: 20,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(
-                                    0xFF000000,
-                                  ).withOpacity(0.05), // #00000005
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: .start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Write some notes to memorize your Medicine..',
-                                          style: TextStyle(
-                                            fontSize: Constants.fontLittle,
-                                            fontFamily: Constants.primaryfont,
-                                            color: CustomColors.black87,
+                              SizedBox(
+                                width: 350,
+                                child: Container(
+                                  height: 108,
+                                  padding: const EdgeInsets.only(
+                                    top: 5,
+                                    right: 20,
+                                    bottom: 5,
+                                    left: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(
+                                      0xFF000000,
+                                    ).withOpacity(0.05), // #00000005
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment: .start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Write some notes to memorize your Medicine..',
+                                            style: TextStyle(
+                                              fontSize: Constants.fontLittle,
+                                              fontFamily: Constants.primaryfont,
+                                              color: CustomColors.black87,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

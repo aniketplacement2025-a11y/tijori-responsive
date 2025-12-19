@@ -53,7 +53,6 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     String otpValue = otp.getOtp();
     print('Verifying OTP: $otpValue');
 
-    // Call the success callback if provided, otherwise use default navigation
     if (widget.onVerificationSuccess != null) {
       widget.onVerificationSuccess!();
     } else {
@@ -78,23 +77,37 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     return '+965 ** ** **';
   }
 
+  // Responsive padding helper
+  EdgeInsets _getResponsivePadding(BuildContext context) {
+    return EdgeInsets.symmetric(
+      horizontal: Responsive.value<double>(
+        context,
+        mobile: Constants.getSpacingMedium(context),
+        tablet: Constants.getSpacingHigh(context),
+        desktop: Constants.getSpacingLarge(context),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Constants.screenWidth = Responsive.screenWidth(context);
-    Constants.screenHeight = Responsive.screenHeight(context);
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+    final bool isDesktop = Responsive.isDesktop(context);
+
+    // Update constants with context
+    Constants.updateFromContext(context);
 
     return Scaffold(
       body: OnboardingBackground(
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Constants.spacingMedium,
-            ),
+            padding: _getResponsivePadding(context),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Back Button
-                SizedBox(height: Constants.spacingMedium),
+                SizedBox(height: Constants.getSpacingMedium(context)),
                 CustomBackButton(
                   onPressed: () => Navigator.of(context).pop(),
                 ),
@@ -102,51 +115,85 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                 // Main Content
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Responsive.value<double>(
+                        context,
+                        mobile: 24,
+                        tablet: 32,
+                        desktop: 40,
+                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // OTP Title
-                        _buildTitle(),
-                        SizedBox(height: Constants.spacingSmall),
+                        _buildTitle(context),
+                        SizedBox(height: Constants.getSpacingSmall(context)),
 
                         // Description
-                        _buildDescription(),
-                        SizedBox(height: Constants.spacingSmall),
+                        _buildDescription(context),
+                        SizedBox(height: Constants.getSpacingSmall(context)),
 
                         // Phone Number
-                        _buildPhoneNumberText(),
-                        SizedBox(height: Constants.spacingMedium),
+                        _buildPhoneNumberText(context),
+                        SizedBox(height: Constants.getSpacingMedium(context)),
 
                         // OTP Image
-                        _buildOtpImage(),
-                        SizedBox(height: Constants.spacingMedium),
+                        _buildOtpImage(context),
+                        SizedBox(height: Constants.getSpacingHigh(context)),
 
                         // OTP Input Fields
-                        _buildOtpInputFields(),
-                        SizedBox(height: Constants.spacingMedium),
+                        _buildOtpInputFields(context),
+                        SizedBox(height: Constants.getSpacingHigh(context)),
 
                         // Verify Button
                         GradientButton(
                           text: 'VERIFY',
-                          width: 400,
+                          width: Responsive.value<double>(
+                            context,
+                            mobile: 300,
+                            tablet: 350,
+                            desktop: 400,
+                          ),
+                          height: Responsive.value<double>(
+                            context,
+                            mobile: 50,
+                            tablet: 55,
+                            desktop: 60,
+                          ),
                           onPressed: _handleVerification,
                         ),
-                        SizedBox(height: Constants.spacingMedium),
+                        SizedBox(height: Constants.getSpacingHigh(context)),
 
                         // Divider
-                        _buildDivider(),
-                        SizedBox(height: Constants.spacingMedium),
+                        _buildDivider(context),
+                        SizedBox(height: Constants.getSpacingHigh(context)),
 
                         // No Phone Text
-                        _buildNoPhoneText(),
-                        SizedBox(height: Constants.spacingMedium),
+                        _buildNoPhoneText(context),
+                        SizedBox(height: Constants.getSpacingMedium(context)),
 
                         // Send OTP by Email Button
                         CustomOutlineButton(
                           text: 'SEND OTP BY EMAIL',
+                          width: Responsive.value<double>(
+                            context,
+                            mobile: 300,
+                            tablet: 350,
+                            desktop: 400,
+                          ),
+                          height: Responsive.value<double>(
+                            context,
+                            mobile: 50,
+                            tablet: 55,
+                            desktop: 60,
+                          ),
                           onPressed: _handleSendOtpByEmail,
                         ),
+
+                        // Extra spacing for larger screens
+                        if (isTablet || isDesktop)
+                          SizedBox(height: Constants.getSpacingLarge(context)),
                       ],
                     ),
                   ),
@@ -159,13 +206,14 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     );
   }
 
-  Widget _buildTitle() {
+  Widget _buildTitle(BuildContext context) {
     return Center(
       child: Text(
         'OTP',
         style: TextStyle(
           fontFamily: Constants.primaryfont,
-          fontSize: Constants.fontLarge,
+          fontSize: Constants.getFontLarge(context),
+          fontWeight: FontWeight.bold,
           color: CustomColors.black87,
         ),
         textAlign: TextAlign.center,
@@ -173,21 +221,21 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     );
   }
 
-  Widget _buildDescription() {
+  Widget _buildDescription(BuildContext context) {
     return Center(
       child: Text(
         'We sent a One Time Password',
         style: TextStyle(
           fontFamily: Constants.primaryfont,
-          fontSize: Constants.fontSmall,
-          color: CustomColors.black87,
+          fontSize: Constants.getFontSmall(context),
+          color: CustomColors.black87.withOpacity(0.8),
         ),
         textAlign: TextAlign.center,
       ),
     );
   }
 
-  Widget _buildPhoneNumberText() {
+  Widget _buildPhoneNumberText(BuildContext context) {
     return Center(
       child: RichText(
         text: TextSpan(
@@ -196,8 +244,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               text: 'to ',
               style: TextStyle(
                 fontFamily: Constants.primaryfont,
-                fontSize: Constants.fontSmall,
-                color: CustomColors.black87,
+                fontSize: Constants.getFontSmall(context),
+                color: CustomColors.black87.withOpacity(0.8),
               ),
             ),
             TextSpan(
@@ -205,7 +253,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               style: TextStyle(
                 fontFamily: Constants.primaryfont,
                 fontWeight: FontWeight.bold,
-                fontSize: Constants.fontMedium,
+                fontSize: Constants.getFontMedium(context),
                 color: CustomColors.black87,
               ),
             ),
@@ -215,10 +263,17 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     );
   }
 
-  Widget _buildOtpImage() {
+  Widget _buildOtpImage(BuildContext context) {
+    final double imageSize = Responsive.value<double>(
+      context,
+      mobile: 180,
+      tablet: 220,
+      desktop: 250,
+    );
+
     return Container(
-      width: 180,
-      height: 108,
+      width: imageSize,
+      height: imageSize * 0.6, // Maintain aspect ratio
       child: Image.asset(
         Images.otp,
         fit: BoxFit.contain,
@@ -226,37 +281,55 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     );
   }
 
-  Widget _buildOtpInputFields() {
+  Widget _buildOtpInputFields(BuildContext context) {
+    final double spacing = Responsive.value<double>(
+      context,
+      mobile: 16,
+      tablet: 20,
+      desktop: 24,
+    );
+
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(4, (index) {
-          return OTPInputField(
-            controller: otp.controllers[index],
-            focusNode: otp.focusNodes[index],
-            onChanged: (value) => otp.onOtpChanged(value, index, context),
-            autoFocus: index == 0,
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: spacing / 2),
+            child: OTPInputField(
+              controller: otp.controllers[index],
+              focusNode: otp.focusNodes[index],
+              onChanged: (value) => otp.onOtpChanged(value, index, context),
+              autoFocus: index == 0,
+            ),
           );
         }),
       ),
     );
   }
 
-  Widget _buildDivider() {
+  Widget _buildDivider(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 1,
+      margin: EdgeInsets.symmetric(
+        horizontal: Responsive.value<double>(
+          context,
+          mobile: 20,
+          tablet: 40,
+          desktop: 60,
+        ),
+      ),
       color: CustomColors.littleWhite,
     );
   }
 
-  Widget _buildNoPhoneText() {
+  Widget _buildNoPhoneText(BuildContext context) {
     return Text(
       'I don\'t have my phone right now',
       style: TextStyle(
         fontFamily: Constants.primaryfont,
-        fontSize: Constants.fontSmall,
-        color: CustomColors.black87,
+        fontSize: Constants.getFontSmall(context),
+        color: CustomColors.black87.withOpacity(0.8),
       ),
       textAlign: TextAlign.center,
     );

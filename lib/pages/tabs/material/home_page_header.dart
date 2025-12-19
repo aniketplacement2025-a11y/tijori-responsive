@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../utils/Images.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/custom_colors.dart';
@@ -16,16 +15,25 @@ class HomePageHeader extends StatefulWidget {
 class _HomePageHeaderState extends State<HomePageHeader> {
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+
+    // Update constants
+    Constants.updateFromContext(context);
+
     return SizedBox(
-      height: 36,
-      width: Responsive.screenWidth(context) * 0.88,
+      height: Responsive.value<double>(
+        context,
+        mobile: 36,
+        tablet: 40,
+        desktop: 44,
+      ),
+      width: Responsive.screenWidth(context) * (isMobile ? 0.95 : 0.9),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment
-            .spaceBetween, // Changed from spaceAround
-        crossAxisAlignment:
-        CrossAxisAlignment.center, // Changed from start
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // 1. LEFT SIDE: Profile Image + Welcome Text
+          // LEFT SIDE: Profile Image + Welcome Text
           Row(
             children: [
               // Profile Image
@@ -34,8 +42,18 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                   print("Clicked on Profile Image");
                 },
                 child: Container(
-                  width: 36,
-                  height: 36,
+                  width: Responsive.value<double>(
+                    context,
+                    mobile: 36,
+                    tablet: 40,
+                    desktop: 44,
+                  ),
+                  height: Responsive.value<double>(
+                    context,
+                    mobile: 36,
+                    tablet: 40,
+                    desktop: 44,
+                  ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: CustomColors.ghostWhite,
@@ -51,7 +69,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                 ),
               ),
 
-              SizedBox(width: Constants.spacingLittle),
+              SizedBox(width: Constants.getSpacingLittle(context)),
 
               // Welcome Text
               Column(
@@ -62,7 +80,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                     'Welcome',
                     style: TextStyle(
                       fontFamily: Constants.primaryfont,
-                      fontSize: Constants.fontLittle,
+                      fontSize: Constants.getFontLittle(context),
                       color: CustomColors.black87,
                     ),
                   ),
@@ -70,7 +88,7 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                     'Abderahman',
                     style: TextStyle(
                       fontFamily: Constants.primaryfont,
-                      fontSize: Constants.fontLittle,
+                      fontSize: Constants.getFontLittle(context),
                       fontWeight: FontWeight.bold,
                       color: CustomColors.black87,
                     ),
@@ -80,25 +98,47 @@ class _HomePageHeaderState extends State<HomePageHeader> {
             ],
           ),
 
-          SizedBox(width: Constants.spacingHigh),
+          SizedBox(width: Constants.getSpacingMedium(context)),
 
-          // 2. MIDDLE: Create Reminder Button (Bell + Text)
+          // MIDDLE: Create Reminder Button (Bell + Text)
           GestureDetector(
             onTap: () {
               print('CLICKED ON BELL IMAGE');
             },
             child: Container(
               padding: EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 6,
+                horizontal: Responsive.value<double>(
+                  context,
+                  mobile: 12,
+                  tablet: 14,
+                  desktop: 16,
+                ),
+                vertical: Responsive.value<double>(
+                  context,
+                  mobile: 6,
+                  tablet: 7,
+                  desktop: 8,
+                ),
               ),
               decoration: BoxDecoration(
                 color: CustomColors.ghostWhite,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(
+                  Responsive.value<double>(
+                    context,
+                    mobile: 16,
+                    tablet: 18,
+                    desktop: 20,
+                  ),
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: CustomColors.blackBS1,
-                    blurRadius: 8,
+                    blurRadius: Responsive.value<double>(
+                      context,
+                      mobile: 8,
+                      tablet: 9,
+                      desktop: 10,
+                    ),
                     offset: Offset(0, 2),
                   ),
                 ],
@@ -106,16 +146,30 @@ class _HomePageHeaderState extends State<HomePageHeader> {
               child: Row(
                 children: [
                   // Bell Image
-                  Image.asset(Images.bell, width: 16, height: 16),
+                  Image.asset(
+                    Images.bell,
+                    width: Responsive.value<double>(
+                      context,
+                      mobile: 16,
+                      tablet: 18,
+                      desktop: 20,
+                    ),
+                    height: Responsive.value<double>(
+                      context,
+                      mobile: 16,
+                      tablet: 18,
+                      desktop: 20,
+                    ),
+                  ),
 
-                  SizedBox(width: Constants.spacingLittle),
+                  SizedBox(width: Constants.getSpacingLittle(context)),
 
                   // "Create reminder" text
                   Text(
                     'Create reminder',
                     style: TextStyle(
                       fontFamily: Constants.primaryfont,
-                      fontSize: Constants.fontSmall,
+                      fontSize: Constants.getFontSmall(context),
                       color: CustomColors.black87,
                     ),
                   ),
@@ -124,15 +178,27 @@ class _HomePageHeaderState extends State<HomePageHeader> {
             ),
           ),
 
-          // 3. RIGHT SIDE: Popup Menu Button
+          // RIGHT SIDE: Popup Menu Button
           Container(
             decoration: BoxDecoration(
               color: CustomColors.ghostWhite,
               shape: BoxShape.circle,
-              border: Border.all(color: CustomColors.lightWhite, width: 1),
+              border: Border.all(
+                color: CustomColors.lightWhite,
+                width: 1,
+              ),
             ),
             child: IconButton(
-              icon: Icon(Icons.menu_outlined, color: CustomColors.black87, size: 16),
+              icon: Icon(
+                Icons.menu_outlined,
+                color: CustomColors.black87,
+                size: Responsive.value<double>(
+                  context,
+                  mobile: 16,
+                  tablet: 18,
+                  desktop: 20,
+                ),
+              ),
               onPressed: () {
                 print("Clicked on Menu Button");
                 Navigator.push(
@@ -140,6 +206,14 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                   MaterialPageRoute(builder: (context) => ProfilePage()),
                 );
               },
+              padding: EdgeInsets.all(
+                Responsive.value<double>(
+                  context,
+                  mobile: 6,
+                  tablet: 7,
+                  desktop: 8,
+                ),
+              ),
             ),
           ),
         ],

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/custom_colors.dart';
+import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 
-class CustomSocialButton extends StatelessWidget{
+class CustomSocialButton extends StatelessWidget {
   final String icon;
   final String label;
   final VoidCallback onPressed;
@@ -16,46 +17,98 @@ class CustomSocialButton extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    Constants.updateFromContext(context);
+
+    final double buttonWidth = Responsive.value<double>(
+      context,
+      mobile: 136,
+      tablet: 150,
+      desktop: 164,
+    );
+
+    final double buttonHeight = Responsive.value<double>(
+      context,
+      mobile: 48,
+      tablet: 52,
+      desktop: 56,
+    );
+
+    final double iconSize = Responsive.value<double>(
+      context,
+      mobile: 16,
+      tablet: 18,
+      desktop: 20,
+    );
+
     return Container(
-      width: 136,
-      height: 48,
+      width: buttonWidth,
+      height: buttonHeight,
       decoration: BoxDecoration(
         color: CustomColors.ghostWhite,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(
+          Responsive.value<double>(
+            context,
+            mobile: 10,
+            tablet: 12,
+            desktop: 14,
+          ),
+        ),
         border: Border.all(
           color: CustomColors.ghostWhite,
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-           color: CustomColors.blackBS1,
-            blurRadius: 5,
+            color: CustomColors.blackBS1,
+            blurRadius: Responsive.value<double>(
+              context,
+              mobile: 5,
+              tablet: 6,
+              desktop: 7,
+            ),
             offset: Offset(0, 2),
           ),
         ],
       ),
       child: TextButton(
-          onPressed: onPressed,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: CustomColors.black87,
-                ),
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              Responsive.value<double>(
+                context,
+                mobile: 10,
+                tablet: 12,
+                desktop: 14,
               ),
-              SizedBox(height: Constants.spacingMedium, width: Constants.spacingMedium),
-              Image.asset(
-                icon,
-                width: 16,
-                fit: BoxFit.cover,
-              ),
-            ],
+            ),
           ),
-     ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: Constants.getFontSmall(context),
+                color: CustomColors.black87,
+                fontFamily: Constants.primaryfont,
+              ),
+            ),
+            SizedBox(
+              width: Constants.getSpacingMedium(context),
+              height: Constants.getSpacingMedium(context),
+            ),
+            Image.asset(
+              icon,
+              width: iconSize,
+              height: iconSize,
+              fit: BoxFit.contain,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

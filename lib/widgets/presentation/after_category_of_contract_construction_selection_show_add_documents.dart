@@ -60,10 +60,10 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
             // Title + Sub Title + Child Title
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
-                height: 104,
+                height: 108,
                 padding: EdgeInsets.only(
                   top: 20,
                   right: 10,
@@ -209,7 +209,7 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
                   horizontal: Constants.spacingLittle,
                 ),
                 child: Column(
-                  crossAxisAlignment: .start,
+                  crossAxisAlignment: .center,
                   children: [
                     // About Documents and Icon
                     Row(
@@ -247,6 +247,9 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
 
                     // "Fill out below the informations about the contract" Text
                     Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Constants.spacingLittle,
+                      ),
                       width: double.infinity,
                       child: Text(
                         'Add more document to your contract',
@@ -262,11 +265,11 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
                     Container(
                       width: double.infinity,
                       child: Column(
-                        crossAxisAlignment: .start,
+                        crossAxisAlignment: .center,
                         children: [
                           // 1st Document
                           Container(
-                            width: 350,
+                            alignment: .center,
                             height: 414,
                             padding: const EdgeInsets.only(top: 20, right: 10),
                             decoration: BoxDecoration(
@@ -339,11 +342,11 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
                             ),
                           ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.spacingMedium),
 
                           // 2nd Document
                           Container(
-                            width: 350,
+                            alignment: .center,
                             height: 414,
                             padding: const EdgeInsets.only(top: 20, right: 10),
                             decoration: BoxDecoration(
@@ -409,9 +412,11 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
                             ),
                           ),
 
+                          SizedBox(height: Constants.spacingMedium),
+
                           // 3rd Document
                           Container(
-                            width: 350,
+                            alignment: .center,
                             height: 414,
                             padding: const EdgeInsets.only(top: 20, right: 10),
                             decoration: BoxDecoration(
@@ -547,13 +552,13 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
                           SizedBox(height: Constants.spacingSmall),
 
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(
                                 children: [
-                                  SizedBox(width: Constants.spacingMedium),
+                                  SizedBox(width: Constants.spacingSmall),
                                   Container(
-                                    width: 320,
+                                    width: 400,
                                     height: 108,
                                     padding: const EdgeInsets.only(
                                       top: 5,
@@ -670,7 +675,7 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
         SizedBox(height: Constants.spacingLittle),
 
         Container(
-          width: 350,
+          alignment: .center,
           height: 36,
           padding: const EdgeInsets.only(
             top: 5,

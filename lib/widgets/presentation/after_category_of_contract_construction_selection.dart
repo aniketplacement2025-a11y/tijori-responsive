@@ -59,10 +59,11 @@ class _AfterCategoryOfContractConstructionSelectionState
             // TITLE + SUB TITLE + CHILD SUB TITLE BOX CONTAINER
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
-                height: 104,
+                alignment: .center,
+                height: 108,
                 padding: EdgeInsets.only(
                   top: 20,
                   right: 10,
@@ -210,7 +211,8 @@ class _AfterCategoryOfContractConstructionSelectionState
                     horizontal: Constants.spacingLittle,
                   ),
                   child: Column(
-                    crossAxisAlignment: .start,
+                    mainAxisAlignment: .center,
+                    crossAxisAlignment: .center,
                     children: [
                       // About Contract and Icon
                       Container(
@@ -294,7 +296,7 @@ class _AfterCategoryOfContractConstructionSelectionState
                             Container(
                               width: double.infinity,
                               child: Column(
-                                crossAxisAlignment: .start,
+                                crossAxisAlignment: .center,
                                 children: [
                                   // NAME OF COMPANY FORM FIELD
                                   CustomFormField(

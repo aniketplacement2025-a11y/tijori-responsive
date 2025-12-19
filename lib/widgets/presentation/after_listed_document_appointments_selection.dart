@@ -56,9 +56,10 @@ class _AfterListedDocumentAppointmentsSelectionState
             // Title + SubTitle Box
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
+                alignment: .center,
                 height: 96,
                 padding: EdgeInsets.only(
                   top: 20,
@@ -261,7 +262,8 @@ class _AfterListedDocumentAppointmentsSelectionState
                             Container(
                               width: double.infinity,
                               child: Column(
-                                crossAxisAlignment: .start,
+                                mainAxisAlignment: .center,
+                                crossAxisAlignment: .center,
                                 children: [
                                   // "Name the Appointment *" FORM FIELD
                                   CustomFormField(
@@ -309,43 +311,42 @@ class _AfterListedDocumentAppointmentsSelectionState
                                       Row(
                                         children: [
                                           SizedBox(
-                                            width: Constants.spacingMedium,
-                                          ),
-                                          Container(
-                                            width: 320,
-                                            height: 108,
-                                            padding: const EdgeInsets.only(
-                                              top: 5,
-                                              right: 20,
-                                              bottom: 5,
-                                              left: 20,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(
-                                                0xFF000000,
-                                              ).withOpacity(0.05), // #00000005
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Row(
-                                              crossAxisAlignment: .start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      'Write some notes to memorize your appointment..',
-                                                      style: TextStyle(
-                                                        fontSize: Constants
-                                                            .fontLittle,
-                                                        fontFamily: Constants
-                                                            .primaryfont,
-                                                        color: CustomColors
-                                                            .black87,
+                                            width: 400,
+                                            child: Container(
+                                              height: 108,
+                                              padding: const EdgeInsets.only(
+                                                top: 5,
+                                                right: 20,
+                                                bottom: 5,
+                                                left: 20,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: const Color(
+                                                  0xFF000000,
+                                                ).withOpacity(0.05), // #00000005
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment: .start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Write some notes to memorize your appointment..',
+                                                        style: TextStyle(
+                                                          fontSize: Constants
+                                                              .fontLittle,
+                                                          fontFamily: Constants
+                                                              .primaryfont,
+                                                          color: CustomColors
+                                                              .black87,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -564,7 +565,7 @@ class _AfterListedDocumentAppointmentsSelectionState
         SizedBox(height: Constants.spacingLittle),
 
         Container(
-          width: 350,
+          alignment: .center,
           height: 36,
           padding: const EdgeInsets.only(
             top: 5,

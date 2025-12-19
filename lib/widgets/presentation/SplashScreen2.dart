@@ -29,174 +29,199 @@ class _SplashScreen2State extends State<SplashScreen2>{
 
   @override
   Widget build(BuildContext context){
+    // Get screen dimensions for proportional scaling
+    final double screenWidth = Responsive.screenWidth(context);
+    final double screenHeight = Responsive.screenHeight(context);
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+
+    // Base design dimensions (from original design - roughly 375x812 mobile)
+    final double baseWidth = 375.0;
+    final double baseHeight = 812.0;
+
+    // Scaling factors
+    final double widthScale = screenWidth / baseWidth;
+    final double heightScale = screenHeight / baseHeight;
+    // Use the smaller scale to maintain proportions without overflow
+    final double scale = widthScale < heightScale ? widthScale : heightScale;
+
+    // Scale all values proportionally
+    double scaled(double value) => value * scale;
+
+    // For tablet/desktop, limit maximum scaling to 1.2x to prevent huge elements
+    final double limitedScale = (isTablet || !isMobile)
+        ? (scale > 1.2 ? 1.2 : scale)
+        : scale;
+
     return Scaffold(
       body: OnboardingBackground(
-        // Using the reusable background
         child: Stack(
-            children: [
-              Positioned(
-                top: 0,
-                right: 0,
-                left: 0,
-                  child: Center(
-                    child: CustomHeader1(
-                        title: Titles.header_title,
-                        flagAsset: Images.flagAsset,
-                    ),
-                  ),
+          children: [
+            // Custom Header 1 - SCALED PROPORTIONALLY
+            Positioned(
+              top: isMobile ? scaled(0) : scaled(10),
+              right: 22,
+              left: 0,
+              child: Center(
+                child: CustomHeader1(
+                  title: Titles.header_title,
+                  flagAsset: Images.flagAsset,
+                ),
               ),
+            ),
 
-              Positioned(
-                  top: 150,
-                  right: 0,
-                  left: 0,
-                  child: Center(
-                    child: LogoContainer(
-                        width: 200,
-                        height: 210,
-                        logoAsset: Images.logoAsset,
-                    ),
-                  ),
+            // Main Logo - SCALED PROPORTIONALLY
+            Positioned(
+              top: scaled(150) * limitedScale,
+              right: 0,
+              left: 0,
+              child: Center(
+                child: LogoContainer(
+                  width: scaled(200) * limitedScale,
+                  height: scaled(210) * limitedScale,
+                  logoAsset: Images.logoAsset,
+                ),
               ),
+            ),
 
-              // Subtitle "All in one place"
-              Positioned(
-                top: 376,
-                right: 0,
-                left: 0,
-                child: Center(
-                  child: Text(
-                    'All in one place!',
-                    style: TextStyle(
-                      fontFamily: Constants.primaryfont,
-                      fontSize: Constants.fontSmall,
-                      color: CustomColors.black87,
-                      fontWeight: FontWeight.bold,
-                    ),
+            // Subtitle "All in one place" - SCALED PROPORTIONALLY
+            Positioned(
+              top: scaled(376) * limitedScale,
+              right: 0,
+              left: 0,
+              child: Center(
+                child: Text(
+                  'All in one place!',
+                  style: TextStyle(
+                    fontFamily: Constants.primaryfont,
+                    fontSize: Constants.getFontSmall(context) * limitedScale,
+                    color: CustomColors.black87,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
+            ),
 
-              // Bottom Content Section with 3 buttons
-              Positioned(
-                bottom: 20,
-                left: 35,
-                right: 35,
-                  child: Container(
-                    height: 220,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //Title "GetAccess to Your App"
-                        Text(
-                          'Get Access to your App',
-                          style: TextStyle(
-                            fontFamily: Constants.primaryfont,
-                            fontSize: Constants.fontSmall,
-                            color: CustomColors.black87,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-
-                        // REGISTER Button
-                        Container(
-                          width: double.infinity,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: CustomColors.gradientBlue,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: CustomColors.blackBS1,
-                                blurRadius: 8,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: TextButton(
-                              onPressed: (){
-                                print('PRESSED ON REGISTER');
-                                _controller.handleRegisterPress();
-                              },
-                              child: Text(
-                                'REGISTER',
-                                style: TextStyle(
-                                  fontSize: Constants.fontSmall,
-                                  color: CustomColors.ghostWhite,
-                                ),
-                              ),
-                          ),
-                        ),
-
-                        // LOG IN Button
-                        Container(
-                          width: double.infinity,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: CustomColors.black87,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                               color: CustomColors.blackBS1,
-                               blurRadius: 8,
-                               offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: TextButton(
-                              onPressed: (){
-                                print('CLICKED ON LOGIN PAGE');
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => SigninLoginPage(),));
-                              },
-                              child: Text(
-                                'LOG IN',
-                                style: TextStyle(
-                                  fontSize: Constants.fontSmall,
-                                  color: CustomColors.ghostWhite,
-                                ),
-                              ),
-                          ),
-                        ),
-
-                        // ENTER AS A GUEST BUTTON
-                        Container(
-                          width: double.infinity,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: CustomColors.ghostWhite,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: CustomColors.ghostWhite,
-                              width: 2,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: CustomColors.blackBS1,
-                                blurRadius: 8,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: TextButton(
-                              onPressed: (){
-                                 print('PRESSED ENTER AS A GUEST');
-                              },
-                              child: Text(
-                                'ENTER AS A GUEST',
-                                style: TextStyle(
-                                  fontSize: Constants.fontSmall,
-                                  fontWeight: FontWeight.bold,
-                                  color: CustomColors.black87,
-                                ),
-                              ),
-                          ),
-                        ),
-                      ],
+            // Bottom Content Section with 3 buttons - SCALED PROPORTIONALLY
+            Positioned(
+              bottom: scaled(20) * limitedScale,
+              left: scaled(35) * limitedScale,
+              right: scaled(35) * limitedScale,
+              child: Container(
+                height: scaled(220) * limitedScale,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Title "Get Access to Your App" - SCALED PROPORTIONALLY
+                    Text(
+                      'Get Access to your App',
+                      style: TextStyle(
+                        fontFamily: Constants.primaryfont,
+                        fontSize: Constants.getFontSmall(context) * limitedScale,
+                        color: CustomColors.black87,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
+
+                    // REGISTER Button - SCALED PROPORTIONALLY
+                    Container(
+                      width: double.infinity,
+                      height: scaled(50) * limitedScale,
+                      decoration: BoxDecoration(
+                        color: CustomColors.gradientBlue,
+                        borderRadius: BorderRadius.circular(scaled(5) * limitedScale),
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blackBS1,
+                            blurRadius: scaled(8) * limitedScale,
+                            offset: Offset(0, scaled(3) * limitedScale),
+                          ),
+                        ],
+                      ),
+                      child: TextButton(
+                        onPressed: (){
+                          print('PRESSED ON REGISTER');
+                          _controller.handleRegisterPress();
+                        },
+                        child: Text(
+                          'REGISTER',
+                          style: TextStyle(
+                            fontSize: Constants.getFontSmall(context) * limitedScale,
+                            color: CustomColors.ghostWhite,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // LOG IN Button - SCALED PROPORTIONALLY
+                    Container(
+                      width: double.infinity,
+                      height: scaled(50) * limitedScale,
+                      decoration: BoxDecoration(
+                        color: CustomColors.black87,
+                        borderRadius: BorderRadius.circular(scaled(5) * limitedScale),
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blackBS1,
+                            blurRadius: scaled(8) * limitedScale,
+                            offset: Offset(0, scaled(3) * limitedScale),
+                          ),
+                        ],
+                      ),
+                      child: TextButton(
+                        onPressed: (){
+                          print('CLICKED ON LOGIN PAGE');
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => SigninLoginPage()));
+                        },
+                        child: Text(
+                          'LOG IN',
+                          style: TextStyle(
+                            fontSize: Constants.getFontSmall(context) * limitedScale,
+                            color: CustomColors.ghostWhite,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // ENTER AS A GUEST BUTTON - SCALED PROPORTIONALLY
+                    Container(
+                      width: double.infinity,
+                      height: scaled(50) * limitedScale,
+                      decoration: BoxDecoration(
+                        color: CustomColors.ghostWhite,
+                        borderRadius: BorderRadius.circular(scaled(5) * limitedScale),
+                        border: Border.all(
+                          color: CustomColors.ghostWhite,
+                          width: scaled(2) * limitedScale,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blackBS1,
+                            blurRadius: scaled(8) * limitedScale,
+                            offset: Offset(0, scaled(3) * limitedScale),
+                          ),
+                        ],
+                      ),
+                      child: TextButton(
+                        onPressed: (){
+                          print('PRESSED ENTER AS A GUEST');
+                        },
+                        child: Text(
+                          'ENTER AS A GUEST',
+                          style: TextStyle(
+                            fontSize: Constants.getFontSmall(context) * limitedScale,
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.black87,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
+          ],
         ),
       ),
     );

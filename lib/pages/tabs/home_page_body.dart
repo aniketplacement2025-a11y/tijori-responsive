@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/list_of_documents_selection.dart';
-
 import '../../utils/Images.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
+import '../../utils/responsive_media_query.dart';
 import '../../widgets/presentation/add_bucket_click_event.dart';
 import '../others/categories_data.dart';
 import '../others/projects_list_titles.dart';
@@ -23,62 +23,88 @@ class _HomePageBodyState extends State<HomePageBody> {
   bool _isGridView = false;
   int? _expandedIndex;
 
-  // Navigation method based on category title
-  // void _navigateToProjectPage(String title, BuildContext context){
-  //   switch(title){
-  //     case 'Construction Villa Hazmi':
-  //       break;
-  //     case 'Values assets':
-  //       break;
-  //     case 'Construction Apartment Fahd':
-  //       break;
-  //     case 'Summer trip 2025':
-  //       break;
-  //     case 'MY TRIPS':
-  //       break;
-  //     default:
-  //       print('No navigation defined for $title');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+    final bool isDesktop = Responsive.isDesktop(context);
+
+    // Update constants
+    Constants.updateFromContext(context);
+
+    // Responsive widths
+    final double mainWidth = Responsive.value<double>(
+      context,
+      mobile: 400,
+      tablet: 450,
+      desktop: 500,
+    );
+
+    final double containerPadding = Responsive.value<double>(
+      context,
+      mobile: Constants.getSpacingSmall(context),
+      tablet: Constants.getSpacingMedium(context),
+      desktop: Constants.getSpacingHigh(context),
+    );
+
     return Container(
       child: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: Constants.spacingSmall),
+        padding: EdgeInsets.symmetric(horizontal: containerPadding),
         child: Column(
-          crossAxisAlignment: .start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Your Scrollable content Containers here..
+            // Storage Container
             Container(
-              width: 400,
-              height: 96,
-              margin: EdgeInsets.only(bottom: Constants.spacingMedium),
-              padding: EdgeInsets.fromLTRB(20, 13, 20, 13),
+              width: mainWidth,
+              height: Responsive.value<double>(
+                context,
+                mobile: 96,
+                tablet: 100,
+                desktop: 104,
+              ),
+              margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
+              padding: EdgeInsets.fromLTRB(
+                Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
+                Responsive.value<double>(context, mobile: 13, tablet: 14, desktop: 15),
+                Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
+                Responsive.value<double>(context, mobile: 13, tablet: 14, desktop: 15),
+              ),
               decoration: BoxDecoration(
-                color: CustomColors.white, // rgba(251, 251, 251, 1)
-                borderRadius: BorderRadius.circular(20), // 20px border radius
+                color: CustomColors.white,
+                borderRadius: BorderRadius.circular(
+                  Responsive.value<double>(
+                    context,
+                    mobile: 20,
+                    tablet: 22,
+                    desktop: 24,
+                  ),
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: CustomColors.blackBS1, // Sybtle shadow
-                    blurRadius: 4,
+                    color: CustomColors.blackBS1,
+                    blurRadius: Responsive.value<double>(
+                      context,
+                      mobile: 4,
+                      tablet: 5,
+                      desktop: 6,
+                    ),
                     offset: Offset(0, 2),
                   ),
                 ],
               ),
               child: Column(
-                mainAxisAlignment: .spaceBetween,
-                crossAxisAlignment: .start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Row 1: "Available Storage" and "34%"
                   Row(
-                    mainAxisAlignment: .spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Available Storage',
                         style: TextStyle(
                           fontFamily: Constants.primaryfont,
-                          fontSize: Constants.fontSmall,
+                          fontSize: Constants.getFontSmall(context),
                           fontWeight: FontWeight.bold,
                           color: CustomColors.littleWhite,
                         ),
@@ -87,7 +113,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                         '34%',
                         style: TextStyle(
                           fontFamily: Constants.primaryfont,
-                          fontSize: Constants.fontSmall,
+                          fontSize: Constants.getFontSmall(context),
                           fontWeight: FontWeight.bold,
                           color: CustomColors.littleWhite,
                         ),
@@ -95,23 +121,42 @@ class _HomePageBodyState extends State<HomePageBody> {
                     ],
                   ),
 
-                  SizedBox(height: Constants.spacingSmall),
+                  SizedBox(height: Constants.getSpacingSmall(context)),
 
-                  //STORAGE PROCESS BAR
+                  // STORAGE PROGRESS BAR
                   Container(
-                    width: 360,
-                    height: 8,
+                    width: mainWidth - 40,
+                    height: Responsive.value<double>(
+                      context,
+                      mobile: 8,
+                      tablet: 9,
+                      desktop: 10,
+                    ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(
+                        Responsive.value<double>(
+                          context,
+                          mobile: 8,
+                          tablet: 9,
+                          desktop: 10,
+                        ),
+                      ),
                       color: CustomColors.gradientBlue.withOpacity(0.8),
                     ),
                     child: Stack(
                       children: [
                         // Filled part with pink
                         Container(
-                          width: 360 * 0.34, // 34% of 360px
+                          width: (mainWidth - 40) * 0.34,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(
+                              Responsive.value<double>(
+                                context,
+                                mobile: 8,
+                                tablet: 9,
+                                desktop: 10,
+                              ),
+                            ),
                             gradient: LinearGradient(
                               colors: [
                                 CustomColors.darkPink,
@@ -126,7 +171,8 @@ class _HomePageBodyState extends State<HomePageBody> {
                     ),
                   ),
 
-                  SizedBox(height: Constants.spacingSmall), // gap: 8px
+                  SizedBox(height: Constants.getSpacingSmall(context)),
+
                   // "753 MB of 2 GB"
                   Text.rich(
                     TextSpan(
@@ -135,7 +181,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                           text: '753 MB ',
                           style: TextStyle(
                             fontFamily: Constants.primaryfont,
-                            fontSize: Constants.fontSmall,
+                            fontSize: Constants.getFontSmall(context),
                             fontWeight: FontWeight.bold,
                             color: CustomColors.littleWhite,
                           ),
@@ -144,7 +190,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                           text: 'of ',
                           style: TextStyle(
                             fontFamily: Constants.primaryfont,
-                            fontSize: Constants.fontSmall,
+                            fontSize: Constants.getFontSmall(context),
                             fontWeight: FontWeight.w500,
                             color: CustomColors.littleWhite,
                           ),
@@ -153,7 +199,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                           text: '2 GB',
                           style: TextStyle(
                             fontFamily: Constants.primaryfont,
-                            fontSize: Constants.fontSmall,
+                            fontSize: Constants.getFontSmall(context),
                             fontWeight: FontWeight.bold,
                             color: CustomColors.littleWhite,
                           ),
@@ -167,12 +213,23 @@ class _HomePageBodyState extends State<HomePageBody> {
 
             // Advertisement Banner
             Container(
-              width: 400,
-              height: 148,
-              margin: EdgeInsets.only(bottom: Constants.spacingMedium),
+              width: mainWidth,
+              height: Responsive.value<double>(
+                context,
+                mobile: 148,
+                tablet: 160,
+                desktop: 172,
+              ),
+              margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
               child: ClipRRect(
-                borderRadius: .circular(16),
-                // Assuming same 16px radius as Container 1
+                borderRadius: BorderRadius.circular(
+                  Responsive.value<double>(
+                    context,
+                    mobile: 16,
+                    tablet: 18,
+                    desktop: 20,
+                  ),
+                ),
                 child: Stack(
                   children: [
                     // Advertisement Image
@@ -189,9 +246,14 @@ class _HomePageBodyState extends State<HomePageBody> {
 
             // Horizontal Scrollable Cards Using ListView.builder
             Container(
-              width: 400,
-              height: 110,
-              margin: EdgeInsets.only(bottom: Constants.spacingMedium),
+              width: mainWidth,
+              height: Responsive.value<double>(
+                context,
+                mobile: 110,
+                tablet: 120,
+                desktop: 130,
+              ),
+              margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
@@ -200,32 +262,31 @@ class _HomePageBodyState extends State<HomePageBody> {
                   final category = CategoriesData.categories[index];
                   return Container(
                     margin: EdgeInsets.only(
-                      left: index == 0 ? 0 : 10,
+                      left: index == 0 ? 0 : Constants.getSpacingSmall(context),
                       right: index == CategoriesData.categories.length - 1
-                          ? 20
+                          ? Constants.getSpacingMedium(context)
                           : 0,
                     ),
                     child: HomeCategoryCard(
-                      imageAsset:
-                          category['icon']!, // Use bracket notation for Map
+                      imageAsset: category['icon']!,
                       title: category['title']!,
-                      onTap: () {}, // Use bracket notation for Map
+                      onTap: () {},
                     ),
                   );
                 },
               ),
             ),
 
-            SizedBox(height: Constants.spacingLittle),
+            SizedBox(height: Constants.getSpacingLittle(context)),
 
             // Horizontal line
             Container(
               width: double.infinity,
               height: 1,
-              color: CustomColors.littleWhite,
+              color: CustomColors.littleWhite.withOpacity(0.5),
             ),
 
-            SizedBox(height: Constants.spacingLittle),
+            SizedBox(height: Constants.getSpacingLittle(context)),
 
             // Ongoing Projects and Buckets
             Container(
@@ -233,26 +294,37 @@ class _HomePageBodyState extends State<HomePageBody> {
               margin: EdgeInsets.only(bottom: 2),
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: Colors.transparent, // Make it transparent
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
-                crossAxisAlignment: .start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: .spaceBetween,
-                    crossAxisAlignment: .center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Left: Title
                       Flexible(
-                        // Use Flexible instead of fixed width
                         child: Container(
-                          constraints: BoxConstraints(maxWidth: 148),
+                          constraints: BoxConstraints(
+                            maxWidth: Responsive.value<double>(
+                              context,
+                              mobile: 148,
+                              tablet: 160,
+                              desktop: 172,
+                            ),
+                          ),
                           child: Text(
                             'Ongoing Projects',
                             style: TextStyle(
                               fontFamily: Constants.primaryfont,
-                              fontSize: 18,
+                              fontSize: Responsive.value<double>(
+                                context,
+                                mobile: 18,
+                                tablet: 19,
+                                desktop: 20,
+                              ),
                               fontWeight: FontWeight.bold,
                               color: CustomColors.black87,
                             ),
@@ -262,15 +334,19 @@ class _HomePageBodyState extends State<HomePageBody> {
 
                       // Right: Image + Divider + Add Button
                       Flexible(
-                        // Use Flexible here too
                         child: Container(
                           constraints: BoxConstraints(
-                            maxWidth: 140,
-                          ), // Limit max width
+                            maxWidth: Responsive.value<double>(
+                              context,
+                              mobile: 140,
+                              tablet: 150,
+                              desktop: 160,
+                            ),
+                          ),
                           child: Row(
-                            mainAxisAlignment: .start,
-                            crossAxisAlignment: .center,
-                            mainAxisSize: .min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               // Menu Image
                               GestureDetector(
@@ -285,25 +361,35 @@ class _HomePageBodyState extends State<HomePageBody> {
                                   );
                                 },
                                 child: Container(
-                                  width: Constants.spacingHigh,
-                                  height: 18,
+                                  width: Constants.getSpacingHigh(context),
+                                  height: Responsive.value<double>(
+                                    context,
+                                    mobile: 18,
+                                    tablet: 20,
+                                    desktop: 22,
+                                  ),
                                   child: Image.asset(
                                     _isGridView
                                         ? Images.gridIcon
                                         : Images.menuIcon,
-                                    width: Constants.spacingHigh,
-                                    height: 18,
+                                    width: Constants.getSpacingHigh(context),
+                                    height: Responsive.value<double>(
+                                      context,
+                                      mobile: 18,
+                                      tablet: 20,
+                                      desktop: 22,
+                                    ),
                                     fit: BoxFit.contain,
                                   ),
                                 ),
                               ),
 
-                              SizedBox(width: Constants.spacingSmall),
+                              SizedBox(width: Constants.getSpacingSmall(context)),
 
                               // Vertical Line Divider
                               Container(
                                 width: 1,
-                                height: Constants.fontLarge,
+                                height: Constants.getFontLarge(context),
                                 decoration: BoxDecoration(
                                   border: Border(
                                     right: BorderSide(
@@ -314,21 +400,18 @@ class _HomePageBodyState extends State<HomePageBody> {
                                 ),
                               ),
 
-                              SizedBox(width: Constants.spacingSmall),
+                              SizedBox(width: Constants.getSpacingSmall(context)),
 
                               // Add Bucket Button
                               Material(
                                 color: Colors.transparent,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print(
-                                      'Context mounted: ${context.mounted}',
-                                    );
+                                    print('Context mounted: ${context.mounted}');
                                     if (context.mounted) {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              AddBucketClickEvent(),
+                                          builder: (context) => AddBucketClickEvent(),
                                         ),
                                       );
                                     } else {
@@ -336,50 +419,79 @@ class _HomePageBodyState extends State<HomePageBody> {
                                     }
                                   },
                                   child: Container(
-                                    height: 36,
+                                    height: Responsive.value<double>(
+                                      context,
+                                      mobile: 36,
+                                      tablet: 38,
+                                      desktop: 40,
+                                    ),
                                     constraints: BoxConstraints(
-                                      maxWidth: 120,
-                                    ), // Reduced max width
-                                    // width: 140,
+                                      maxWidth: Responsive.value<double>(
+                                        context,
+                                        mobile: 120,
+                                        tablet: 130,
+                                        desktop: 140,
+                                      ),
+                                    ),
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: Constants.fontLittle,
-                                      vertical: 6,
+                                      horizontal: Constants.getFontLittle(context),
+                                      vertical: Responsive.value<double>(
+                                        context,
+                                        mobile: 6,
+                                        tablet: 7,
+                                        desktop: 8,
+                                      ),
                                     ),
                                     decoration: BoxDecoration(
                                       color: CustomColors.ghostWhite,
-                                      borderRadius: BorderRadius.circular(6),
+                                      borderRadius: BorderRadius.circular(
+                                        Responsive.value<double>(
+                                          context,
+                                          mobile: 6,
+                                          tablet: 7,
+                                          desktop: 8,
+                                        ),
+                                      ),
                                       boxShadow: [
                                         BoxShadow(
                                           color: CustomColors.blackBS1,
-                                          blurRadius: 4,
+                                          blurRadius: Responsive.value<double>(
+                                            context,
+                                            mobile: 4,
+                                            tablet: 5,
+                                            desktop: 6,
+                                          ),
                                           offset: Offset(0, 2),
                                         ),
                                       ],
                                     ),
                                     child: Row(
-                                      mainAxisSize: .min,
-                                      mainAxisAlignment: .center,
-                                      crossAxisAlignment: .center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          width: Constants.fontLittle,
-                                          height: Constants.fontLittle,
+                                          width: Constants.getFontLittle(context),
+                                          height: Constants.getFontLittle(context),
                                           child: Image.asset(
                                             Images.plusIcon,
                                             fit: BoxFit.contain,
                                           ),
                                         ),
 
-                                        SizedBox(
-                                          width: Constants.spacingLittle,
-                                        ),
+                                        SizedBox(width: Constants.getSpacingLittle(context)),
 
                                         Text(
                                           'Add Bucket',
                                           style: TextStyle(
                                             fontFamily: Constants.primaryfont,
-                                            fontSize: 10,
-                                            fontWeight: .bold,
+                                            fontSize: Responsive.value<double>(
+                                              context,
+                                              mobile: 10,
+                                              tablet: 11,
+                                              desktop: 12,
+                                            ),
+                                            fontWeight: FontWeight.bold,
                                             color: CustomColors.black87,
                                           ),
                                         ),
@@ -398,73 +510,71 @@ class _HomePageBodyState extends State<HomePageBody> {
                   // Row 2: "My documents of actual projects" text
                   Container(
                     width: double.infinity,
-                    //height: 26,
                     child: Text(
                       'My documents of actual projects',
                       style: TextStyle(
                         fontFamily: Constants.primaryfont,
-                        fontSize: Constants.fontLittle,
-                        fontWeight: .w500,
-                        color:
-                            CustomColors.littleWhite, // Adjust color as needed
+                        fontSize: Constants.getFontLittle(context),
+                        fontWeight: FontWeight.w500,
+                        color: CustomColors.littleWhite,
                       ),
                     ),
                   ),
 
-                  SizedBox(height: Constants.spacingLittle),
+                  SizedBox(height: Constants.getSpacingLittle(context)),
 
-                  // // PROJECT CARDS - DYNAMIC LAYOUT BASED ON _isGridView
+                  // PROJECT CARDS - DYNAMIC LAYOUT BASED ON _isGridView
                   _isGridView
                       ? GridViewProjectCard() // Grid Layout after click
                       : Column(
-                          children: ProjectsListTitles.projects
-                              .asMap()
-                              .entries
-                              .map((entry) {
-                                final index = entry.key;
-                                Map<String, String> project = entry.value;
-                                String title = project['title']!;
+                    children: ProjectsListTitles.projects
+                        .asMap()
+                        .entries
+                        .map((entry) {
+                      final index = entry.key;
+                      Map<String, String> project = entry.value;
+                      String title = project['title']!;
 
-                                return ListViewProjectCard(
-                                  project: project,
-                                  isExpanded: _expandedIndex == index,
-                                  onToggle: () {
-                                    setState(() {
-                                      if (_expandedIndex == index) {
-                                        _expandedIndex =
-                                            null; // Collapse if already expanded
-                                      } else {
-                                        _expandedIndex =
-                                            index; // Expand this one
-                                      }
-                                    });
-                                  },
-                                  onTap: (){
-                                    // Naviagate to respective page
-                                    Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => ListOfDocumentsSelection(
-                                          bucket_title: title
-                                      )
-                                    ));
-                                  }
-                                );
-                              })
-                              .toList(),
-                        ), // List layout before click, // List layout before click
+                      return ListViewProjectCard(
+                        project: project,
+                        isExpanded: _expandedIndex == index,
+                        onToggle: () {
+                          setState(() {
+                            if (_expandedIndex == index) {
+                              _expandedIndex = null;
+                            } else {
+                              _expandedIndex = index;
+                            }
+                          });
+                        },
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListOfDocumentsSelection(
+                                bucket_title: title,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    })
+                        .toList(),
+                  ),
                 ],
               ),
             ),
 
-            SizedBox(height: Constants.spacingSmall),
+            SizedBox(height: Constants.getSpacingSmall(context)),
 
-            //Horizontal line
+            // Horizontal line
             Container(
               width: double.infinity,
               height: 1,
-              color: CustomColors.littleWhite,
+              color: CustomColors.littleWhite.withOpacity(0.5),
             ),
 
-            SizedBox(height: Constants.spacingLittle),
+            SizedBox(height: Constants.getSpacingLittle(context)),
 
             // Upcoming Milestones and Sub Containers
             Container(
@@ -476,22 +586,33 @@ class _HomePageBodyState extends State<HomePageBody> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
-                crossAxisAlignment: .start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: .spaceBetween,
-                    crossAxisAlignment: .center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Left: Title
                       Flexible(
-                        // Use Flexible instead of Fixed width
                         child: Container(
-                          constraints: BoxConstraints(maxWidth: 184),
+                          constraints: BoxConstraints(
+                            maxWidth: Responsive.value<double>(
+                              context,
+                              mobile: 184,
+                              tablet: 200,
+                              desktop: 216,
+                            ),
+                          ),
                           child: Text(
                             'Upcoming Milestones',
                             style: TextStyle(
                               fontFamily: Constants.primaryfont,
-                              fontSize: 18,
+                              fontSize: Responsive.value<double>(
+                                context,
+                                mobile: 18,
+                                tablet: 19,
+                                desktop: 20,
+                              ),
                               fontWeight: FontWeight.bold,
                               color: CustomColors.black87,
                             ),
@@ -508,32 +629,32 @@ class _HomePageBodyState extends State<HomePageBody> {
                       'Your next milestones to follow Your project',
                       style: TextStyle(
                         fontFamily: Constants.primaryfont,
-                        fontSize: Constants.fontLittle,
-                        fontWeight: .w500,
+                        fontSize: Constants.getFontLittle(context),
+                        fontWeight: FontWeight.w500,
                         color: CustomColors.littleWhite,
                       ),
                     ),
                   ),
 
-                  SizedBox(height: Constants.spacingLittle),
+                  SizedBox(height: Constants.getSpacingLittle(context)),
 
                   UpcomingProjectCard(),
 
-                  SizedBox(height: Constants.spacingLittle),
+                  SizedBox(height: Constants.getSpacingLittle(context)),
                 ],
               ),
             ),
 
-            SizedBox(height: Constants.spacingLittle),
+            SizedBox(height: Constants.getSpacingLittle(context)),
 
-            //Horizontal line
+            // Horizontal line
             Container(
               width: double.infinity,
               height: 1,
-              color: CustomColors.littleWhite,
+              color: CustomColors.littleWhite.withOpacity(0.5),
             ),
 
-            SizedBox(height: Constants.spacingLittle),
+            SizedBox(height: Constants.getSpacingLittle(context)),
 
             // Payment Alerts and Sub Container
             Container(
@@ -545,22 +666,33 @@ class _HomePageBodyState extends State<HomePageBody> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
-                crossAxisAlignment: .start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: .spaceBetween,
-                    crossAxisAlignment: .center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Left: Title
                       Flexible(
-                        // Use Flexible instead of Fixed width
                         child: Container(
-                          constraints: BoxConstraints(maxWidth: 184),
+                          constraints: BoxConstraints(
+                            maxWidth: Responsive.value<double>(
+                              context,
+                              mobile: 184,
+                              tablet: 200,
+                              desktop: 216,
+                            ),
+                          ),
                           child: Text(
                             'Payment Alerts',
                             style: TextStyle(
                               fontFamily: Constants.primaryfont,
-                              fontSize: 18,
+                              fontSize: Responsive.value<double>(
+                                context,
+                                mobile: 18,
+                                tablet: 19,
+                                desktop: 20,
+                              ),
                               fontWeight: FontWeight.bold,
                               color: CustomColors.black87,
                             ),
@@ -573,60 +705,93 @@ class _HomePageBodyState extends State<HomePageBody> {
                   Container(
                     width: double.infinity,
                     child: Text(
-                      'You don’t miss your next payment',
+                      'You don\'t miss your next payment',
                       style: TextStyle(
                         fontFamily: Constants.primaryfont,
-                        fontSize: Constants.fontLittle,
-                        fontWeight: .w500,
+                        fontSize: Constants.getFontLittle(context),
+                        fontWeight: FontWeight.w500,
                         color: CustomColors.littleWhite,
                       ),
                     ),
                   ),
 
-                  SizedBox(height: Constants.spacingLittle),
+                  SizedBox(height: Constants.getSpacingLittle(context)),
 
                   Container(
-                    width: 400,
-                    height: 140,
-                    margin: EdgeInsets.only(bottom: Constants.spacingMedium),
-                    padding: EdgeInsets.all(Constants.spacingSmall),
+                    width: mainWidth,
+                    height: Responsive.value<double>(
+                      context,
+                      mobile: 120,
+                      tablet: 130,
+                      desktop: 140,
+                    ),
+                    margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
+                    padding: EdgeInsets.all(Constants.getSpacingSmall(context)),
                     decoration: BoxDecoration(
                       color: CustomColors.ghostWhite,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(
+                        Responsive.value<double>(
+                          context,
+                          mobile: 10,
+                          tablet: 12,
+                          desktop: 14,
+                        ),
+                      ),
                       border: Border.all(
                         color: CustomColors.blackBS1,
                         width: 1,
                       ),
                     ),
                     child: Column(
+                      mainAxisAlignment: .center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // ROW 1: Payment Header with Date
                         Container(
-                          width: 360, // width: 360px
-                          height: 36, // height: 36px
+                          width: mainWidth - 40,
+                          height: Responsive.value<double>(
+                            context,
+                            mobile: 36,
+                            tablet: 38,
+                            desktop: 40,
+                          ),
                           margin: EdgeInsets.only(
-                            bottom: Constants.spacingSmall,
+                            bottom: Constants.getSpacingSmall(context),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               // Left: Payment Button
                               Container(
-                                width: 73,
-                                height: 36,
-                                padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                                width: Responsive.value<double>(
+                                  context,
+                                  mobile: 73,
+                                  tablet: 77,
+                                  desktop: 81,
+                                ),
+                                height: Responsive.value<double>(
+                                  context,
+                                  mobile: 36,
+                                  tablet: 38,
+                                  desktop: 40,
+                                ),
+                                padding: EdgeInsets.fromLTRB(
+                                  Responsive.value<double>(context, mobile: 8, tablet: 9, desktop: 10),
+                                  Responsive.value<double>(context, mobile: 4, tablet: 5, desktop: 6),
+                                  Responsive.value<double>(context, mobile: 8, tablet: 9, desktop: 10),
+                                  Responsive.value<double>(context, mobile: 4, tablet: 5, desktop: 6),
+                                ),
                                 decoration: BoxDecoration(
                                   color: CustomColors.littleWhite,
-                                  borderRadius: .circular(40),
+                                  borderRadius: BorderRadius.circular(40),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Payment',
                                     style: TextStyle(
                                       fontFamily: Constants.primaryfont,
-                                      fontSize: Constants.fontLittle,
-                                      fontWeight: .bold,
+                                      fontSize: Constants.getFontLittle(context),
+                                      fontWeight: FontWeight.bold,
                                       color: CustomColors.black87,
                                     ),
                                   ),
@@ -635,41 +800,73 @@ class _HomePageBodyState extends State<HomePageBody> {
 
                               // Right: Next + Date
                               Container(
-                                width: 156,
-                                height: 26,
+                                width: Responsive.value<double>(
+                                  context,
+                                  mobile: 156,
+                                  tablet: 164,
+                                  desktop: 172,
+                                ),
+                                height: Responsive.value<double>(
+                                  context,
+                                  mobile: 26,
+                                  tablet: 28,
+                                  desktop: 30,
+                                ),
                                 child: Row(
                                   children: [
                                     // "Next" Text
                                     Container(
-                                      width: 40, // Approximate width for "Next"
-                                      height: Constants.fontMedium,
+                                      width: Responsive.value<double>(
+                                        context,
+                                        mobile: 40,
+                                        tablet: 42,
+                                        desktop: 44,
+                                      ),
+                                      height: Constants.getFontMedium(context),
                                       child: Text(
                                         'Next',
                                         style: TextStyle(
                                           fontFamily: Constants.primaryfont,
-                                          fontSize: 14,
-                                          fontWeight: .bold,
+                                          fontSize: Responsive.value<double>(
+                                            context,
+                                            mobile: 14,
+                                            tablet: 15,
+                                            desktop: 16,
+                                          ),
+                                          fontWeight: FontWeight.bold,
                                           color: CustomColors.darkPink,
                                         ),
                                       ),
                                     ),
 
-                                    SizedBox(width: Constants.spacingLittle),
+                                    SizedBox(width: Constants.getSpacingLittle(context)),
 
                                     // Date Text
                                     Container(
-                                      width: 108,
-                                      height: 26,
+                                      width: Responsive.value<double>(
+                                        context,
+                                        mobile: 108,
+                                        tablet: 114,
+                                        desktop: 120,
+                                      ),
+                                      height: Responsive.value<double>(
+                                        context,
+                                        mobile: 26,
+                                        tablet: 28,
+                                        desktop: 30,
+                                      ),
                                       child: Text(
                                         '11 August 2025',
                                         style: TextStyle(
                                           fontFamily: Constants.primaryfont,
-                                          fontSize: 14,
-                                          fontWeight:
-                                              FontWeight.w400, // Regular
-                                          color: Color(
-                                            0xFF34362D,
-                                          ), // Grey color
+                                          fontSize: Responsive.value<double>(
+                                            context,
+                                            mobile: 14,
+                                            tablet: 15,
+                                            desktop: 16,
+                                          ),
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF34362D),
                                         ),
                                       ),
                                     ),
@@ -682,13 +879,18 @@ class _HomePageBodyState extends State<HomePageBody> {
 
                         // Row 2: Payment Details Card
                         Container(
-                          width: 360,
-                          height: 54,
-                          padding: EdgeInsets.all(Constants.spacingSmall),
+                          width: mainWidth - 40,
+                          height: Responsive.value<double>(
+                            context,
+                            mobile: 54,
+                            tablet: 58,
+                            desktop: 62,
+                          ),
+                          padding: EdgeInsets.all(Constants.getSpacingSmall(context)),
                           decoration: BoxDecoration(
                             color: CustomColors.ghostWhite,
                             borderRadius: BorderRadius.circular(
-                              Constants.spacingSmall,
+                              Constants.getSpacingSmall(context),
                             ),
                             border: Border.all(
                               color: CustomColors.blackBS1,
@@ -696,52 +898,67 @@ class _HomePageBodyState extends State<HomePageBody> {
                             ),
                           ),
                           child: Row(
-                            mainAxisAlignment: .spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               // Left: Payment Title
                               Container(
-                                width: 156,
-                                height: Constants.fontLarge,
+                                width: Responsive.value<double>(
+                                  context,
+                                  mobile: 156,
+                                  tablet: 164,
+                                  desktop: 172,
+                                ),
+                                height: Constants.getFontLarge(context),
                                 child: Text(
                                   'Design and Planning',
                                   style: TextStyle(
                                     fontFamily: Constants.primaryfont,
-                                    fontSize: Constants.fontSmall,
-                                    fontWeight: .bold,
+                                    fontSize: Constants.getFontSmall(context),
+                                    fontWeight: FontWeight.bold,
                                     color: CustomColors.black87,
                                   ),
                                 ),
                               ),
 
-                              SizedBox(width: Constants.spacingSmall),
+                              SizedBox(width: Constants.getSpacingSmall(context)),
 
                               // Right: Amount + Icon
                               Row(
                                 children: [
-                                  //Icon
+                                  // Icon
                                   Container(
-                                    width: Constants.fontMedium,
-                                    height: Constants.fontMedium,
+                                    width: Constants.getFontMedium(context),
+                                    height: Constants.getFontMedium(context),
                                     child: Image.asset(
                                       Images.circlepercentIcon,
-                                      width: Constants.fontMedium,
-                                      height: Constants.fontMedium,
+                                      width: Constants.getFontMedium(context),
+                                      height: Constants.getFontMedium(context),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
 
                                   // Amount Text
                                   Container(
-                                    width: 98,
-                                    height: Constants.fontMedium,
+                                    width: Responsive.value<double>(
+                                      context,
+                                      mobile: 98,
+                                      tablet: 104,
+                                      desktop: 110,
+                                    ),
+                                    height: Constants.getFontMedium(context),
                                     margin: EdgeInsets.only(
-                                      right: Constants.spacingSmall,
+                                      right: Constants.getSpacingSmall(context),
                                     ),
                                     child: Text(
                                       '25,000 Kd (30%)',
                                       style: TextStyle(
                                         fontFamily: Constants.primaryfont,
-                                        fontSize: 13,
+                                        fontSize: Responsive.value<double>(
+                                          context,
+                                          mobile: 13,
+                                          tablet: 14,
+                                          desktop: 15,
+                                        ),
                                         color: CustomColors.black87,
                                       ),
                                     ),
@@ -757,6 +974,10 @@ class _HomePageBodyState extends State<HomePageBody> {
                 ],
               ),
             ),
+
+            // Extra bottom spacing for larger screens
+            if (isTablet || isDesktop)
+              SizedBox(height: Constants.getSpacingLarge(context)),
           ],
         ),
       ),

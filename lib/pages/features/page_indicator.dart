@@ -21,7 +21,7 @@ class _PageIndicatorState extends State<PageIndicator>{
   @override
   Widget build(BuildContext context){
    return Container(
-     height: 24,
+     height: 56,
      child: Row(
        mainAxisAlignment: MainAxisAlignment.center,
        children: List.generate(widget.totalPages, (index){

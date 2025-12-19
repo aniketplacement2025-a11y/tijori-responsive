@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/material/custom_header_back_icon.dart';
-
 import '../../utils/custom_colors.dart';
+import '../../utils/responsive_media_query.dart';
 
 class PositionedHeaderBackIcon extends StatelessWidget {
   final BuildContext context;
@@ -35,10 +35,27 @@ class PositionedHeaderBackIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+
     return Positioned(
-      top: top,
-      left: left,
-      right: right,
+      top: Responsive.value<double>(
+        context,
+        mobile: top,
+        tablet: top * 1.1,
+        desktop: top * 1.2,
+      ),
+      left: Responsive.value<double>(
+        context,
+        mobile: left,
+        tablet: left * 1.2,
+        desktop: left * 1.5,
+      ),
+      right: Responsive.value<double>(
+        context,
+        mobile: right,
+        tablet: right * 1.2,
+        desktop: right * 1.5,
+      ),
       child: CustomHeaderBackIcon(
         context: context,
         onBackPressed: onBackPressed,

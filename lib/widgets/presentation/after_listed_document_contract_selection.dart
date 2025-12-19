@@ -123,9 +123,10 @@ class _AfterListedDocumentContractSelectionState
             // Title + SubTitle Box
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
+                alignment: .center,
                 height: 96,
                 padding: EdgeInsets.only(
                   top: 20,
@@ -136,7 +137,10 @@ class _AfterListedDocumentContractSelectionState
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: .circular(16),
-                  border: Border.all(color: CustomColors.black87, width: 1),
+                  border: Border.all(
+                      color: CustomColors.black87,
+                      width: 1
+                  ),
                 ),
                 child: Column(
                   mainAxisAlignment: .center,
@@ -256,7 +260,7 @@ class _AfterListedDocumentContractSelectionState
                           borderRadius: .circular(8),
                         ),
                         child: Column(
-                          crossAxisAlignment: .start,
+                          crossAxisAlignment: .center,
                           children: [
                             Row(
                               mainAxisAlignment: .spaceBetween,
@@ -308,7 +312,7 @@ class _AfterListedDocumentContractSelectionState
                             // Vertical Scrollable Card
                             Container(
                               width: 400,
-                              height: 324,
+                              height: 348,
                               margin: EdgeInsets.symmetric(
                                 horizontal: 2,
                                 vertical: 2,

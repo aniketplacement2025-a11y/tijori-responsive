@@ -111,9 +111,10 @@ class _AfterListedDocumentWarrantiesSelectionState
             // Title + SubTitle Box
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
+                alignment: .center,
                 height: 96,
                 padding: EdgeInsets.only(
                   top: 20,
@@ -233,7 +234,8 @@ class _AfterListedDocumentWarrantiesSelectionState
                     horizontal: Constants.spacingSmall,
                   ),
                   child: Column(
-                    crossAxisAlignment: .start,
+                    mainAxisAlignment: .center,
+                    crossAxisAlignment: .center,
                     children: [
                       // Add Bucket Text and Icon
                       Container(
@@ -245,7 +247,7 @@ class _AfterListedDocumentWarrantiesSelectionState
                           borderRadius: .circular(8),
                         ),
                         child: Column(
-                          crossAxisAlignment: .start,
+                          crossAxisAlignment: .center,
                           children: [
                             Row(
                               mainAxisAlignment: .spaceBetween,

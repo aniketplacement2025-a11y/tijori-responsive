@@ -3,6 +3,7 @@ import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_form_field.d
 import 'package:vkaps_it_solution_project_tijori/auth/forgot_password_page.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/official_landing_page.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
+import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
 import '../../utils/Images.dart';
@@ -31,50 +32,79 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    // Get screen dimensions for proportional scaling
+    final double screenWidth = Responsive.screenWidth(context);
+    final double screenHeight = Responsive.screenHeight(context);
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+
+    // Base design dimensions (from original design - roughly 375x812 mobile)
+    final double baseWidth = 375.0;
+    final double baseHeight = 812.0;
+
+    // Scaling factors
+    final double widthScale = screenWidth / baseWidth;
+    final double heightScale = screenHeight / baseHeight;
+    // Use the smaller scale to maintain proportions without overflow
+    final double scale = widthScale < heightScale ? widthScale : heightScale;
+
+    // Scale all values proportionally
+    double scaled(double value) => value * scale;
+
+    // For tablet/desktop, limit maximum scaling to 1.2x to prevent huge elements
+    final double limitedScale = (isTablet || !isMobile)
+        ? (scale > 1.2 ? 1.2 : scale)
+        : scale;
+
     return Scaffold(
       body: OnboardingBackground(
         child: Stack(
           children: [
-            // Back Button
+            // Back Button - SCALED
             Positioned(
-              top: 24,
-              left: 12,
+              top: scaled(24) * limitedScale,
+              left: scaled(12) * limitedScale,
               child: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back_ios, color: CustomColors.black87),
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: CustomColors.black87,
+                  size: Constants.getFontMedium(context) * limitedScale,
+                ),
               ),
             ),
 
-            // Main Content
+            // Main Content - SCALED
             Positioned(
-              top: 32,
+              top: scaled(32) * limitedScale,
               left: 0,
               right: 0,
               bottom: 0,
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+                padding: EdgeInsets.symmetric(
+                  horizontal: scaled(24) * limitedScale,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title
+                    // Title - SCALED
                     Center(
                       child: Text(
                         'Sign In',
                         style: TextStyle(
                           fontFamily: Constants.primaryfont,
-                          fontSize: Constants.fontMedium,
-                          fontWeight: .bold,
+                          fontSize: Constants.getFontMedium(context) * limitedScale,
+                          fontWeight: FontWeight.bold,
                           color: CustomColors.black87,
                         ),
                       ),
                     ),
 
-                    SizedBox(height: Constants.spacingLittle),
+                    SizedBox(height: Constants.getSpacingLittle(context) * limitedScale),
 
-                    // Sign Up Link
+                    // Sign Up Link - SCALED
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -83,10 +113,12 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                             'I don\'t have an account.',
                             style: TextStyle(
                               fontFamily: Constants.primaryfont,
-                              fontSize: Constants.fontSmall,
+                              fontSize: Constants.getFontSmall(context) * limitedScale,
                               color: CustomColors.black87,
                             ),
                           ),
+
+                          SizedBox(width: scaled(4) * limitedScale),
 
                           InkWell(
                             onTap: () {
@@ -96,7 +128,7 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                               'Create an Account',
                               style: TextStyle(
                                 fontFamily: Constants.primaryfont,
-                                fontSize: Constants.fontSmall,
+                                fontSize: Constants.getFontSmall(context) * limitedScale,
                                 color: CustomColors.black87,
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
@@ -107,9 +139,9 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                       ),
                     ),
 
-                    SizedBox(height: Constants.spacingMedium),
+                    SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
 
-                    // Registration Form
+                    // Login Form
                     Form(
                       key: _formKey,
                       child: Column(
@@ -119,17 +151,21 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                             label: 'Phone Number or Email',
                             hintText: 'Enter your Phone number or Email',
                             controller: _phoneEmailController,
-                            suffixIcon: Icon(Icons.person), // Custom icon
+                            suffixIcon: Icon(
+                              Icons.person,
+                              size: Constants.getFontMedium(context) * limitedScale,
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your full name';
+                                return 'Please enter your phone number or email';
                               }
                               return null;
                             },
                           ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
+                          // Password Field
                           CustomPasswordField(
                             label: 'Password',
                             controller: _passwordController,
@@ -139,13 +175,14 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                                 _obscurePassword = !_obscurePassword;
                               });
                             },
-                          ), // CustomPasswordField
+                          ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
-                          SizedBox(
-                            height: 24,
-                            width: 320,
+                          // Forgot Password Link - SCALED
+                          Container(
+                            height: scaled(24) * limitedScale,
+                            width: scaled(320) * limitedScale,
                             child: InkWell(
                               onTap: () {
                                 print('CLICKED ON I FORGOT MY PASSWORD.');
@@ -160,7 +197,7 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                                 'I forgot my password',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.fontSmall,
+                                  fontSize: Constants.getFontSmall(context) * limitedScale,
                                   color: CustomColors.black87,
                                   decoration: TextDecoration.underline,
                                 ),
@@ -168,20 +205,20 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                             ),
                           ),
 
-                          SizedBox(height: Constants.spacingMedium),
+                          SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
 
-                          // SIGN IN BUTTON
+                          // SIGN IN BUTTON - SCALED
                           Container(
                             width: double.infinity,
-                            height: 42,
+                            height: scaled(42) * limitedScale,
                             decoration: BoxDecoration(
                               color: CustomColors.gradientBlue,
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(scaled(5) * limitedScale),
                               boxShadow: [
                                 BoxShadow(
                                   color: CustomColors.lightWhite,
-                                  blurRadius: 8,
-                                  offset: Offset(0, 3),
+                                  blurRadius: scaled(8) * limitedScale,
+                                  offset: Offset(0, scaled(3) * limitedScale),
                                 ),
                               ],
                             ),
@@ -189,47 +226,50 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                             child: TextButton(
                               onPressed: () {
                                 print('CLICKED ON SIGNED IN BUTTON');
-                                Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => OfficialLandingPage())
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => OfficialLandingPage()
+                                  ),
                                 );
                               },
                               child: Text(
                                 'SIGN IN',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.fontSmall,
+                                  fontSize: Constants.getFontSmall(context) * limitedScale,
                                   color: CustomColors.ghostWhite,
                                 ),
                               ),
                             ),
                           ),
 
-                          SizedBox(height: Constants.spacingMedium),
+                          SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
 
-                          // Horizontal line
+                          // Horizontal line - SCALED
                           Container(
                             width: double.infinity,
-                            height: 1,
+                            height: scaled(1) * limitedScale,
                             color: CustomColors.littleWhite,
                           ),
 
-                          SizedBox(height: Constants.spacingSmall),
+                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
 
-                          //Social Media Section
+                          // Social Media Section - SCALED
                           Column(
                             children: [
                               Text(
                                 'Or use social media account to Sign Up',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.fontSmall,
+                                  fontSize: Constants.getFontSmall(context) * limitedScale,
                                   color: CustomColors.black87.withOpacity(0.7),
                                 ),
                               ),
 
-                              SizedBox(height: Constants.spacingMedium),
+                              SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
 
-                              // Social Media Buttons
+                              // Social Media Buttons - SCALED
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -242,7 +282,7 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                                     },
                                   ),
 
-                                  SizedBox(width: Constants.spacingMedium),
+                                  SizedBox(width: Constants.getSpacingMedium(context) * limitedScale),
 
                                   // GOOGLE BUTTON
                                   CustomSocialButton(
@@ -256,6 +296,9 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                               ),
                             ],
                           ),
+
+                          // Extra bottom padding for better scrolling
+                          SizedBox(height: Constants.getSpacingLarge(context) * limitedScale),
                         ],
                       ),
                     ),

@@ -48,10 +48,11 @@ class _ContractPageAfterDocumentState extends State<ContractPageAfterDocument> {
 
             Positioned(
               top: 72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
-                height: 108,
+                alignment: .center,
+                height: 112,
                 padding: EdgeInsets.only(
                   top: 20,
                   right: 10,
@@ -69,7 +70,7 @@ class _ContractPageAfterDocumentState extends State<ContractPageAfterDocument> {
                   children: [
                     // Row 1: Bucket name with icon
                     SizedBox(
-                      width: 330,
+                      width: 315,
                       height: 22,
                       child: Row(
                         mainAxisAlignment: .center,

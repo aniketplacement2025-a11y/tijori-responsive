@@ -30,7 +30,7 @@ class AddNewCategoryResponse extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 200),
       child: Container(
-        height: Responsive.screenHeight(context)*0.7,
+        height: Responsive.screenHeight(context)*0.5,
         decoration: BoxDecoration(
           color: CustomColors.ghostWhite,
           borderRadius: const BorderRadius.only(

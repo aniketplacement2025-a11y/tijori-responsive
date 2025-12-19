@@ -1,18 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/custom_colors.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/Images.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/titles.dart';
-import '../../pages/features/onboarding_controller.dart';
-import '../../pages/features/page_indicator.dart';
+
 import '../../pages/others/custom_header_1.dart';
 import '../../pages/others/logo_container.dart';
+import '../../utils/Images.dart';
 import '../../utils/onboarding_background.dart';
+import '../../utils/responsive_media_query.dart';
+import '../../utils/titles.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = Responsive.screenWidth(context);

@@ -53,10 +53,11 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
              // Title + Subtitle + ChildTitle Box
              Positioned(
                top:72,
-               left: 5,
+               left: 10,
+               right: 10,
                child: Container(
-                 width: 350,
-                 height: 104,
+                 alignment: .center,
+                 height: 108,
                  padding: EdgeInsets.only(
                    top: 20,
                    right: 10,
@@ -208,7 +209,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                              horizontal: Constants.spacingLittle,
                            ),
                            child: Column(
-                             crossAxisAlignment: .start,
+                             crossAxisAlignment: .center,
                              children: [
 
                                // About Warranty and Icon
@@ -221,7 +222,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                                    borderRadius: .circular(8),
                                  ),
                                  child: Column(
-                                   crossAxisAlignment: .start,
+                                   crossAxisAlignment: .center,
                                    children: [
 
                                      Row(
@@ -295,7 +296,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                                      Container(
                                        width: double.infinity,
                                        child: Column(
-                                         crossAxisAlignment: .start,
+                                         crossAxisAlignment: .center,
                                          children: [
 
                                            // Name of Brand FORM FIELD
@@ -305,12 +306,16 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                                                Imagepath: Images.right
                                            ),
 
+                                           SizedBox(height: Constants.spacingLittle),
+
                                            // Price
                                            _buildTextLabel(
                                                label: 'Price',
                                                sublabel: '200',
                                                Imagepath: Images.right,
                                            ),
+
+                                           SizedBox(height: Constants.spacingLittle),
 
                                            // Serial Number
                                            _buildTextLabel(
@@ -319,6 +324,8 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                                              Imagepath: Images.squarepenIcon,
                                            ),
 
+                                           SizedBox(height: Constants.spacingLittle),
+
                                            // Seller Name
                                            _buildTextLabel(
                                                label: 'Seller Name',
@@ -326,8 +333,12 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                                                Imagepath: Images.right,
                                            ),
 
+                                           SizedBox(height: Constants.spacingLittle),
+
                                            // Seller Phone Number
                                            CustomPhoneField(),
+
+                                           SizedBox(height: Constants.spacingLittle),
 
                                            // Start date of the warranty
                                            _buildTextLabel(
@@ -336,12 +347,16 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                                                Imagepath: Images.calenderIcon,
                                            ),
 
+                                           SizedBox(height: Constants.spacingLittle),
+
                                            // Expiry date of the warranty
                                            _buildTextLabel(
                                              label: 'Expiry date of the warranty',
                                              sublabel: '12.05.2025',
                                              Imagepath: Images.calenderIcon,
                                            ),
+
+                                           SizedBox(height: Constants.spacingLittle),
 
                                            // Purchase location
                                            _buildTextLabel(
@@ -350,12 +365,16 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                                              Imagepath: Images.plusIcon,
                                            ),
 
+                                           SizedBox(height: Constants.spacingLittle),
+
                                            // Country of manufacture
                                            _buildTextLabel(
                                              label: 'Country of manufacture',
                                              sublabel: 'Kuwait City',
                                              Imagepath: Images.bottomarrowIcon,
                                            ),
+
+                                           SizedBox(height: Constants.spacingLittle),
 
                                            // Store Location
                                            _buildTextLabel(
@@ -368,13 +387,12 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
 
                                            // Row Of "Add reminder for expiry date" and Image
                                            SizedBox(
-                                             width: 200,
                                              height: 22,
                                              child: Column(
-                                               crossAxisAlignment: .start,
+                                               crossAxisAlignment: .center,
                                                children: [
                                                  Row(
-                                                   mainAxisAlignment: .center,
+                                                   mainAxisAlignment: .start,
                                                    children: [
                                                      // Icon/Image
                                                      Container(
@@ -406,7 +424,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
 
                                            // "Country of manufacture" Text
                                            Container(
-                                             width: 350,
+                                             alignment: .center,
                                              height: 36,
                                              padding: const EdgeInsets.only(
                                                top: 5,
@@ -472,7 +490,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
 
                                            // "Country of manufacture" Text
                                            Container(
-                                             width: 350,
+                                             alignment: .center,
                                              height: 36,
                                              padding: const EdgeInsets.only(
                                                top: 5,
@@ -648,7 +666,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
     required String Imagepath,
   }){
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
           children: [
@@ -664,7 +682,7 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
         SizedBox(height: Constants.spacingLittle),
 
         Container(
-          width: 350,
+          alignment: .center,
           height: 36,
           padding: const EdgeInsets.only(
             top: 5,

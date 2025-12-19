@@ -1,43 +1,77 @@
 import 'package:vkaps_it_solution_project_tijori/auth/features/button_with_thumsup.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
-
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
 import '../../utils/Images.dart';
 import 'package:flutter/material.dart';
+import '../../utils/responsive_media_query.dart';
 
 class OtpSuccessPopup extends StatelessWidget {
   OtpSuccessPopup({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+    final bool isDesktop = Responsive.isDesktop(context);
+
+    // Update constants
+    Constants.updateFromContext(context);
+
     return Scaffold(
       body: OnboardingBackground(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Constants.spacingMedium),
-
+          padding: EdgeInsets.symmetric(
+            horizontal: Responsive.value<double>(
+              context,
+              mobile: Constants.getSpacingMedium(context),
+              tablet: Constants.getSpacingHigh(context),
+              desktop: Constants.getSpacingLarge(context),
+            ),
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center, // CHANGED TO CENTER
             children: [
-              // Back Arrow
-              SizedBox(height: Constants.spacingLarge),
-              Container(
-                width: Constants.fontMedium,
-                height: Constants.fontMedium,
-                decoration: BoxDecoration(
-                  color: CustomColors.lightWhite,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                  padding: const EdgeInsets.only(
-                    top: 8,
-                    right: 4,
-                    bottom: 8,
-                    left: 4,
+              // Back Arrow - Keep at top left but in a centered container
+              SizedBox(height: Constants.getSpacingLarge(context)),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  width: Responsive.value<double>(
+                    context,
+                    mobile: Constants.getFontMedium(context),
+                    tablet: Constants.getFontMedium(context) * 1.2,
+                    desktop: Constants.getFontMedium(context) * 1.4,
+                  ),
+                  height: Responsive.value<double>(
+                    context,
+                    mobile: Constants.getFontMedium(context),
+                    tablet: Constants.getFontMedium(context) * 1.2,
+                    desktop: Constants.getFontMedium(context) * 1.4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: CustomColors.lightWhite,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      size: Responsive.value<double>(
+                        context,
+                        mobile: 20,
+                        tablet: 22,
+                        desktop: 24,
+                      ),
+                    ),
+                    padding: EdgeInsets.all(Responsive.value<double>(
+                      context,
+                      mobile: 8,
+                      tablet: 10,
+                      desktop: 12,
+                    )),
                   ),
                 ),
               ),
@@ -45,56 +79,114 @@ class OtpSuccessPopup extends StatelessWidget {
               // Title and Content
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 36),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.value<double>(
+                      context,
+                      mobile: 36,
+                      tablet: 60,
+                      desktop: 80,
+                    ),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // OTP title
                       SizedBox(
-                        width: 200,
-                        height: 36,
+                        width: Responsive.value<double>(
+                          context,
+                          mobile: 200,
+                          tablet: 250,
+                          desktop: 300,
+                        ),
                         child: Text(
                           'Account Created',
                           style: TextStyle(
                             fontFamily: Constants.primaryfont,
                             fontWeight: FontWeight.bold,
-                            fontSize: Constants.fontMedium,
+                            fontSize: Responsive.value<double>(
+                              context,
+                              mobile: Constants.getFontMedium(context),
+                              tablet: Constants.getFontMedium(context) * 1.1,
+                              desktop: Constants.getFontLarge(context),
+                            ),
                             color: CustomColors.black87,
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
 
-                      SizedBox(height: Constants.spacingSmall),
+                      SizedBox(height: Constants.getSpacingSmall(context)),
 
                       // Description Text
                       SizedBox(
-                        width: 240,
-                        height: 40,
+                        width: Responsive.value<double>(
+                          context,
+                          mobile: 240,
+                          tablet: 300,
+                          desktop: 360,
+                        ),
                         child: Text(
                           'Your Account was successfully created',
                           style: TextStyle(
                             fontFamily: Constants.primaryfont,
-                            fontSize: 13,
-                            color: CustomColors.black87,
+                            fontSize: Responsive.value<double>(
+                              context,
+                              mobile: 13,
+                              tablet: 15,
+                              desktop: 16,
+                            ),
+                            color: CustomColors.black87.withOpacity(0.8),
+                            height: 1.4,
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
 
-                      SizedBox(height: Constants.spacingLittle),
+                      SizedBox(height: Constants.getSpacingHigh(context)),
 
+                      // Button with thumbs up - Make it responsive
                       ButtonWithThumsup(
                         imagePath: Images.thumsUp,
                         buttonText: "GET ACCESS TO THE APP",
+                        imageWidth: Responsive.value<double>(
+                          context,
+                          mobile: 238,
+                          tablet: 300,
+                          desktop: 350,
+                        ),
+                        imageHeight: Responsive.value<double>(
+                          context,
+                          mobile: 156,
+                          tablet: 196,
+                          desktop: 230,
+                        ),
+                        buttonWidth: Responsive.value<double>(
+                          context,
+                          mobile: 300,
+                          tablet: 380,
+                          desktop: 464,
+                        ),
+                        buttonHeight: Responsive.value<double>(
+                          context,
+                          mobile: 56,
+                          tablet: 60,
+                          desktop: 64,
+                        ),
+                        fontSize: Responsive.value<double>(
+                          context,
+                          mobile: 14,
+                          tablet: 15,
+                          desktop: 16,
+                        ),
                         onPressed: () {
-                          // String otpValue = otp.getOtp();
-                          // print("OTP Entered: $otpValue");
                           print("Successfully Done Sign Up");
-
-                          // You can add API call or navigation here
+                          // Add navigation or other actions here
                         },
                       ),
+
+                      // Extra spacing for larger screens
+                      if (isTablet || isDesktop)
+                        SizedBox(height: Constants.getSpacingLarge(context)),
                     ],
                   ),
                 ),

@@ -118,10 +118,11 @@ class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
 
             Positioned(
               top:72,
-              left: 5,
+              left: 10,
+              right: 10,
               child: Container(
-                width: 350,
-                height: 108,
+                alignment: .center,
+                height: 112,
                 padding: EdgeInsets.only(
                   top: 20,
                   right: 10,
@@ -328,7 +329,7 @@ class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
                                     // Vertical Scrollable Cards Using GridView.builder
                                     Container(
                                       width: 400,
-                                      height: 410,
+                                      height: 480,
                                       margin: EdgeInsets.symmetric(
                                         horizontal: Constants.spacingLittle,
                                         vertical: Constants.spacingLittle,
