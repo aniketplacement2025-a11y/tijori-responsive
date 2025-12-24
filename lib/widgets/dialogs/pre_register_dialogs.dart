@@ -106,7 +106,7 @@ class PreRegisterDialog extends StatelessWidget {
               right: scaled(16) * limitedScale,
               bottom: scaled(16) * limitedScale,
               child: Container(
-                height: scaled(40) * limitedScale,
+                height: scaled(48) * limitedScale,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -114,7 +114,7 @@ class PreRegisterDialog extends StatelessWidget {
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.only(right: scaled(8) * limitedScale),
-                        height: scaled(40) * limitedScale,
+                        height: scaled(48) * limitedScale,
                         decoration: BoxDecoration(
                           color: CustomColors.gradientBlue,
                           borderRadius: BorderRadius.circular(scaled(12) * limitedScale),
@@ -147,7 +147,7 @@ class PreRegisterDialog extends StatelessWidget {
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.only(left: scaled(8) * limitedScale),
-                        height: scaled(40) * limitedScale,
+                        height: scaled(48) * limitedScale,
                         decoration: BoxDecoration(
                           color: CustomColors.black87,
                           borderRadius: BorderRadius.circular(scaled(12) * limitedScale),

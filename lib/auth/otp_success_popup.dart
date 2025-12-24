@@ -1,4 +1,5 @@
 import 'package:vkaps_it_solution_project_tijori/auth/features/button_with_thumsup.dart';
+import 'package:vkaps_it_solution_project_tijori/pages/official_landing_page.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
@@ -180,6 +181,10 @@ class OtpSuccessPopup extends StatelessWidget {
                         ),
                         onPressed: () {
                           print("Successfully Done Sign Up");
+                          Navigator.push(context,
+                              MaterialPageRoute(builder:
+                              (context) => OfficialLandingPage())
+                          );
                           // Add navigation or other actions here
                         },
                       ),

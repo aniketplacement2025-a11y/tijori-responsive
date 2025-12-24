@@ -5,14 +5,14 @@ class Images {
   static String flagAsset = 'assets/icons/twemoji_flag-kuwait.png';
   static String logoAsset = 'assets/icons/Logo 1.png';
 
-  // For Onboarding Page
-  static String bg_removal = 'assets/images/bg_removal.png';
-  static String cloud1 = 'assets/images/cloud1.png';
-  static String cloud2 = 'assets/images/cloud2.png';
-
-  // For Onboarding Page 4
-  static String girl = 'assets/images/Girl.png';
-  static String Clouds = 'assets/images/Group 1.png';
+  // // For Onboarding Page
+  // static String bg_removal = 'assets/images/bg_removal.png';
+  // static String cloud1 = 'assets/images/cloud1.png';
+  // static String cloud2 = 'assets/images/cloud2.png';
+  //
+  // // For Onboarding Page 4
+  // static String girl = 'assets/images/Girl.png';
+  // static String Clouds = 'assets/images/Group 1.png';
 
   // Pre-Registered Dialog
   static String person_logo = 'assets/icons/person_logo.png';
@@ -20,6 +20,9 @@ class Images {
   // Register Page
   static String google = 'assets/icons/google-logo.png';
   static String apple = 'assets/icons/apple-Logo.png';
+
+  // Continue Commercial Logo
+  static String twotwoes = 'assets/icons/twotwos.png';
 
   // Otp Verification Page
   static String otp = 'assets/images/Group 3.png';

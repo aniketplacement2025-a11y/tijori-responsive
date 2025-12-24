@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/email_otp_verification.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
@@ -51,7 +52,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
               child: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => SigninLoginPage()),
+                        (route) => false,
+                  );
                 },
                 icon: Icon(
                   Icons.arrow_back_ios,

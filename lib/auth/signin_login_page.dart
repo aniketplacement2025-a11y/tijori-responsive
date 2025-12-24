@@ -4,6 +4,7 @@ import 'package:vkaps_it_solution_project_tijori/auth/forgot_password_page.dart'
 import 'package:vkaps_it_solution_project_tijori/pages/official_landing_page.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
+import 'package:vkaps_it_solution_project_tijori/widgets/presentation/SplashScreen2.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
 import '../../utils/Images.dart';
@@ -66,7 +67,12 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
               left: scaled(12) * limitedScale,
               child: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  print("Clicked On Sign In Back Button");
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => SplashScreen2()),
+                        (route) => false,
+                  );
                 },
                 icon: Icon(
                   Icons.arrow_back_ios,

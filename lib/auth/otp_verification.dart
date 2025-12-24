@@ -57,8 +57,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
       widget.onVerificationSuccess!();
     } else {
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => OtpSuccessPopup())
+        context,
+        MaterialPageRoute(builder: (context) => OtpSuccessPopup()),
       );
     }
   }
@@ -108,9 +108,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               children: [
                 // Back Button
                 SizedBox(height: Constants.getSpacingMedium(context)),
-                CustomBackButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
+                CustomBackButton(onPressed: () => Navigator.of(context).pop()),
 
                 // Main Content
                 Expanded(
@@ -274,10 +272,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     return Container(
       width: imageSize,
       height: imageSize * 0.6, // Maintain aspect ratio
-      child: Image.asset(
-        Images.otp,
-        fit: BoxFit.contain,
-      ),
+      child: Image.asset(Images.otp, fit: BoxFit.contain),
     );
   }
 

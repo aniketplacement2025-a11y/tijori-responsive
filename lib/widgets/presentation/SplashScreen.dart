@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
-import 'package:vkaps_it_solution_project_tijori/widgets/material/onboarding_wrapper.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
 import '../../utils/Images.dart';
@@ -25,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 10), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => OnboardingWrapper()),
+        MaterialPageRoute(builder: (context) => OnboardingScreen()),
       );
     });
   }
