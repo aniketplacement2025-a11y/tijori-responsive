@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_form_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/forgot_password_page.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/official_landing_page.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/login_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/SplashScreen2.dart';
@@ -9,6 +11,7 @@ import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
 import '../../utils/Images.dart';
 import '../../utils/titles.dart';
+import '../services/settings/loadingIndicator.dart';
 import 'fields/custom_password_field.dart';
 import 'fields/custom_social_button.dart';
 
@@ -229,24 +232,33 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                               ],
                             ),
 
-                            child: TextButton(
-                              onPressed: () {
-                                print('CLICKED ON SIGNED IN BUTTON');
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => OfficialLandingPage()
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                'SIGN IN',
-                                style: TextStyle(
-                                  fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.getFontSmall(context) * limitedScale,
-                                  color: CustomColors.ghostWhite,
-                                ),
-                              ),
+                            child: ChangeNotifierProvider(
+                              create: (BuildContext context) => LoginProvider(),
+                              child: Consumer<LoginProvider>(
+                                builder: (context, provider, child) {
+                                  return TextButton(
+                                    onPressed: () {
+                                      print('CLICKED ON SIGNED IN BUTTON');
+                                      if(!provider.isLoading){
+                                       Map requestBody = {
+                                         "emailOrPhone": _phoneEmailController.text.toString(),
+                                         "password": _passwordController.text.toString(),
+                                       };
+                                       provider.login(requestBody, context);
+                                      }},
+                                    child: provider.isLoading
+                                        ? loadingIndicator()
+                                        :  Text(
+                                      'SIGN IN',
+                                      style: TextStyle(
+                                        fontFamily: Constants.primaryfont,
+                                        fontSize: Constants.getFontSmall(
+                                            context) * limitedScale,
+                                        color: CustomColors.ghostWhite,
+                                      ),
+                                    ),
+                                  );
+                                },),
                             ),
                           ),
 
