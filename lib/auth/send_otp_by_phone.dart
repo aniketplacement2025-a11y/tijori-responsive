@@ -1,29 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:vkaps_it_solution_project_tijori/auth/email_otp_verification.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/features/otp_manager.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
-import 'package:vkaps_it_solution_project_tijori/services/providers/send_otp_email_provider.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
-import '../../utils/constants.dart';
-import '../../utils/custom_colors.dart';
-import '../../utils/Images.dart';
-import '../../utils/titles.dart';
-import 'fields/custom_form_field.dart';
-import '../../utils/responsive_media_query.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
+import '../utils/constants.dart';
+import '../utils/custom_colors.dart';
+import '../utils/onboarding_background.dart';
+import '../utils/responsive_media_query.dart';
+import 'fields/Intl_custom_phone_field.dart';
+
+class SendOtpByPhone extends StatefulWidget {
+  const SendOtpByPhone({super.key});
+
   @override
-  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
+  State<SendOtpByPhone> createState() => _SendOtpByPhoneState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final TextEditingController _emailController = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
+class _SendOtpByPhoneState extends State<SendOtpByPhone> {
+  List<String> send_otp_phone_number = [];
 
   @override
   Widget build(BuildContext context) {
@@ -149,31 +142,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       width: double.infinity,
                       child: Column(
                         children: [
-                          // FORM FIELD FOR EMAIL - Already responsive via CustomFormField
-                          CustomFormField(
-                            label: 'Email Name',
-                            hintText: 'E.g.: User@domain.com',
-                            controller: _emailController,
-                            suffixIcon: Icon(
-                              Icons.email,
-                              size: Responsive.value<double>(
-                                context,
-                                mobile: 20,
-                                tablet: 22,
-                                desktop: 24,
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your full name';
-                              }
-                              if (!RegExp(
-                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                              ).hasMatch(value)) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
+                          // PHONE FIELD - Already responsive via CustomFormField
+                          IntlCustomPhoneField(
+                            suffixIcon: Icon(Icons.phone),
+                            labelText: 'Company Phone Number',
+                            onChanged: (value) {
+                              setState(() {
+                                send_otp_phone_number = value;
+                              });
                             },
                           ),
 
@@ -211,32 +187,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 ),
                               ],
                             ),
-                            child: ChangeNotifierProvider(
-                              create: (BuildContext context) => SendOtpEmailProvider(),
-                              child: Consumer<SendOtpEmailProvider>(
-                                builder: (context, provider, child) {
-                                  return
-                                  TextButton(
-                                    onPressed: () {
-                                      print('CLICKED ON SEND OTP BUTTON');
-                                      if (!provider.isLoading) {
-                                        Map requestBody = {
-                                          "email": _emailController.text.toString(),
-                                        };
-                                        provider.sendOtpEmail(requestBody, context);
-                                      }
-                                    },
-                                    child: Text(
-                                      'SEND OTP',
-                                      style: TextStyle(
-                                        fontFamily: Constants.primaryfont,
-                                        fontSize: Constants.getFontSmall(context),
-                                        fontWeight: FontWeight.bold,
-                                        color: CustomColors.ghostWhite,
-                                      ),
-                                    ),
-                                  );
-                                }
+                            child: TextButton(
+                              onPressed: () {
+                                print('CLICKED ON SEND OTP BUTTON');
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => EmailOtpVerification(
+                                //       email: _emailController.text,
+                                //     ),
+                                //   ),
+                                // );
+                              },
+                              child: Text(
+                                'SEND OTP',
+                                style: TextStyle(
+                                  fontFamily: Constants.primaryfont,
+                                  fontSize: Constants.getFontSmall(context),
+                                  fontWeight: FontWeight.bold,
+                                  color: CustomColors.ghostWhite,
+                                ),
                               ),
                             ),
                           ),

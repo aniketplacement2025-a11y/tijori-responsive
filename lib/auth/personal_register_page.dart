@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_form_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_phone_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_social_button.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/sign_up_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/SplashScreen2.dart';
@@ -12,6 +14,8 @@ import '../../utils/Images.dart';
 import '../../utils/titles.dart';
 import '../pages/others/custom_header_1.dart';
 import '../pages/others/logo_container.dart';
+import '../services/settings/loadingIndicator.dart';
+import '../services/settings/print_value.dart';
 import 'fields/Intl_custom_phone_field.dart';
 import 'fields/custom_password_field.dart';
 import 'otp_verification.dart';
@@ -37,29 +41,6 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
   TextEditingController _confirmPasswordController = TextEditingController();
 
   List<String> _phoneController = [];
-
-
-  // Handle Register
-  void _handleRegister() {
-    if (_formKey.currentState!.validate()) {
-      print('Registration successful!');
-      print('Full Name: ${_fullNameController.text}');
-      print('Phone: ${_phoneController[0]}${_phoneController[1]}');
-      print('Email: ${_emailController.text}');
-
-      // Navigate to OTP Verification Page
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OTPVerificationPage(
-            phoneNumber: '${_phoneController[0]}${_phoneController[1]}',
-            email: _emailController.text,
-            fullName: _fullNameController.text,
-          ),
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -368,17 +349,60 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                                 ),
                               ],
                             ),
-                            child: TextButton(
-                              onPressed: _acceptItems ? _handleRegister : null,
-                              child: Text(
-                                'REGISTER',
-                                style: TextStyle(
-                                  fontSize:
-                                      Constants.getFontSmall(context) *
-                                      limitedScale,
-                                  fontFamily: Constants.primaryfont,
-                                  color: CustomColors.ghostWhite,
-                                ),
+                            child: ChangeNotifierProvider(
+                              create: (BuildContext context) => SignUpProvider(),
+                              child: Consumer<SignUpProvider>(
+                                builder: (context, provider, child) {
+                                  return
+                                  TextButton(
+                                    onPressed: () async {
+                                      if(!provider.isLoading && _formKey.currentState!.validate()){
+                                        // Validate phone number
+                                        if (_phoneController.length < 2) {
+                                          print("Please enter valid phone number");
+                                          // Show error: Please enter valid phone number
+                                          return;
+                                        }
+
+                                        // Prepare request body
+                                        Map<String, dynamic> requestBody = {
+                                          "fullName": _fullNameController.text.trim(),
+                                          "email": _emailController.text.trim(),
+                                          "password": _passwordController.text,
+                                          "phone": {
+                                            "country_code":
+                                            _phoneController[0], // Should be like "+91"
+                                            "number": _phoneController[1].replaceAll(
+                                              RegExp(r'\D'),
+                                              '',
+                                            ), // Remove non-digits
+                                          },
+                                          "isCommercial": widget.isCommercial,
+                                        };
+
+                                        printValue(requestBody, tag: "INPUT TO API");
+
+                                        // Call the provider
+                                        await provider.signUpPersonalProvider(
+                                          requestBody,
+                                          context,
+                                        );
+                                      }
+                                    },
+                                    child: provider.isLoading
+                                        ? loadingIndicator()
+                                        : Text(
+                                      'REGISTER',
+                                      style: TextStyle(
+                                        fontSize:
+                                        Constants.getFontSmall(context) *
+                                            limitedScale,
+                                        fontFamily: Constants.primaryfont,
+                                        color: CustomColors.ghostWhite,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),

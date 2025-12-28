@@ -31,6 +31,17 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
 
   List<String> typeList = ['Job Title', 'Business Manager', 'Other'];
 
+  bool _acceptItems = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+
+  TextEditingController _fullNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
+
+  List<String> _phoneController = [];
+
   void _handleRegister() {
     if (_formKey.currentState!.validate()) {
       print('Registration successful!');
@@ -48,21 +59,12 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
           email: _emailController.text,
           fullName: _fullNameController.text,
           isCommercial: widget.isCommercial,
+          password: _passwordController.text,
+          selectedType: selectedType,
         ),
       ),
     );
   }
-
-  bool _acceptItems = false;
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
-
-  TextEditingController _fullNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
-
-  List<String> _phoneController = [];
 
   // Get screen dimensions for proportional scaling
   late final double screenWidth = Responsive.screenWidth(context);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../auth/otp_success_popup.dart';
 import '../models/rest_client.dart';
 import '../settings/print_value.dart';
 
@@ -36,8 +37,8 @@ class VerifyOtpForgotPasswordProvider with ChangeNotifier {
           // Handle response
           if (value['success'] == true) {
             // Navigate to success screen
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => OtpSuccessPopup()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OtpSuccessPopup()));
           } else {
             // Show error message
             ScaffoldMessenger.of(context).showSnackBar(

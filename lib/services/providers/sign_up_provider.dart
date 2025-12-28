@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/otp_verification.dart';
 import '../models/rest_client.dart';
 import '../settings/print_value.dart';
 
@@ -36,12 +37,12 @@ class SignUpProvider with ChangeNotifier {
       // Handle success
       if (response['success'] == true) {
         // Navigate to OTP screen or show success message
-        // Navigator.pushReplacement(
-        //   context, MaterialPageRoute(
-        //   builder: (context) => PersonalOtpVerification(
-        //     requestBody: requestBody,
-        //   )
-        // ));
+        Navigator.pushReplacement(
+          context, MaterialPageRoute(
+          builder: (context) => OTPVerificationPage(
+            requestBody: requestBody,
+          )
+        ));
         print('Registration successful: ${response['message']}');
       } else {
         // Show error message

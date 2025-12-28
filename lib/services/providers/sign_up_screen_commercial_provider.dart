@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../auth/commercial_otp_verification.dart';
 import '../settings/print_value.dart';
 import '../models/rest_client.dart';
 
@@ -23,12 +24,12 @@ class SignUpScreenCommercialProvider extends ChangeNotifier{
 
       if (value['success'] == true) {
         print("MISSION COMMERCIAL PAGE SUCCESS");
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) =>
-        //         CommercialOtpVerification(requestBody: userData),
-        //     ),
-        // );
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>
+                CommercialOtpVerification(requestBody: userData),
+            ),
+        );
         // Handle success
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

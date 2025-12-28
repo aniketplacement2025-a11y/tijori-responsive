@@ -1,40 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/features/otp_manager.dart';
-import 'package:vkaps_it_solution_project_tijori/auth/otp_success_popup.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/custom_colors.dart';
-import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
-import '../services/providers/personal_otp_verification_provider.dart';
-import '../services/settings/print_value.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/commercial_user_verify_otp_provider.dart';
+
 import '../utils/Images.dart';
+import '../utils/constants.dart';
+import '../utils/custom_colors.dart';
+import '../utils/onboarding_background.dart';
+import '../utils/responsive_media_query.dart';
+import 'features/back_button.dart';
+import 'features/gradient_button.dart';
+import 'features/outline_button.dart';
+import 'fields/otp_input_field.dart';
 
-// Reusable Components
-import 'package:vkaps_it_solution_project_tijori/auth/fields/otp_input_field.dart';
-import '../auth/features/gradient_button.dart';
-import '../auth/features/outline_button.dart';
-import '../auth/features/back_button.dart';
+class CommercialOtpVerification extends StatefulWidget {
 
-class OTPVerificationPage extends StatefulWidget {
   final Map<dynamic, dynamic> requestBody;
-  final VoidCallback? onVerificationSuccess;
-  final VoidCallback? onSendOtpByEmail;
 
-  const OTPVerificationPage({
+  CommercialOtpVerification({
     super.key,
     required this.requestBody,
-    this.onVerificationSuccess,
-    this.onSendOtpByEmail,
   });
 
   @override
-  State<OTPVerificationPage> createState() => _OTPVerificationPageState();
+  State<CommercialOtpVerification> createState() => _CommercialOtpVerificationState();
 }
 
-class _OTPVerificationPageState extends State<OTPVerificationPage> {
+class _CommercialOtpVerificationState extends State<CommercialOtpVerification> {
   late OtpManager otp;
-  late PersonalOtpVerificationProvider _provider =
-  PersonalOtpVerificationProvider(); // Create provider instance
+  late CommercialUserVerifyOtpProvider _provider =
+  CommercialUserVerifyOtpProvider();
 
   @override
   void initState() {
@@ -43,58 +37,78 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     otp.init();
   }
 
-  @override
-  void dispose() {
-    otp.dispose();
-    super.dispose();
-  }
-
+  // CORRECTED _handleVerification method in CommercialOtpVerification
   void _handleVerification() {
     String otpValue = otp.getOtp();
     print('Verifying OTP: $otpValue');
 
     if (otpValue.length != 4) {
-      printValue('Please enter a valid 4-digit OTP', tag: 'ERROR');
-      // Show snackbar instead of just printing
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please enter a valid 4-digit OTP')),
-      ); }
+      );
+      return; // IMPORTANT: Return here
+    }
 
+    // Extract the original formData Map
+    Map<String, dynamic> originalFormData = widget.requestBody['formData'] ?? {};
+
+    // Create the correct structure for OTP verification
+    // The API expects FLAT structure, not nested
     Map<String, dynamic> verificationData = {
-      'userData': widget.requestBody,
+      // Copy all original form data (FLAT structure)
+      'userData[fullName]': originalFormData['fullName'] ?? '',
+      'userData[email]': originalFormData['email'] ?? '',
+      'userData[password]': originalFormData['password'] ?? '',
+      'userData[phone][country_code]': originalFormData['phone[country_code]'] ?? '',
+      'userData[phone][number]': originalFormData['phone[number]'] ?? '',
+      'userData[jobTitle]': originalFormData['jobTitle'] ?? '',
+      'userData[isCommercial]': originalFormData['isCommercial'] ?? '',
+      'userData[commercialInformation][commercialRegNum]': originalFormData['commercialInformation[commercialRegNum]'] ?? '',
+      'userData[commercialInformation][licenseNumber]': originalFormData['commercialInformation[licenseNumber]'] ?? '',
+      'userData[commercialInformation][companyName]': originalFormData['commercialInformation[companyName]'] ?? '',
+      'userData[commercialInformation][companyAddress]': originalFormData['commercialInformation[companyAddress]'] ?? '',
+      'userData[commercialInformation][companyPhone][country_code]': originalFormData['commercialInformation[companyPhone][country_code]'] ?? '',
+      'userData[commercialInformation][companyPhone][number]': originalFormData['commercialInformation[companyPhone][number]'] ?? '',
+      'userData[commercialInformation][companyWhatsapp][country_code]': originalFormData['commercialInformation[companyWhatsapp][country_code]'] ?? '',
+      'userData[commercialInformation][companyWhatsapp][number]': originalFormData['commercialInformation[companyWhatsapp][number]'] ?? '',
+      'userData[commercialInformation][companyActivity]': originalFormData['commercialInformation[companyActivity]'] ?? '',
+      'userData[commercialInformation][establishmentDate]': originalFormData['commercialInformation[establishmentDate]'] ?? '',
+
+      // Add OTP
       'otp': otpValue,
+
+      // Add file path and folder name
+      'documents': widget.requestBody['documents'] ?? '',
+      'folderName': widget.requestBody['folderName'] ?? '',
     };
 
-    print('Verification Data: $verificationData');
+    // Remove empty values
+    verificationData.removeWhere((key, value) => value == null || value.toString().isEmpty);
 
-    // Get provider using Provider.of
-    // final provider = Provider.of<PersonalOtpVerificationProvider>(context, listen: false);
-    // provider.personalUserVerifyOtp(verificationData, context);
+    print('Sending OTP verification data:');
+    verificationData.forEach((key, value) {
+      print('$key: $value');
+    });
 
-    // Use the provider instance directly
-    _provider.personalUserVerifyOtp(verificationData, context);
-  }
-
-  void _handleSendOtpByEmail() {
-    print('SEND OTP BY EMAIL');
-    if (widget.onSendOtpByEmail != null) {
-      widget.onSendOtpByEmail!();
-    }
+    // Call the provider
+    _provider.verifyOtpCommercialSignUp(verificationData, context);
   }
 
   String _getMaskedPhoneNumber() {
     try {
-      // Extract nested Map (phone)
-      Map<String, dynamic> phoneMap =
-      widget.requestBody['phone'] as Map<String, dynamic>;
-      String countryCode = phoneMap['country_code'] as String;
-      String phoneNumber = phoneMap['number'] as String;
+      // Extract from original formData
+      Map<String, dynamic> originalFormData = widget.requestBody['formData'] ?? {};
+
+      String countryCode = originalFormData['phone[country_code]']?.toString() ?? '';
+      String phoneNumber = originalFormData['phone[number]']?.toString() ?? '';
+
       if (phoneNumber.length > 4) {
         return '${countryCode} ${phoneNumber.substring(0, 2)}** **${phoneNumber.substring(phoneNumber.length - 2)}';
       }
       return '$countryCode ** ** **';
     } catch (e) {
-      return '+965 ** ** **';
+      print('Error masking phone: $e');
+      return '+91 ** ** **';
     }
   }
 
@@ -108,6 +122,13 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
         desktop: Constants.getSpacingLarge(context),
       ),
     );
+  }
+
+  void _handleSendOtpByEmail() {
+    print('SEND OTP BY EMAIL');
+    // if (widget.onSendOtpByEmail != null) {
+    //   widget.onSendOtpByEmail!();
+    // }
   }
 
   @override
@@ -167,25 +188,25 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
 
                         // Verify Button
                         StatefulBuilder(
-                          builder: (context, setState) {
-                            return
-                            GradientButton(
-                              text: _provider.isLoading ? 'VERIFYING...' : 'VERIFY',
-                              width: Responsive.value<double>(
-                                context,
-                                mobile: 300,
-                                tablet: 350,
-                                desktop: 400,
-                              ),
-                              height: Responsive.value<double>(
-                                context,
-                                mobile: 50,
-                                tablet: 55,
-                                desktop: 60,
-                              ),
-                              onPressed: _handleVerification,
-                            );
-                          }
+                            builder: (context, setState) {
+                              return
+                                GradientButton(
+                                  text: _provider.isLoading ? 'VERIFYING...' : 'VERIFY',
+                                  width: Responsive.value<double>(
+                                    context,
+                                    mobile: 300,
+                                    tablet: 350,
+                                    desktop: 400,
+                                  ),
+                                  height: Responsive.value<double>(
+                                    context,
+                                    mobile: 50,
+                                    tablet: 55,
+                                    desktop: 60,
+                                  ),
+                                  onPressed: _handleVerification,
+                                );
+                            }
                         ),
                         SizedBox(height: Constants.getSpacingHigh(context)),
 
