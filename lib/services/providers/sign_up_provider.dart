@@ -19,6 +19,7 @@ class SignUpProvider with ChangeNotifier {
 
   Future<void> signUpPersonalProvider(
       Map<dynamic, dynamic> requestBody,  // Change Object to Map<String, dynamic>
+      bool isCommercial,
       BuildContext context) async {      // Make it async
     try {
       printValue(requestBody, tag: "INPUT TO API");
@@ -40,19 +41,34 @@ class SignUpProvider with ChangeNotifier {
         Navigator.pushReplacement(
           context, MaterialPageRoute(
           builder: (context) => OTPVerificationPage(
+            isCommercial: isCommercial,
             requestBody: requestBody,
           )
         ));
         print('Registration successful: ${response['message']}');
       } else {
         // Show error message
+        isLoading = false;
+        notifyListeners();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response['message'] ?? 'Registration failed'),
+            backgroundColor: Colors.red,
+          ),
+        );
         print('Registration failed: ${response['message']}');
       }
 
     } catch (e) {
+      print("API ERROR => ${e.toString()}");
       isLoading = false;
       notifyListeners();
-      print("API ERROR => ${e.toString()}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('REGISTRATION FAILED BECAUSE OF ${e.toString()} PLEASE RE CHECK THE DETAILS'),
+          backgroundColor: Colors.red,
+        ),
+      );
       // Show error to user
     }
   }

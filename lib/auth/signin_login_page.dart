@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_form_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/forgot_password_page.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/send_otp_by_phone.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/official_landing_page.dart';
 import 'package:vkaps_it_solution_project_tijori/services/providers/login_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
@@ -16,6 +17,13 @@ import 'fields/custom_password_field.dart';
 import 'fields/custom_social_button.dart';
 
 class SigninLoginPage extends StatefulWidget {
+  final bool isCommercial;
+
+  SigninLoginPage({
+   super.key,
+   required this.isCommercial,
+  });
+
   @override
   _SigninLoginPageState createState() => _SigninLoginPageState();
 }
@@ -64,27 +72,6 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
       body: OnboardingBackground(
         child: Stack(
           children: [
-            // Back Button - SCALED
-            Positioned(
-              top: scaled(24) * limitedScale,
-              left: scaled(12) * limitedScale,
-              child: IconButton(
-                onPressed: () {
-                  print("Clicked On Sign In Back Button");
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => SplashScreen2()),
-                        (route) => false,
-                  );
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: CustomColors.black87,
-                  size: Constants.getFontMedium(context) * limitedScale,
-                ),
-              ),
-            ),
-
             // Main Content - SCALED
             Positioned(
               top: scaled(32) * limitedScale,
@@ -104,14 +91,18 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                         'Sign In',
                         style: TextStyle(
                           fontFamily: Constants.primaryfont,
-                          fontSize: Constants.getFontMedium(context) * limitedScale,
+                          fontSize:
+                              Constants.getFontMedium(context) * limitedScale,
                           fontWeight: FontWeight.bold,
                           color: CustomColors.black87,
                         ),
                       ),
                     ),
 
-                    SizedBox(height: Constants.getSpacingLittle(context) * limitedScale),
+                    SizedBox(
+                      height:
+                          Constants.getSpacingLittle(context) * limitedScale,
+                    ),
 
                     // Sign Up Link - SCALED
                     Center(
@@ -122,7 +113,9 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                             'I don\'t have an account.',
                             style: TextStyle(
                               fontFamily: Constants.primaryfont,
-                              fontSize: Constants.getFontSmall(context) * limitedScale,
+                              fontSize:
+                                  Constants.getFontSmall(context) *
+                                  limitedScale,
                               color: CustomColors.black87,
                             ),
                           ),
@@ -137,7 +130,9 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                               'Create an Account',
                               style: TextStyle(
                                 fontFamily: Constants.primaryfont,
-                                fontSize: Constants.getFontSmall(context) * limitedScale,
+                                fontSize:
+                                    Constants.getFontSmall(context) *
+                                    limitedScale,
                                 color: CustomColors.black87,
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
@@ -148,7 +143,10 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                       ),
                     ),
 
-                    SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
+                    SizedBox(
+                      height:
+                          Constants.getSpacingMedium(context) * limitedScale,
+                    ),
 
                     // Login Form
                     Form(
@@ -168,11 +166,28 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your phone number or email';
                               }
+
+                              // Email validation regex
+                              final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+                              // Phone validation (10 digits)
+                              final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                              final isPhone = digitsOnly.length >= 10;
+                              final isEmail = emailRegex.hasMatch(value);
+
+                              if (!isEmail && !isPhone) {
+                                return 'Please enter a valid email or 10-digit phone number';
+                              }
+
                               return null;
                             },
                           ),
 
-                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
+                          SizedBox(
+                            height:
+                                Constants.getSpacingSmall(context) *
+                                limitedScale,
+                          ),
 
                           // Password Field
                           CustomPasswordField(
@@ -184,9 +199,22 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                                 _obscurePassword = !_obscurePassword;
                               });
                             },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              if (value.length < 6) {
+                                return 'Password must be at least 6 characters';
+                              }
+                              return null;
+                            },
                           ),
 
-                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
+                          SizedBox(
+                            height:
+                                Constants.getSpacingSmall(context) *
+                                limitedScale,
+                          ),
 
                           // Forgot Password Link - SCALED
                           Container(
@@ -198,7 +226,8 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ForgotPasswordPage(),
+                                    builder: (context) => SendOtpByPhone(
+                                        isCommercial: widget.isCommercial)
                                   ),
                                 );
                               },
@@ -206,7 +235,9 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                                 'I forgot my password',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.getFontSmall(context) * limitedScale,
+                                  fontSize:
+                                      Constants.getFontSmall(context) *
+                                      limitedScale,
                                   color: CustomColors.black87,
                                   decoration: TextDecoration.underline,
                                 ),
@@ -214,7 +245,11 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                             ),
                           ),
 
-                          SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
+                          SizedBox(
+                            height:
+                                Constants.getSpacingMedium(context) *
+                                limitedScale,
+                          ),
 
                           // SIGN IN BUTTON - SCALED
                           Container(
@@ -222,7 +257,9 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                             height: scaled(42) * limitedScale,
                             decoration: BoxDecoration(
                               color: CustomColors.gradientBlue,
-                              borderRadius: BorderRadius.circular(scaled(5) * limitedScale),
+                              borderRadius: BorderRadius.circular(
+                                scaled(5) * limitedScale,
+                              ),
                               boxShadow: [
                                 BoxShadow(
                                   color: CustomColors.lightWhite,
@@ -237,32 +274,63 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                               child: Consumer<LoginProvider>(
                                 builder: (context, provider, child) {
                                   return TextButton(
+                                    // In your SigninLoginPage, update the onPressed:
                                     onPressed: () {
                                       print('CLICKED ON SIGNED IN BUTTON');
-                                      if(!provider.isLoading){
-                                       Map requestBody = {
-                                         "emailOrPhone": _phoneEmailController.text.toString(),
-                                         "password": _passwordController.text.toString(),
-                                       };
-                                       provider.login(requestBody, context);
-                                      }},
+
+                                      // Check if form key is valid
+                                      if (_formKey.currentState == null) {
+                                        print('Form key is null!');
+                                        return;
+                                      }
+
+                                      // Try to validate
+                                      bool isValid = _formKey.currentState!.validate();
+                                      print('Form validation result: $isValid');
+
+                                      if (isValid) {
+                                        if (!provider.isLoading) {
+                                          Map requestBody = {
+                                            "emailOrPhone": _phoneEmailController.text.toString(),
+                                            "password": _passwordController.text.toString(),
+                                          };
+                                          provider.login(requestBody, widget.isCommercial ,context);
+                                        }
+                                      } else {
+                                        print('Validation failed - showing snackbar');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Please fill in all required fields'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
                                     child: provider.isLoading
                                         ? loadingIndicator()
-                                        :  Text(
-                                      'SIGN IN',
-                                      style: TextStyle(
-                                        fontFamily: Constants.primaryfont,
-                                        fontSize: Constants.getFontSmall(
-                                            context) * limitedScale,
-                                        color: CustomColors.ghostWhite,
-                                      ),
-                                    ),
+                                        : Text(
+                                            'SIGN IN',
+                                            style: TextStyle(
+                                              fontFamily: Constants.primaryfont,
+                                              fontSize:
+                                                  Constants.getFontSmall(
+                                                    context,
+                                                  ) *
+                                                  limitedScale,
+                                              color: CustomColors.ghostWhite,
+                                            ),
+                                          ),
                                   );
-                                },),
+                                },
+                              ),
                             ),
                           ),
 
-                          SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
+                          SizedBox(
+                            height:
+                                Constants.getSpacingMedium(context) *
+                                limitedScale,
+                          ),
 
                           // Horizontal line - SCALED
                           Container(
@@ -271,7 +339,11 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                             color: CustomColors.littleWhite,
                           ),
 
-                          SizedBox(height: Constants.getSpacingSmall(context) * limitedScale),
+                          SizedBox(
+                            height:
+                                Constants.getSpacingSmall(context) *
+                                limitedScale,
+                          ),
 
                           // Social Media Section - SCALED
                           Column(
@@ -280,12 +352,18 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                                 'Or use social media account to Sign Up',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.getFontSmall(context) * limitedScale,
+                                  fontSize:
+                                      Constants.getFontSmall(context) *
+                                      limitedScale,
                                   color: CustomColors.black87.withOpacity(0.7),
                                 ),
                               ),
 
-                              SizedBox(height: Constants.getSpacingMedium(context) * limitedScale),
+                              SizedBox(
+                                height:
+                                    Constants.getSpacingMedium(context) *
+                                    limitedScale,
+                              ),
 
                               // Social Media Buttons - SCALED
                               Row(
@@ -300,7 +378,11 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                                     },
                                   ),
 
-                                  SizedBox(width: Constants.getSpacingMedium(context) * limitedScale),
+                                  SizedBox(
+                                    width:
+                                        Constants.getSpacingMedium(context) *
+                                        limitedScale,
+                                  ),
 
                                   // GOOGLE BUTTON
                                   CustomSocialButton(
@@ -316,7 +398,11 @@ class _SigninLoginPageState extends State<SigninLoginPage> {
                           ),
 
                           // Extra bottom padding for better scrolling
-                          SizedBox(height: Constants.getSpacingLarge(context) * limitedScale),
+                          SizedBox(
+                            height:
+                                Constants.getSpacingLarge(context) *
+                                limitedScale,
+                          ),
                         ],
                       ),
                     ),

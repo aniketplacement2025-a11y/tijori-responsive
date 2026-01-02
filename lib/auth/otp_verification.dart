@@ -17,6 +17,7 @@ import '../auth/features/back_button.dart';
 
 class OTPVerificationPage extends StatefulWidget {
   final Map<dynamic, dynamic> requestBody;
+  final bool isCommercial;
   final VoidCallback? onVerificationSuccess;
   final VoidCallback? onSendOtpByEmail;
 
@@ -24,6 +25,7 @@ class OTPVerificationPage extends StatefulWidget {
     super.key,
     required this.requestBody,
     this.onVerificationSuccess,
+    required this.isCommercial,
     this.onSendOtpByEmail,
   });
 
@@ -72,7 +74,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     // provider.personalUserVerifyOtp(verificationData, context);
 
     // Use the provider instance directly
-    _provider.personalUserVerifyOtp(verificationData, context);
+    _provider.personalUserVerifyOtp(verificationData, widget.isCommercial, context);
   }
 
   void _handleSendOtpByEmail() {
@@ -298,6 +300,14 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     return Container(
       width: imageSize,
       height: imageSize * 0.6, // Maintain aspect ratio
+      decoration: BoxDecoration(
+        color: CustomColors.ghostWhite.withOpacity(0.6),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: CustomColors.lightWhite,
+          width: 1,
+        ),
+      ),
       child: Image.asset(Images.otp, fit: BoxFit.contain),
     );
   }

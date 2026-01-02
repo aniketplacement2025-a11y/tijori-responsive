@@ -16,10 +16,12 @@ class AfterCategoryOfContractConstructionSelectionShowAddDocuments
   final String title;
   final String sub_title;
   final String child_sub_title;
+  final bool isCommercial;
 
   AfterCategoryOfContractConstructionSelectionShowAddDocuments({
     super.key,
     required this.title,
+    required this.isCommercial,
     required this.sub_title,
     required this.child_sub_title,
   });
@@ -625,7 +627,9 @@ class _AfterCategoryOfContractConstructionSelectionShowAddDocumentsState
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              OfficialLandingPage(),
+                                              OfficialLandingPage(
+                                                isCommercial: widget.isCommercial,
+                                              ),
                                         ),
                                       );
                                     },

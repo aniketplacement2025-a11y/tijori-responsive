@@ -7,13 +7,18 @@ import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.da
 import '../../utils/Images.dart';
 
 class HomeSubsPageBody extends StatefulWidget {
-  const HomeSubsPageBody({super.key});
+  final bool isCommercial;
+  HomeSubsPageBody({
+    super.key,
+    required this.isCommercial,
+  });
 
   @override
   State<HomeSubsPageBody> createState() => _HomeSubsPageBodyState();
 }
 
 class BillingPlan {
+  final bool isCommercial;
   final String title;
   final String discount;
   bool isSelected;
@@ -22,6 +27,7 @@ class BillingPlan {
     required this.title,
     required this.discount,
     required this.isSelected,
+    required this.isCommercial,
   });
 }
 
@@ -31,26 +37,29 @@ class _HomeSubsPageBodyState extends State<HomeSubsPageBody> {
   @override
   void initState() {
     super.initState();
-    _controller = PreSubscriptionController(context);
+    _controller = PreSubscriptionController(context, widget.isCommercial);
   }
 
   int _selectedPlanIndex = 2; // Default selected: Yearly (-15%)
 
-  final List<BillingPlan> _billingPlans = [
+  late final List<BillingPlan> _billingPlans = [
     BillingPlan(
       title: 'Monthly',
       discount: '',
       isSelected: false,
+      isCommercial: widget.isCommercial,
     ),
     BillingPlan(
       title: 'Quarterly',
       discount: '(-10%)',
       isSelected: false,
+      isCommercial:widget.isCommercial,
     ),
     BillingPlan(
       title: 'Yearly',
       discount: '(-15%)',
       isSelected: true,
+      isCommercial:widget.isCommercial,
     ),
   ];
 

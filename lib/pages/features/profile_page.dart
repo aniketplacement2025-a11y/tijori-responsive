@@ -4,20 +4,51 @@ import 'package:vkaps_it_solution_project_tijori/pages/others/dart_pink_button.d
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 
+import '../../auth/signin_login_page.dart';
+import '../../services/functions/storage_area_of_access_token.dart';
 import '../../utils/Images.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
+import '../../widgets/dialogs/success_dialog.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final bool isCommercial;
+
+  ProfilePage({
+    super.key,
+    required this.isCommercial,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  String checkName(){
+    print("Name : ${StorageAreaOfAccessToken.instance.getName()}");
+    String name = StorageAreaOfAccessToken.instance.getName();
+    return name;
+  }
+
+  String checkEmail(){
+    print("Email : ${StorageAreaOfAccessToken.instance.getEmail()}");
+    String name = StorageAreaOfAccessToken.instance.getEmail();
+    return name;
+  }
+
+  List<String> checkPhone(){
+    print("Phone: ${StorageAreaOfAccessToken.instance.getPhone()}");
+    List<String> phone = StorageAreaOfAccessToken.instance.getPhone();
+    return phone;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+    final bool isDesktop = Responsive.isDesktop(context);
+
     return Scaffold(
       body: OnboardingBackground(
           child: Stack(
@@ -25,11 +56,22 @@ class _ProfilePageState extends State<ProfilePage> {
 
               // FIXED HEADER
               Positioned(
-                top: 20,
-                left: 5,
-                  right: 5,
+                top: Responsive.value<double>(
+                  context,
+                  mobile: 28,
+                  tablet: 32,
+                  desktop: 36,
+                ),
+                left: isMobile ? 8 : 12,
+                right: isMobile ? 8 : 12,
                   child: Container(
-                    width: Responsive.screenWidth(context) * (0.88),
+                    height: Responsive.value<double>(
+                      context,
+                      mobile: 44,
+                      tablet: 48,
+                      desktop: 52,
+                    ),
+                    width: Responsive.screenWidth(context) * (isMobile ? 0.95 : 0.9),
                     child: Row(
                       mainAxisAlignment: .spaceBetween,
                       crossAxisAlignment: .center,
@@ -42,29 +84,69 @@ class _ProfilePageState extends State<ProfilePage> {
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
+                              horizontal: Responsive.value<double>(
+                                context,
+                                mobile: 16,
+                                tablet: 18,
+                                desktop: 20,
+                              ),
+                              vertical: Responsive.value<double>(
+                                context,
+                                mobile: 10,
+                                tablet: 12,
+                                desktop: 14,
+                              ),
                             ),
                             decoration: BoxDecoration(
-                              color: CustomColors.ghostWhite,
-                              borderRadius: BorderRadius.circular(16),
+                              color: CustomColors.ghostWhite.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(
+                                Responsive.value<double>(
+                                  context,
+                                  mobile: 16,
+                                  tablet: 18,
+                                  desktop: 20,
+                                ),
+                              ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: CustomColors.blackBS1,
-                                  blurRadius: 8,
+                                  color: CustomColors.blackBS1.withOpacity(0.05),
+                                  blurRadius: Responsive.value<double>(
+                                    context,
+                                    mobile: 12,
+                                    tablet: 14,
+                                    desktop: 16,
+                                  ),
                                   offset: Offset(0, 2),
                                 ),
                               ],
                             ),
                             child: Row(
                               children: [
-                                Image.asset(Images.bell, width: 16, height: 16),
-                                SizedBox(width: Constants.spacingLittle),
+                                // Bell Image
+                                Image.asset(
+                                  Images.bell,
+                                  width: Responsive.value<double>(
+                                    context,
+                                    mobile: 28,
+                                    tablet: 32,
+                                    desktop: 36,
+                                  ),
+                                  height: Responsive.value<double>(
+                                    context,
+                                    mobile: 28,
+                                    tablet: 32,
+                                    desktop: 36,
+                                  ),
+                                ),
+
+                                SizedBox(width: Constants.getSpacingLittle(context)),
+
+                                // "Create reminder" text
                                 Text(
                                   'Create reminder',
                                   style: TextStyle(
                                     fontFamily: Constants.primaryfont,
-                                    fontSize: Constants.fontSmall,
+                                    fontSize: Constants.getFontSmall(context),
                                     color: CustomColors.black87,
                                   ),
                                 ),
@@ -85,7 +167,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             icon: Icon(
                               Icons.menu_outlined,
                               color: CustomColors.black87,
-                              size: 16,
+                              size: Responsive.value<double>(
+                                context,
+                                mobile: 16,
+                                tablet: 18,
+                                desktop: 20,
+                              ),
                             ),
                             onSelected: (value) {
                               // Handle menu item selection
@@ -130,7 +217,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         horizontal: Constants.spacingSmall,
                       ), // EdgeInsets.symmetric
                       child: Column(
-                        crossAxisAlignment: .start,
+                        mainAxisAlignment: .center,
+                        crossAxisAlignment: .center,
                         children: [
                           // Profile Image + Details of User
                           Container(
@@ -159,7 +247,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                  height: 21,
                                  alignment: Alignment.center,
                                  child: Text(
-                                   'Said Abderahman',
+                                   checkName(),
                                    style: TextStyle(
                                      fontFamily: Constants.primaryfont,
                                      fontWeight: FontWeight.bold,
@@ -190,7 +278,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                          ),
                                        ),
                                        TextSpan(
-                                         text: '+965 356 6689',
+                                         text: "${checkPhone()[0]}  ${checkPhone()[1]}",
                                          style: TextStyle(
                                            fontFamily: Constants.primaryfont,
                                            fontWeight: .bold,
@@ -225,7 +313,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                         ),
                                         TextSpan(
-                                          text: 's.abderahman@yahoo.ae',
+                                          text: checkEmail(),
                                           style: TextStyle(
                                             fontFamily: Constants.primaryfont,
                                             fontSize: Constants.fontLittle,
@@ -352,8 +440,43 @@ class _ProfilePageState extends State<ProfilePage> {
                           CustomOutlineButton(
                               text: 'Logout'.toUpperCase(),
                               onPressed: (){
-                                Navigator.pop(context);
                                 print('CLICKED ON LOGOUT BUTTON');
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (context) {
+                                    return SuccessDialog(
+                                      initialHeight: 200,
+                                      onComplete: () async {
+                                        await StorageAreaOfAccessToken.instance.logout();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SigninLoginPage(
+                                                isCommercial: widget.isCommercial
+                                            ),
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'To Login Again U Have to Sign In',
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      imageAsset: Images.Logout,
+                                      title: 'Confirm Logout',
+                                      subtitle:
+                                      'Are U Sure U Want to log out?',
+                                      buttonText:
+                                      'OK',
+                                    );
+                                  },
+                                );
                               }
                           ),
 

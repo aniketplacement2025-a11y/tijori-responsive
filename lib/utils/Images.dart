@@ -34,6 +34,14 @@ class Images {
      //Header
   static String profile = 'assets/images/arabicman.png';
   static String bell = 'assets/images/notificationbell.png';
+     // Commercial Header
+  static String whitebell = 'assets/icons/whitebell.png';
+  static String building = 'assets/icons/building-2.png';
+  static String book = 'assets/icons/book-user.png';
+  static String clock = 'assets/icons/clipboard-clock.png';
+  static String newspaper = 'assets/icons/newspaper.png';
+       // Profile Page Logout Button
+   static String Logout = 'assets/icons/OIP.png';
      // Advertisement
   static String advertisement = 'assets/images/advertisement.png';
      // Ongoing Project Container

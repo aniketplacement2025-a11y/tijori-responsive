@@ -15,10 +15,12 @@ import 'fields/otp_input_field.dart';
 class CommercialOtpVerification extends StatefulWidget {
 
   final Map<dynamic, dynamic> requestBody;
+  final bool isCommercial;
 
   CommercialOtpVerification({
     super.key,
     required this.requestBody,
+    required this.isCommercial,
   });
 
   @override
@@ -91,7 +93,7 @@ class _CommercialOtpVerificationState extends State<CommercialOtpVerification> {
     });
 
     // Call the provider
-    _provider.verifyOtpCommercialSignUp(verificationData, context);
+    _provider.verifyOtpCommercialSignUp(verificationData, widget.isCommercial , context);
   }
 
   String _getMaskedPhoneNumber() {

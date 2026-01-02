@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/email_otp_verification.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/send_otp_by_phone.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
 import 'package:vkaps_it_solution_project_tijori/services/providers/send_otp_email_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
@@ -12,6 +13,14 @@ import 'fields/custom_form_field.dart';
 import '../../utils/responsive_media_query.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
+
+  final bool isCommercial;
+
+  ForgotPasswordPage({
+    super.key,
+    required this.isCommercial,
+  });
+
   @override
   _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
@@ -56,7 +65,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (_) => SigninLoginPage()),
+                    MaterialPageRoute(builder: (_) => SigninLoginPage(
+                      isCommercial: widget.isCommercial,
+                    )),
                         (route) => false,
                   );
                 },
@@ -219,11 +230,21 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   TextButton(
                                     onPressed: () {
                                       print('CLICKED ON SEND OTP BUTTON');
-                                      if (!provider.isLoading) {
-                                        Map requestBody = {
-                                          "email": _emailController.text.toString(),
-                                        };
-                                        provider.sendOtpEmail(requestBody, context);
+                                      if (_emailController.text.toString() != "") {
+                                        if (!provider.isLoading) {
+                                          Map requestBody = {
+                                            "email": _emailController.text.toString(),
+                                          };
+                                          provider.sendOtpEmail(requestBody, widget.isCommercial, context);
+                                        }
+                                      } else {
+                                        print('Validation failed - showing snackbar');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Please fill in all required fields'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
                                       }
                                     },
                                     child: Text(
@@ -301,6 +322,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 child: TextButton(
                                   onPressed: () {
                                     print('CLICKED ON SEND OTP BY PHONE BUTTON');
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder:
+                                        (context) => SendOtpByPhone(
+                                          isCommercial: widget.isCommercial,
+                                        ),),
+                                    );
                                   },
                                   child: Text(
                                     'SEND OTP BY PHONE',

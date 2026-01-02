@@ -8,6 +8,7 @@ import '../utils/constants.dart';
 import '../utils/custom_colors.dart';
 import '../utils/responsive_media_query.dart';
 import 'continue_commercial_register_page.dart';
+import 'features/password_validation_checklist.dart';
 import 'fields/Intl_custom_phone_field.dart';
 import 'fields/custom_form_field.dart';
 import 'fields/custom_password_field.dart';
@@ -34,28 +35,72 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
   bool _acceptItems = false;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _showPasswordValidation = false;
 
   TextEditingController _fullNameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
 
-  List<String> _phoneController = [];
+  List<String> phoneController = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(() {
+      setState(() {
+        _showPasswordValidation = _passwordController.text.isNotEmpty;
+      });
+    });
+  }
 
   void _handleRegister() {
-    if (_formKey.currentState!.validate()) {
-      print('Registration successful!');
-      print('Full Name: ${_fullNameController.text}');
-      print('Phone: ${_phoneController[0]}${_phoneController[1]}');
-      print('Email: ${_emailController.text}');
+    // Validate form first
+    if (!_formKey.currentState!.validate()) {
+      print('Form validation failed');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill all required fields correctly'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
     }
+
+    // Check if terms are accepted
+    if (!_acceptItems) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please accept terms and conditions'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Check if job title is selected
+    if (selectedType == 'Job Title') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please select a job title'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    print('Registration successful!');
+    print('Full Name: ${_fullNameController.text}');
+    print('Phone: ${phoneController.isNotEmpty ? '${phoneController[0]}${phoneController[1]}' : 'Not provided'}');
+    print('Email: ${_emailController.text}');
+    print('Job Title: $selectedType');
 
     // Navigate to OTP Verification Page
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ContinueCommercialRegisterPage(
-          phoneNumber: '${_phoneController[0]}${_phoneController[1]}',
+          phoneNumber: phoneController,
           email: _emailController.text,
           fullName: _fullNameController.text,
           isCommercial: widget.isCommercial,
@@ -91,32 +136,20 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
       : scale;
 
   @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: OnboardingBackground(
         child: Stack(
           children: [
-            // Back Button - SCALED
-            Positioned(
-              top: scaled(24) * limitedScale,
-              left: scaled(12) * limitedScale,
-              child: IconButton(
-                onPressed: () {
-                  print("Clicked On Commercial Back Button");
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => SplashScreen2()),
-                    (route) => false,
-                  );
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: CustomColors.black87,
-                  size: scaled(24) * limitedScale,
-                ),
-              ),
-            ),
-
             // Main Content - SCALED
             Positioned(
               top: scaled(32) * limitedScale,
@@ -171,7 +204,9 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SigninLoginPage(),
+                                  builder: (context) => SigninLoginPage(
+                                    isCommercial: widget.isCommercial,
+                                  ),
                                 ),
                               );
                             },
@@ -204,7 +239,7 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
                         children: [
                           // Your DropdownButtonFormField - this is CORRECT
                           Column(
-                            crossAxisAlignment: .start,
+                            crossAxisAlignment: CrossAxisAlignment.start, // FIXED: Changed from .start
                             children: [
                               Row(
                                 children: [
@@ -246,6 +281,12 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
                                   setState(() {
                                     selectedType = value!;
                                   });
+                                },
+                                validator: (value) {
+                                  if (value == null || value == 'Job Title') {
+                                    return 'Please select a job title';
+                                  }
+                                  return null;
                                 },
                                 decoration: InputDecoration(
                                   filled: true,
@@ -294,6 +335,9 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter your full name';
                                   }
+                                  if (value.length < 3) {
+                                    return 'Name must be at least 3 characters';
+                                  }
                                   return null;
                                 },
                               ),
@@ -310,8 +354,25 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
                                 labelText: 'Company Phone Number',
                                 onChanged: (value) {
                                   setState(() {
-                                    _phoneController = value;
+                                    phoneController = value;
                                   });
+                                },
+                                validator: (phone) {
+                                  if (phone == null || phone.number.isEmpty) {
+                                    return 'Please enter a phone number';
+                                  }
+
+                                  // Validate phone number length
+                                  if (phone.number.length < 10) {
+                                    return 'Phone number must be at least 10 digits';
+                                  }
+
+                                  // Additional validation if needed
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(phone.number)) {
+                                    return 'Phone number must contain only digits';
+                                  }
+
+                                  return null;
                                 },
                               ),
 
@@ -347,7 +408,7 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
                                     limitedScale,
                               ),
 
-                              // Password Field
+                              // Password Field with comprehensive validation
                               CustomPasswordField(
                                 label: 'Password',
                                 controller: _passwordController,
@@ -357,23 +418,47 @@ class _CommercialRegisterPageState extends State<CommercialRegisterPage> {
                                     _obscurePassword = !_obscurePassword;
                                   });
                                 },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a password';
+                                  }
+
+                                  // Quick validation for form submission
+                                  final isValid = value.length >= 8 &&
+                                      RegExp(r'[A-Z]').hasMatch(value) &&
+                                      RegExp(r'[a-z]').hasMatch(value) &&
+                                      RegExp(r'[0-9]').hasMatch(value) &&
+                                      RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value) &&
+                                      !value.contains(' ');
+
+                                  return isValid ? null : 'Password does not meet all requirements';
+                                },
+                              ),
+
+                              // Animated Password Validation Box
+                              AnimatedCrossFade(
+                                duration: Duration(milliseconds: 200),
+                                crossFadeState: _showPasswordValidation
+                                    ? CrossFadeState.showFirst
+                                    : CrossFadeState.showSecond,
+                                firstChild: PasswordValidationChecklist(
+                                  password: _passwordController.text,
+                                ),
+                                secondChild: SizedBox.shrink(),
                               ),
 
                               SizedBox(
-                                height:
-                                    Constants.getSpacingSmall(context) *
-                                    limitedScale,
+                                height: Constants.getSpacingSmall(context) * limitedScale,
                               ),
 
-                              // Confirm Password Field
+// Confirm Password Field
                               CustomPasswordField(
                                 label: 'Confirm Password',
                                 controller: _confirmPasswordController,
                                 obscureText: _obscureConfirmPassword,
                                 onToggle: () {
                                   setState(() {
-                                    _obscureConfirmPassword =
-                                        !_obscureConfirmPassword;
+                                    _obscureConfirmPassword = !_obscureConfirmPassword;
                                   });
                                 },
                                 validator: (value) {

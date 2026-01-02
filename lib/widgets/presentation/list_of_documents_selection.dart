@@ -19,9 +19,11 @@ import '../material/positioned_header_back_icon.dart';
 
 class ListOfDocumentsSelection extends StatefulWidget {
   final String bucket_title;
+  final bool isCommercial;
 
   ListOfDocumentsSelection({
     super.key,
+    required this.isCommercial,
     required this.bucket_title,
   });
 
@@ -30,31 +32,35 @@ class ListOfDocumentsSelection extends StatefulWidget {
 }
 
 class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
-
   int? _selectedCategoryIndex; // Track selected Category index
   TextEditingController controller = TextEditingController();
 
-
   // Navigation method based on category title
-  void _navigateToProjectPage(String subtitle, String title ,BuildContext context){
-    switch(subtitle){
+  void _navigateToProjectPage(String subtitle, String title, BuildContext context) {
+    switch (subtitle) {
       case 'CONTRACTS':
         Navigator.push(
-          context, MaterialPageRoute(
+          context,
+          MaterialPageRoute(
             builder: (context) => AfterListedDocumentContractSelection(
               subtitle: subtitle,
+              isCommercial: widget.isCommercial,
               title: title,
-            )
-          ), );
+            ),
+          ),
+        );
         break;
       case 'WARRANTIES':
         Navigator.push(
-          context, MaterialPageRoute(
+          context,
+          MaterialPageRoute(
             builder: (context) => AfterListedDocumentWarrantiesSelection(
               subtitle: subtitle,
+              isCommercial: widget.isCommercial,
               title: title,
-            )
-        ), );
+            ),
+          ),
+        );
         break;
       case 'INSURANCE':
         break;
@@ -62,31 +68,39 @@ class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
         break;
       case 'MY TRIPS':
         Navigator.push(
-          context, MaterialPageRoute(
+          context,
+          MaterialPageRoute(
             builder: (context) => AfterListedDocumentMyTripsSelection(
-                title: title,
-                subtitle: subtitle,
-                ),
-            ), );
+              title: title,
+              isCommercial: widget.isCommercial,
+              subtitle: subtitle,
+            ),
+          ),
+        );
         break;
       case 'Appointments':
         Navigator.push(
-          context, MaterialPageRoute(
-          builder: (context) => AfterListedDocumentAppointmentsSelection(
-            title: title,
-            subtitle: subtitle,
+          context,
+          MaterialPageRoute(
+            builder: (context) => AfterListedDocumentAppointmentsSelection(
+              title: title,
+              subtitle: subtitle,
+              isCommercial: widget.isCommercial,
+            ),
           ),
-        ), );
+        );
         break;
       case 'My Medicine':
-         Navigator.push(
-           context,
-           MaterialPageRoute(
-             builder: (context) => AfterListedDocumentMyMedicinesSelection(
-               title: title,
-               subtitle: subtitle,
-             ),
-           ),);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AfterListedDocumentMyMedicinesSelection(
+              title: title,
+              isCommercial: widget.isCommercial,
+              subtitle: subtitle,
+            ),
+          ),
+        );
         break;
       default:
         print('No navigation defined for $title');
@@ -95,86 +109,135 @@ class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+    final bool isDesktop = Responsive.isDesktop(context);
+
+    // Update constants
+    Constants.updateFromContext(context);
+
+    // Responsive dimensions
+    final double mainWidth = Responsive.value<double>(
+      context,
+      mobile: 400,
+      tablet: 450,
+      desktop: 500,
+    );
+
+    final double topContainerHeight = Responsive.value<double>(
+      context,
+      mobile: 112,
+      tablet: 120,
+      desktop: 128,
+    );
+
+    final double headerTop = Responsive.value<double>(
+      context,
+      mobile: 72,
+      tablet: 80,
+      desktop: 88,
+    );
+
+    final double gridViewHeight = Responsive.value<double>(
+      context,
+      mobile: 480,
+      tablet: 520,
+      desktop: 560,
+    );
+
     return Scaffold(
       body: OnboardingBackground(
         child: Stack(
           children: [
-
-            // Header Fixed at top
+            // Header Fixed at top - Already responsive via PositionedHeaderBackIcon
             PositionedHeaderBackIcon(
               context: context,
               top: 20,
-              left: 4,
-              right: 0,
+              left: isMobile ? 12 : 20,
+              right: isMobile ? 12 : 20,
               onBackPressed: () {
                 print('Custom back action');
                 Navigator.pop(context);
               },
               onReminderPressed: () {
                 print('Custom reminder action');
-                // Show reminder dialog
               },
             ),
 
+            // Top Container with Bucket Info
             Positioned(
-              top:72,
-              left: 10,
-              right: 10,
+              top: headerTop,
+              left: isMobile ? 12 : 20,
+              right: isMobile ? 12 : 20,
               child: Container(
-                alignment: .center,
-                height: 112,
+                alignment: Alignment.center,
+                height: topContainerHeight,
                 padding: EdgeInsets.only(
-                  top: 20,
-                  right: 10,
-                  bottom: 20,
-                  left: 10,
+                  top: Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
+                  right: Responsive.value<double>(context, mobile: 10, tablet: 12, desktop: 14),
+                  bottom: Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
+                  left: Responsive.value<double>(context, mobile: 10, tablet: 12, desktop: 14),
                 ),
                 decoration: BoxDecoration(
                   color: Colors.transparent,
-                  borderRadius: .circular(16),
+                  borderRadius: BorderRadius.circular(
+                    Responsive.value<double>(
+                      context,
+                      mobile: 16,
+                      tablet: 18,
+                      desktop: 20,
+                    ),
+                  ),
                   border: Border.all(
                     color: CustomColors.black87,
                     width: 1,
                   ),
                 ),
                 child: Column(
-                  mainAxisAlignment: .center,
-                  crossAxisAlignment: .center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     // Row 1: Bucket name with icon
                     SizedBox(
-                      width: 350,
-                      height: 22,
+                      width: mainWidth - 50,
+                      height: Responsive.value<double>(
+                        context,
+                        mobile: 22,
+                        tablet: 24,
+                        desktop: 26,
+                      ),
                       child: Row(
-                        mainAxisAlignment: .center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
-                          SizedBox(width: Constants.spacingLittle),
+                          SizedBox(width: Constants.getSpacingLittle(context)),
 
                           // Icon/Image
                           Container(
-                            width: Constants.fontMedium,
-                            height: Constants.fontMedium,
+                            width: Constants.getFontMedium(context),
+                            height: Constants.getFontMedium(context),
                             child: Image.asset(
                               Images.projectIcon,
                               fit: BoxFit.contain,
                             ),
                           ),
 
-                          SizedBox(width: Constants.spacingSmall),
+                          SizedBox(width: Constants.getSpacingSmall(context)),
                         ],
                       ),
                     ),
 
-                    SizedBox(height: Constants.spacingSmall),
+                    SizedBox(height: Constants.getSpacingSmall(context)),
 
                     // Row 2: Type
                     SizedBox(
-                      width: 320,
-                      height: 20,
-                      child:
-                      Center(
+                      width: mainWidth - 80,
+                      height: Responsive.value<double>(
+                        context,
+                        mobile: 20,
+                        tablet: 22,
+                        desktop: 24,
+                      ),
+                      child: Center(
                         child: RichText(
                           text: TextSpan(
                             children: [
@@ -183,202 +246,236 @@ class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: Constants.fontSmall,
+                                  fontSize: Constants.getFontSmall(context),
                                   color: CustomColors.black87,
                                 ),
                               ),
                             ],
                           ),
-                        ),),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
 
-
-
-                   Positioned(
-                      top: 188,
-                      left: 0,
-                      right: 0,
-                      bottom: 10,
-                      child: Container(
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Constants.spacingSmall,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: .start,
-                            children: [
-
-                              // Text and New Category Button
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.only(bottom: 2),
-                                padding: EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: .circular(8),
+            // Main Content Area
+            Positioned(
+              top: headerTop + topContainerHeight + Responsive.value<double>(
+                context,
+                mobile: 4,
+                tablet: 8,
+                desktop: 12,
+              ),
+              left: isMobile ? 12 : 20,
+              right: isMobile ? 12 : 20,
+              bottom: 10,
+              child: Container(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.value<double>(
+                      context,
+                      mobile: Constants.getSpacingSmall(context),
+                      tablet: Constants.getSpacingMedium(context),
+                      desktop: Constants.getSpacingHigh(context),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Text and New Category Button
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: 2),
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Left: Title
+                                Flexible(
+                                  child: Container(
+                                    constraints: BoxConstraints(
+                                      maxWidth: mainWidth * 0.6,
+                                    ),
+                                    child: Text(
+                                      'What do you want to add to this Bucket?',
+                                      style: TextStyle(
+                                        fontFamily: Constants.primaryfont,
+                                        fontSize: Constants.getFontLittle(context),
+                                        color: CustomColors.black87,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: .start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: .spaceBetween,
-                                      crossAxisAlignment: .center,
-                                      children: [
 
-                                        // Left: Title
-                                        Flexible(
-                                          // 'What do you want to add to this Bucket?' Text
-                                          child: Text(
-                                            'What do you want to add to this Bucket?',
-                                            style: TextStyle(
-                                              fontFamily: Constants.primaryfont,
-                                              fontSize: Constants.fontLittle,
-                                              color: CustomColors.black87,
-                                              // Adjust color as needed
-                                            ),
-                                          ),
-                                        ),
+                                SizedBox(width: Constants.getSpacingSmall(context)),
 
-                                        SizedBox(width: Constants.spacingSmall),
-
-                                        // Add New Category
-                                        Material(
-                                          color: Colors.transparent,
-                                          child: GestureDetector(
-                                            onTap: (){
-                                              print(" Clicked on Add New Bucket");
-                                              showModalBottomSheet(
-                                                context: context,
-                                                isScrollControlled: true,
-                                                backgroundColor: Colors.transparent,
-                                                builder: (context) {
-                                                  return AddNewCategoryResponse(
-                                                    onComplete: () {
-                                                      Navigator.pop(
-                                                        context,
-                                                      ); // Close the dialog
-                                                      Navigator.push(context,
-                                                       MaterialPageRoute(builder:
-                                                       (context) => AddNewCategoryClickEvent()
-                                                      ));
-                                                    }, controller: controller,
-                                                  );
-                                                },
+                                // Add New Category Button
+                                Material(
+                                  color: Colors.transparent,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print("Clicked on Add New Bucket");
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return AddNewCategoryResponse(
+                                            onComplete: () {
+                                              Navigator.pop(context);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => AddNewCategoryClickEvent(),
+                                                ),
                                               );
                                             },
-                                            child: Container(
-                                              height: 36,
-                                              constraints: BoxConstraints(
-                                                maxWidth: 150,
-                                              ), // Reduced max width
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: Constants.fontLittle,
-                                                vertical: Constants.spacingLittle,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: CustomColors.ghostWhite,
-                                                borderRadius: BorderRadius.circular(Constants.spacingLittle),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: CustomColors.blackBS1,
-                                                    blurRadius: 4,
-                                                    offset: Offset(0, 2),
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: .center,
-                                                mainAxisSize: .min,
-                                                children: [
-
-                                                  Container(
-                                                    width: Constants.fontLittle,
-                                                    height: Constants.fontLittle,
-                                                    child: Image.asset(
-                                                      Images.plusIcon,
-                                                      fit: BoxFit.contain,
-                                                    ),
-                                                  ),
-
-                                                  SizedBox(
-                                                    width: Constants.spacingLittle,
-                                                  ),
-
-                                                  Text(
-                                                    'Add New Category',
-                                                    style: TextStyle(
-                                                      fontFamily: Constants.primaryfont,
-                                                      fontSize: Constants.spacingSmall,
-                                                      fontWeight: .bold,
-                                                      color: CustomColors.black87,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                            controller: controller,
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      height: Responsive.value<double>(
+                                        context,
+                                        mobile: 36,
+                                        tablet: 38,
+                                        desktop: 40,
+                                      ),
+                                      constraints: BoxConstraints(
+                                        maxWidth: Responsive.value<double>(
+                                          context,
+                                          mobile: 150,
+                                          tablet: 165,
+                                          desktop: 180,
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: Constants.getFontLittle(context),
+                                        vertical: Constants.getSpacingLittle(context),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: CustomColors.ghostWhite,
+                                        borderRadius: BorderRadius.circular(
+                                          Constants.getSpacingLittle(context),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: CustomColors.blackBS1,
+                                            blurRadius: Responsive.value<double>(
+                                              context,
+                                              mobile: 4,
+                                              tablet: 5,
+                                              desktop: 6,
+                                            ),
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            width: Constants.getFontLittle(context),
+                                            height: Constants.getFontLittle(context),
+                                            child: Image.asset(
+                                              Images.plusIcon,
+                                              fit: BoxFit.contain,
                                             ),
                                           ),
-                                        ),
 
-                                      ],
-                                    ),
+                                          SizedBox(width: Constants.getSpacingLittle(context)),
 
-                                    // Vertical Scrollable Cards Using GridView.builder
-                                    Container(
-                                      width: 400,
-                                      height: 480,
-                                      margin: EdgeInsets.symmetric(
-                                        horizontal: Constants.spacingLittle,
-                                        vertical: Constants.spacingLittle,
-                                      ),
-                                      child: GridView.count(
-                                        crossAxisCount: 2, // 2 Items per Row
-                                        crossAxisSpacing: Constants.spacingSmall,
-                                        mainAxisSpacing: Constants.spacingSmall,
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        childAspectRatio: 194/108,
-                                        children: CategoriesData.
-                                        categories.asMap().entries.map((entry){
-                                          int index = entry.key;
-                                          Map<String, String> category = entry.value;
-                                          String subtitle = category['title']!;
-                                          String icon = category['icon']!;
-
-                                          return Container(
-                                            child: HomeCategoryCard(
-                                              imageAsset: icon, // Use bracket notation for Map
-                                              title: subtitle,
-                                              isSelected: _selectedCategoryIndex == index, // Pass selection state
-                                              onTap: (){
-                                                setState(() {
-                                                  // Toggle selection - if already selected, deselect
-                                                  _selectedCategoryIndex = _selectedCategoryIndex == index ? null : index;
-                                                });
-                                                print('$subtitle tapped');
-
-                                                // Naviagate to respective page
-                                                _navigateToProjectPage(subtitle, widget.bucket_title , context);
-                                              },
+                                          Text(
+                                            'Add New Category',
+                                            style: TextStyle(
+                                              fontFamily: Constants.primaryfont,
+                                              fontSize: Constants.getSpacingSmall(context),
+                                              fontWeight: FontWeight.bold,
+                                              color: CustomColors.black87,
                                             ),
-                                          );
-                                        }).toList(),
+                                          ),
+                                        ],
                                       ),
                                     ),
-
-
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
+                            ),
 
-                            ],
-                          ),
+                            SizedBox(height: Constants.getSpacingMedium(context)),
+
+                            // Vertical Scrollable Cards Using GridView.builder
+                            Container(
+                              width: mainWidth,
+                              height: gridViewHeight,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: Constants.getSpacingLittle(context),
+                                vertical: Constants.getSpacingLittle(context),
+                              ),
+                              child: GridView.count(
+                                crossAxisCount: Responsive.value<int>(
+                                  context,
+                                  mobile: 2,
+                                  tablet: 3,
+                                  desktop: 4,
+                                ),
+                                crossAxisSpacing: Constants.getSpacingSmall(context),
+                                mainAxisSpacing: Constants.getSpacingSmall(context),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                childAspectRatio: Responsive.value<double>(
+                                  context,
+                                  mobile: 194 / 108,
+                                  tablet: 200 / 110,
+                                  desktop: 210 / 115,
+                                ),
+                                children: CategoriesData.categories.asMap().entries.map((entry) {
+                                  int index = entry.key;
+                                  Map<String, String> category = entry.value;
+                                  String subtitle = category['title']!;
+                                  String icon = category['icon']!;
+
+                                  return Container(
+                                    child: HomeCategoryCard(
+                                      imageAsset: icon,
+                                      title: subtitle,
+                                      isSelected: _selectedCategoryIndex == index,
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedCategoryIndex = _selectedCategoryIndex == index ? null : index;
+                                        });
+                                        print('$subtitle tapped');
+                                        _navigateToProjectPage(subtitle, widget.bucket_title, context);
+                                      },
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
+
+                      // Extra spacing for larger screens
+                      if (isTablet || isDesktop)
+                        SizedBox(height: Constants.getSpacingLarge(context)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

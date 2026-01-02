@@ -183,11 +183,33 @@ class RestClient {
         isRequireAuthentication: false,
       );
 
+      printValue(response,tag: 'Final Response OF API');
+      print('Final Response OF API $response');
       return response;
 
     } catch (e) {
       printValue("OTP Verification failed: $e", tag: "ERROR");
       rethrow;
     }
+  }
+
+  static Future<dynamic> sendOtpByPhone(dynamic requestBody) async {
+    Map<String, dynamic> response = await _httpHelper.post(
+      url: '$baseUrl/auth/forgot-password',
+      requestBody: requestBody,
+    );
+    // If response from api come as List '[]' then we write List<dynamic>
+    printValue(response);
+    return response;
+  }
+
+  static Future<dynamic> updateNewPassword(dynamic requestBody) async {
+    Map<String, dynamic> response = await _httpHelper.post(
+      url: '$baseUrl/auth/reset-password',
+      requestBody: requestBody,
+    );
+    // If response from api come as List '[]' then we write List<dynamic>
+    printValue(response);
+    return response;
   }
 }

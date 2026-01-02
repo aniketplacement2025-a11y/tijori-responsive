@@ -14,11 +14,12 @@ import 'features/outline_button.dart';
 import 'fields/otp_input_field.dart';
 
 class VerifyOtpForgotPassword extends StatefulWidget {
-
+  final bool isCommercial;
   final List<String> completePhoneNumber;
 
   VerifyOtpForgotPassword({
     super.key,
+    required this.isCommercial,
     required this.completePhoneNumber,
   });
 
@@ -53,8 +54,8 @@ class _VerifyOtpForgotPasswordState extends State<VerifyOtpForgotPassword> {
       print('completePhoneNumber length: ${widget.completePhoneNumber?.length}');
 
       // Validate OTP length
-      if (otpValue.length != 6) {
-        _showErrorSnackBar('Please enter a valid 6-digit OTP');
+      if (otpValue.length != 4) {
+        _showErrorSnackBar('Please enter a valid 4-digit OTP');
         return;
       }
 
@@ -66,7 +67,7 @@ class _VerifyOtpForgotPasswordState extends State<VerifyOtpForgotPassword> {
       }
 
       // Call API or next step
-      _provider.verifyOtpForgotPassword(widget.completePhoneNumber, otpValue, context);
+      _provider.verifyOtpForgotPassword(widget.completePhoneNumber, otpValue, widget.isCommercial, context);
 
     } catch (e, stackTrace) {
       print('EXCEPTION in _handleVerification: $e');
@@ -309,6 +310,19 @@ class _VerifyOtpForgotPasswordState extends State<VerifyOtpForgotPassword> {
     return Container(
       width: imageSize,
       height: imageSize * 0.6, // Maintain aspect ratio
+      decoration: BoxDecoration(
+        color: CustomColors.ghostWhite.withOpacity(0.6),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: CustomColors.lightWhite,
+          width: Responsive.value<double>(
+            context,
+            mobile: 1.0,
+            tablet: 1.2,
+            desktop: 1.5,
+          ),
+        ),
+      ),
       child: Image.asset(Images.otp, fit: BoxFit.contain),
     );
   }

@@ -17,9 +17,11 @@ class AfterCategoryOfContractConstructionSelectionShow extends StatefulWidget {
   final String title;
   final String subtitle;
   final String child_sub_title;
+  final bool isCommercial;
 
   const AfterCategoryOfContractConstructionSelectionShow({
     super.key,
+    required this.isCommercial,
     required this.title,
     required this.subtitle,
     required this.child_sub_title,
@@ -577,6 +579,7 @@ class _AfterCategoryOfContractConstructionSelectionShowState
                                                 sub_title: widget.subtitle,
                                                 child_sub_title:
                                                     widget.child_sub_title,
+                                                isCommercial: widget.isCommercial,
                                               ),
                                         ),
                                       );

@@ -31,40 +31,28 @@ class _HomePageFooterState extends State<HomePageFooter> {
     return Container(
       width: Responsive.value<double>(
         context,
-        mobile: 400,
-        tablet: 450,
-        desktop: 500,
+        mobile: 380,
+        tablet: 420,
+        desktop: 480,
       ),
       height: Responsive.value<double>(
         context,
-        mobile: 85,
-        tablet: 90,
-        desktop: 95,
+        mobile: 82,
+        tablet: 88,
+        desktop: 94,
       ),
       padding: EdgeInsets.fromLTRB(
-        Responsive.value<double>(context, mobile: 30, tablet: 35, desktop: 40),
-        Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
-        Responsive.value<double>(context, mobile: 30, tablet: 35, desktop: 40),
-        Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
+        Responsive.value<double>(context, mobile: 20, tablet: 25, desktop: 30),
+        Responsive.value<double>(context, mobile: 15, tablet: 18, desktop: 24),
+        Responsive.value<double>(context, mobile: 20, tablet: 25, desktop: 30),
+        Responsive.value<double>(context, mobile: 15, tablet: 18, desktop: 24),
       ),
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(200),
-        boxShadow: [
-          BoxShadow(
-            color: CustomColors.blackBS1,
-            blurRadius: Responsive.value<double>(
-              context,
-              mobile: 20,
-              tablet: 22,
-              desktop: 24,
-            ),
-            offset: Offset(0, 5),
-          ),
-        ],
         border: Border.all(
           color: CustomColors.ghostWhite,
-          width: 2,
+          width: 1,
         ),
       ),
       child: Row(
@@ -79,15 +67,15 @@ class _HomePageFooterState extends State<HomePageFooter> {
             child: Container(
               width: Responsive.value<double>(
                 context,
-                mobile: 77,
-                tablet: 85,
-                desktop: 93,
+                mobile: 70,
+                tablet: 80,
+                desktop: 90,
               ),
               height: Responsive.value<double>(
                 context,
-                mobile: 45,
-                tablet: 48,
-                desktop: 51,
+                mobile: 58,
+                tablet: 62,
+                desktop: 66,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -98,9 +86,9 @@ class _HomePageFooterState extends State<HomePageFooter> {
                     Icons.home,
                     size: Responsive.value<double>(
                       context,
-                      mobile: 20,
-                      tablet: 22,
-                      desktop: 24,
+                      mobile: 24,
+                      tablet: 26,
+                      desktop: 28,
                     ),
                     color: widget.currentTab == HomePageTab.home
                         ? CustomColors.gradientBlue
@@ -111,7 +99,7 @@ class _HomePageFooterState extends State<HomePageFooter> {
                     'Home',
                     style: TextStyle(
                       fontFamily: Constants.primaryfont,
-                      fontSize: Constants.getFontLittle(context),
+                      fontSize: Constants.getFontSmall(context),
                       fontWeight: FontWeight.w600,
                       color: widget.currentTab == HomePageTab.home
                           ? CustomColors.gradientBlue
@@ -138,9 +126,9 @@ class _HomePageFooterState extends State<HomePageFooter> {
                   Icons.description,
                   size: Responsive.value<double>(
                     context,
-                    mobile: 20,
-                    tablet: 22,
-                    desktop: 24,
+                    mobile: 24,
+                    tablet: 26,
+                    desktop: 28,
                   ),
                   color: widget.currentTab == HomePageTab.documents
                       ? CustomColors.gradientBlue
@@ -151,7 +139,7 @@ class _HomePageFooterState extends State<HomePageFooter> {
                   'My Documents',
                   style: TextStyle(
                     fontFamily: Constants.primaryfont,
-                    fontSize: Constants.getFontLittle(context),
+                    fontSize: Constants.getFontSmall(context),
                     fontWeight: FontWeight.w600,
                     color: widget.currentTab == HomePageTab.documents
                         ? CustomColors.gradientBlue
@@ -170,15 +158,15 @@ class _HomePageFooterState extends State<HomePageFooter> {
             child: Container(
               width: Responsive.value<double>(
                 context,
-                mobile: 77,
-                tablet: 85,
-                desktop: 93,
+                mobile: 84,
+                tablet: 92,
+                desktop: 100,
               ),
               height: Responsive.value<double>(
                 context,
-                mobile: 45,
-                tablet: 48,
-                desktop: 51,
+                mobile: 48,
+                tablet: 51,
+                desktop: 54,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -188,9 +176,9 @@ class _HomePageFooterState extends State<HomePageFooter> {
                     Icons.subscriptions,
                     size: Responsive.value<double>(
                       context,
-                      mobile: 20,
-                      tablet: 22,
-                      desktop: 24,
+                      mobile: 24,
+                      tablet: 26,
+                      desktop: 28,
                     ),
                     color: widget.currentTab == HomePageTab.subscription
                         ? CustomColors.gradientBlue
@@ -201,7 +189,7 @@ class _HomePageFooterState extends State<HomePageFooter> {
                     'Subscription',
                     style: TextStyle(
                       fontFamily: Constants.primaryfont,
-                      fontSize: Constants.getFontLittle(context),
+                      fontSize: Constants.getFontSmall(context),
                       fontWeight: FontWeight.w600,
                       color: widget.currentTab == HomePageTab.subscription
                           ? CustomColors.gradientBlue

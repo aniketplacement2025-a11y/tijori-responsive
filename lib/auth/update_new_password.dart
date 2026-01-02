@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_password_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/update_password_success_popup.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/update_new_password_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
@@ -10,6 +12,15 @@ import 'features/gradient_button.dart';
 import '../../utils/responsive_media_query.dart';
 
 class UpdateNewPassword extends StatefulWidget {
+  final bool isCommercial;
+  List<String> send_otp_phone_number;
+
+  UpdateNewPassword({
+   super.key,
+   required this.isCommercial,
+   required this.send_otp_phone_number,
+  });
+
   @override
   _UpdateNewPasswordState createState() => _UpdateNewPasswordState();
 }
@@ -186,29 +197,39 @@ class _UpdateNewPasswordState extends State<UpdateNewPassword> {
                           SizedBox(height: Constants.getSpacingHigh(context)),
 
                           // Change Password Button - Responsive
-                          GradientButton(
-                            text: 'CHANGE PASSWORD',
-                            width: Responsive.value<double>(
-                              context,
-                              mobile: double.infinity,
-                              tablet: 350,
-                              desktop: 400,
+                          ChangeNotifierProvider(
+                            create: (BuildContext context) => UpdateNewPasswordProvider(),
+                            child: Consumer<UpdateNewPasswordProvider>(
+                              builder: (context, provider, child) {
+                                return GradientButton(
+                                  text: 'CHANGE PASSWORD',
+                                  width: Responsive.value<double>(
+                                    context,
+                                    mobile: double.infinity,
+                                    tablet: 350,
+                                    desktop: 400,
+                                  ),
+                                  height: Responsive.value<double>(
+                                    context,
+                                    mobile: 48,
+                                    tablet: 52,
+                                    desktop: 56,
+                                  ),
+                                  onPressed: () {
+                                    print('CLICKED ON CHANGE PASSWORD BUTTON');
+                                    if(!provider.isLoading){
+                                     Map requestBody = {
+                                       "phone" : {
+                                         'country_code' : widget.send_otp_phone_number[0].trim(),
+                                         'number' : widget.send_otp_phone_number[1].trim(),
+                                       },
+                                       "newPassword" : _passwordController.text.trim(),
+                                     };
+                                     provider.updateNewPassword(requestBody, widget.isCommercial, context);
+                                    }},
+                                );
+                              },
                             ),
-                            height: Responsive.value<double>(
-                              context,
-                              mobile: 48,
-                              tablet: 52,
-                              desktop: 56,
-                            ),
-                            onPressed: () {
-                              print('CLICKED ON CHANGE PASSWORD BUTTON');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UpdatePasswordSuccessPopup(),
-                                ),
-                              );
-                            },
                           ),
 
                           // Extra spacing for larger screens

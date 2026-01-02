@@ -14,9 +14,11 @@ import '../material/positioned_header_back_icon.dart';
 class AfterListedDocumentContractSelection extends StatefulWidget {
   final String title;
   final String subtitle;
+  final bool isCommercial;
 
   AfterListedDocumentContractSelection({
     super.key,
+    required this.isCommercial,
     required this.title,
     required this.subtitle,
   });
@@ -93,6 +95,7 @@ class _AfterListedDocumentContractSelectionState
           subtitle: subtitle,
           title: title,
           child_sub_title: child_sub_title,
+          isCommercial: widget.isCommercial,
         ),
       ),
     );

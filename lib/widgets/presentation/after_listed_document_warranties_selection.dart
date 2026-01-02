@@ -3,7 +3,6 @@ import 'package:vkaps_it_solution_project_tijori/pages/others/warranty_categorie
 import 'package:vkaps_it_solution_project_tijori/pages/tabs/features/home_category_card.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/after_category_of_warranties_watch_selection.dart';
-
 import '../../auth/features/gradient_button.dart';
 import '../../utils/Images.dart';
 import '../../utils/constants.dart';
@@ -14,11 +13,13 @@ import '../material/positioned_header_back_icon.dart';
 class AfterListedDocumentWarrantiesSelection extends StatefulWidget {
   final String title;
   final String subtitle;
+  final bool isCommercial;
 
   AfterListedDocumentWarrantiesSelection({
     super.key,
     required this.title,
     required this.subtitle,
+    required this.isCommercial,
   });
 
   @override
@@ -28,37 +29,19 @@ class AfterListedDocumentWarrantiesSelection extends StatefulWidget {
 
 class _AfterListedDocumentWarrantiesSelectionState
     extends State<AfterListedDocumentWarrantiesSelection> {
-  int? _selectedCategoryIndex; // Track selected Category index
+  int? _selectedCategoryIndex;
   bool _acceptItems = false;
 
   void _navigateToChildCategoryOfProjectPage(
-    String child_sub_title,
-    String subtitle,
-    String title,
-    BuildContext context,
-  ) {
+      String child_sub_title,
+      String subtitle,
+      String title,
+      BuildContext context,
+      ) {
     switch (child_sub_title) {
       case 'WATCHES':
-        _navigatetoNextPage(
-          title: title,
-          subtitle: subtitle,
-          child_sub_title: child_sub_title,
-        );
-        break;
       case 'JEWELARIES':
-        _navigatetoNextPage(
-          title: title,
-          subtitle: subtitle,
-          child_sub_title: child_sub_title,
-        );
-        break;
       case 'BAGS':
-        _navigatetoNextPage(
-          title: title,
-          subtitle: subtitle,
-          child_sub_title: child_sub_title,
-        );
-        break;
       case 'OTHERS':
         _navigatetoNextPage(
           title: title,
@@ -81,6 +64,7 @@ class _AfterListedDocumentWarrantiesSelectionState
           subtitle: subtitle,
           title: title,
           child_sub_title: child_sub_title,
+          isCommercial: widget.isCommercial,
         ),
       ),
     );
@@ -88,6 +72,42 @@ class _AfterListedDocumentWarrantiesSelectionState
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final bool isTablet = Responsive.isTablet(context);
+    final bool isDesktop = Responsive.isDesktop(context);
+
+    // Update constants
+    Constants.updateFromContext(context);
+
+    // Responsive dimensions
+    final double mainWidth = Responsive.value<double>(
+      context,
+      mobile: 400,
+      tablet: 450,
+      desktop: 500,
+    );
+
+    final double headerTop = Responsive.value<double>(
+      context,
+      mobile: 20,
+      tablet: 24,
+      desktop: 28,
+    );
+
+    final double titleTop = Responsive.value<double>(
+      context,
+      mobile: 72,
+      tablet: 80,
+      desktop: 88,
+    );
+
+    final double contentTop = Responsive.value<double>(
+      context,
+      mobile: 172,
+      tablet: 188,
+      desktop: 204,
+    );
+
     return Scaffold(
       body: OnboardingBackground(
         child: Stack(
@@ -95,69 +115,86 @@ class _AfterListedDocumentWarrantiesSelectionState
             // Header Fixed at top
             PositionedHeaderBackIcon(
               context: context,
-              top: 20,
-              left: 4,
-              right: 0,
+              top: headerTop,
+              left: isMobile ? 12 : 20,
+              right: isMobile ? 12 : 20,
               onBackPressed: () {
                 print('Custom back action');
                 Navigator.pop(context);
               },
               onReminderPressed: () {
                 print('Custom reminder action');
-                // Show reminder dialog
               },
             ),
 
             // Title + SubTitle Box
             Positioned(
-              top: 72,
-              left: 10,
-              right: 10,
+              top: titleTop,
+              left: isMobile ? 12 : 20,
+              right: isMobile ? 12 : 20,
               child: Container(
-                alignment: .center,
-                height: 96,
+                alignment: Alignment.center,
+                height: Responsive.value<double>(
+                  context,
+                  mobile: 96,
+                  tablet: 104,
+                  desktop: 112,
+                ),
                 padding: EdgeInsets.only(
-                  top: 20,
-                  right: 10,
-                  bottom: 20,
-                  left: 10,
+                  top: Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
+                  right: Responsive.value<double>(context, mobile: 10, tablet: 12, desktop: 14),
+                  bottom: Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
+                  left: Responsive.value<double>(context, mobile: 10, tablet: 12, desktop: 14),
                 ),
                 decoration: BoxDecoration(
                   color: Colors.transparent,
-                  borderRadius: .circular(16),
-                  border: Border.all(color: CustomColors.black87, width: 1),
+                  borderRadius: BorderRadius.circular(
+                    Responsive.value<double>(
+                      context,
+                      mobile: 16,
+                      tablet: 18,
+                      desktop: 20,
+                    ),
+                  ),
+                  border: Border.all(
+                    color: CustomColors.black87,
+                    width: 1,
+                  ),
                 ),
                 child: Column(
-                  mainAxisAlignment: .center,
-                  crossAxisAlignment: .center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Row 1: Bucket name with icon
-                    // Row 1: Bucket name with icon
                     SizedBox(
-                      width: 330,
-                      height: 22,
+                      width: mainWidth - 70,
+                      height: Responsive.value<double>(
+                        context,
+                        mobile: 22,
+                        tablet: 24,
+                        desktop: 26,
+                      ),
                       child: Row(
-                        mainAxisAlignment: .center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // Icon/Image
                           Container(
-                            width: Constants.fontMedium,
-                            height: Constants.fontMedium,
+                            width: Constants.getFontMedium(context),
+                            height: Constants.getFontMedium(context),
                             child: Image.asset(
                               Images.projectIcon,
                               fit: BoxFit.contain,
                             ),
                           ),
 
-                          SizedBox(width: Constants.spacingSmall),
+                          SizedBox(width: Constants.getSpacingSmall(context)),
 
                           // Bucket Text
                           Container(
                             constraints: BoxConstraints(
-                              maxWidth: 286, // Maximum width
-                              minWidth: 100, // Minimum width if needed
+                              maxWidth: mainWidth - 140,
                             ),
-                            height: Constants.fontSmall,
+                            height: Constants.getFontSmall(context),
                             child: RichText(
                               text: TextSpan(
                                 children: [
@@ -165,7 +202,7 @@ class _AfterListedDocumentWarrantiesSelectionState
                                     text: 'Bucket: ',
                                     style: TextStyle(
                                       fontFamily: Constants.primaryfont,
-                                      fontSize: Constants.fontSmall,
+                                      fontSize: Constants.getFontSmall(context),
                                       color: CustomColors.black87,
                                     ),
                                   ),
@@ -173,7 +210,7 @@ class _AfterListedDocumentWarrantiesSelectionState
                                     text: '${widget.title}',
                                     style: TextStyle(
                                       fontFamily: Constants.primaryfont,
-                                      fontSize: Constants.fontSmall,
+                                      fontSize: Constants.getFontSmall(context),
                                       fontWeight: FontWeight.bold,
                                       color: CustomColors.black87,
                                     ),
@@ -188,10 +225,15 @@ class _AfterListedDocumentWarrantiesSelectionState
 
                     // Row 2: Type
                     SizedBox(
-                      width: 280,
-                      height: 20,
+                      width: mainWidth - 120,
+                      height: Responsive.value<double>(
+                        context,
+                        mobile: 20,
+                        tablet: 22,
+                        desktop: 24,
+                      ),
                       child: Align(
-                        alignment: Alignment.center, // Align to right
+                        alignment: Alignment.center,
                         child: RichText(
                           text: TextSpan(
                             children: [
@@ -199,7 +241,7 @@ class _AfterListedDocumentWarrantiesSelectionState
                                 text: 'Type: ',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.fontSmall,
+                                  fontSize: Constants.getFontSmall(context),
                                   color: CustomColors.black87,
                                 ),
                               ),
@@ -207,7 +249,7 @@ class _AfterListedDocumentWarrantiesSelectionState
                                 text: '${widget.subtitle.toLowerCase()}',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.fontSmall,
+                                  fontSize: Constants.getFontSmall(context),
                                   fontWeight: FontWeight.bold,
                                   color: CustomColors.black87,
                                 ),
@@ -224,18 +266,23 @@ class _AfterListedDocumentWarrantiesSelectionState
 
             // "Category of Warranty" Text + Grid View Options
             Positioned(
-              top: 172,
-              left: 0,
-              right: 0,
-              bottom: 10,
+              top: contentTop,
+              left: isMobile ? 12 : 20,
+              right: isMobile ? 12 : 20,
+              bottom: Responsive.value<double>(
+                context,
+                mobile: 10,
+                tablet: 12,
+                desktop: 14,
+              ),
               child: Container(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(
-                    horizontal: Constants.spacingSmall,
+                    horizontal: Constants.getSpacingSmall(context),
                   ),
                   child: Column(
-                    mainAxisAlignment: .center,
-                    crossAxisAlignment: .center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Add Bucket Text and Icon
                       Container(
@@ -244,38 +291,50 @@ class _AfterListedDocumentWarrantiesSelectionState
                         padding: EdgeInsets.all(2),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
-                          borderRadius: .circular(8),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
-                          crossAxisAlignment: .center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Row(
-                              mainAxisAlignment: .spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 // Left: Title
                                 Flexible(
-                                  // Use Flexible instead of fixed width
                                   child: Container(
-                                    constraints: BoxConstraints(maxWidth: 184),
+                                    constraints: BoxConstraints(
+                                      maxWidth: Responsive.value<double>(
+                                        context,
+                                        mobile: 184,
+                                        tablet: 200,
+                                        desktop: 216,
+                                      ),
+                                    ),
                                     child: Text(
                                       'Category of Warranty',
                                       style: TextStyle(
                                         fontFamily: Constants.primaryfont,
-                                        fontSize: 18,
-                                        fontWeight: .bold,
+                                        fontSize: Responsive.value<double>(
+                                          context,
+                                          mobile: 18,
+                                          tablet: 19,
+                                          desktop: 20,
+                                        ),
+                                        fontWeight: FontWeight.bold,
                                         color: CustomColors.black87,
                                       ),
                                     ),
                                   ),
                                 ),
 
+                                // Progress icon
                                 Container(
-                                  width: Constants.spacingHigh,
-                                  height: Constants.spacingLarge,
+                                  width: Constants.getSpacingHigh(context),
+                                  height: Constants.getSpacingLarge(context),
                                   child: Image.asset(
                                     Images.twoofthree,
-                                    width: Constants.spacingHigh,
-                                    height: Constants.spacingLarge,
+                                    width: Constants.getSpacingHigh(context),
+                                    height: Constants.getSpacingLarge(context),
                                     fit: BoxFit.contain,
                                   ),
                                 ),
@@ -285,125 +344,164 @@ class _AfterListedDocumentWarrantiesSelectionState
                             // "Choose from below type of your contract" text
                             Container(
                               width: double.infinity,
+                              margin: EdgeInsets.only(
+                                top: Constants.getSpacingLittle(context),
+                              ),
                               child: Text(
                                 'Choose from below type of your contract',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.fontLittle,
-                                  fontWeight: .w500,
+                                  fontSize: Constants.getFontLittle(context),
+                                  fontWeight: FontWeight.w500,
                                   color: CustomColors.littleWhite,
                                 ),
                               ),
                             ),
 
+                            SizedBox(height: Constants.getSpacingMedium(context)),
+
                             // Vertical Scrollable Card
                             Container(
-                              width: 400,
-                              height: 225,
+                              width: mainWidth,
+                              height: Responsive.value<double>(
+                                context,
+                                mobile: 225,
+                                tablet: 250,
+                                desktop: 275,
+                              ),
                               margin: EdgeInsets.symmetric(
                                 horizontal: 2,
                                 vertical: 2,
                               ),
                               child: GridView.count(
-                                crossAxisCount: 2, // 2 Items per Row
-                                crossAxisSpacing: Constants.spacingSmall,
-                                mainAxisSpacing: Constants.spacingSmall,
+                                crossAxisCount: Responsive.value<int>(
+                                  context,
+                                  mobile: 2,
+                                  tablet: 2,
+                                  desktop: 3,
+                                ),
+                                crossAxisSpacing: Constants.getSpacingSmall(context),
+                                mainAxisSpacing: Constants.getSpacingSmall(context),
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                childAspectRatio: 194 / 108,
+                                childAspectRatio: Responsive.value<double>(
+                                  context,
+                                  mobile: 194 / 108,
+                                  tablet: 200 / 112,
+                                  desktop: 180 / 100,
+                                ),
                                 children: WarrantyCategoriesData.warranty
                                     .asMap()
                                     .entries
                                     .map((entry) {
-                                      int index = entry.key;
-                                      Map<String, String> contract =
-                                          entry.value;
-                                      String child_sub_title =
-                                          contract['title']!;
-                                      String icon = contract['icon']!;
+                                  int index = entry.key;
+                                  Map<String, String> contract = entry.value;
+                                  String child_sub_title = contract['title']!;
+                                  String icon = contract['icon']!;
 
-                                      return Container(
-                                        child: HomeCategoryCard(
-                                          onTap: () {
-                                            setState(() {
-                                              // Toggle selection - if already selected, deselect
-                                              _selectedCategoryIndex =
-                                                  _selectedCategoryIndex ==
-                                                      index
-                                                  ? null
-                                                  : index;
-                                            });
-                                            print('$child_sub_title tapped');
+                                  return Container(
+                                    child: HomeCategoryCard(
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedCategoryIndex = _selectedCategoryIndex == index
+                                              ? null
+                                              : index;
+                                        });
+                                        print('$child_sub_title tapped');
 
-                                            // Navigate to respective page
-                                            _navigateToChildCategoryOfProjectPage(
-                                              child_sub_title,
-                                              widget.subtitle,
-                                              widget.title,
-                                              context,
-                                            );
-                                          },
-                                          imageAsset: icon,
-                                          title: child_sub_title,
-                                          isSelected:
-                                              _selectedCategoryIndex == index,
-                                        ),
-                                      );
-                                    })
+                                        _navigateToChildCategoryOfProjectPage(
+                                          child_sub_title,
+                                          widget.subtitle,
+                                          widget.title,
+                                          context,
+                                        );
+                                      },
+                                      imageAsset: icon,
+                                      title: child_sub_title,
+                                      isSelected: _selectedCategoryIndex == index,
+                                    ),
+                                  );
+                                })
                                     .toList(),
                               ),
                             ),
 
-                            // "This type of contract is about construction projects type of contract is about construction projects." Text
+                            SizedBox(height: Constants.getSpacingMedium(context)),
+
+                            // Description text
                             Container(
                               width: double.infinity,
+                              margin: EdgeInsets.only(
+                                bottom: Constants.getSpacingMedium(context),
+                              ),
                               child: Text(
                                 'This type of contract is about construction projects type of contract is about construction projects.',
                                 style: TextStyle(
                                   fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.fontLittle,
-                                  fontWeight: .w500,
+                                  fontSize: Constants.getFontLittle(context),
+                                  fontWeight: FontWeight.w500,
                                   color: CustomColors.littleWhite,
-                                  // Adjust color as needed
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
 
                             // Terms and Conditions
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: _acceptItems,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      _acceptItems = value ?? false;
-                                    });
-                                  },
-                                  activeColor: CustomColors.gradientBlue,
-                                ),
-
-                                Expanded(
-                                  child: Text(
-                                    'Scan Ai Ocr Proccess to extract informations.',
-                                    style: TextStyle(
-                                      fontSize: Constants.fontLittle,
-                                      color: CustomColors.black87,
-                                      fontFamily: Constants.primaryfont,
-                                    ),
+                            Container(
+                              width: mainWidth,
+                              margin: EdgeInsets.only(
+                                bottom: Constants.getSpacingMedium(context),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: .start,
+                                children: [
+                                  Checkbox(
+                                    value: _acceptItems,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        _acceptItems = value ?? false;
+                                      });
+                                    },
+                                    activeColor: CustomColors.gradientBlue,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   ),
-                                ),
-                              ],
+
+                                  SizedBox(width: Constants.getSpacingSmall(context)),
+
+                                  Text(
+                                      'Scan Ai Ocr Proccess to extract informations.',
+                                      style: TextStyle(
+                                        fontSize: Constants.getFontLittle(context),
+                                        color: CustomColors.black87,
+                                        fontFamily: Constants.primaryfont,
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ),
 
-                            SizedBox(height: Constants.spacingLittle),
+                            SizedBox(height: Constants.getSpacingLittle(context)),
 
+                            // Add Contract Button
                             GradientButton(
                               text: 'Add the contract',
                               onPressed: () {
                                 print("CLICKED ON ADD THE CONTRACT");
                               },
-                              width: 350,
+                              width: mainWidth - 50,
+                              height: Responsive.value<double>(
+                                context,
+                                mobile: 48,
+                                tablet: 52,
+                                desktop: 56,
+                              ),
                             ),
+
+                            // Extra spacing for larger screens
+                            if (isTablet || isDesktop)
+                              SizedBox(height: Constants.getSpacingLarge(context)),
                           ],
                         ),
                       ),

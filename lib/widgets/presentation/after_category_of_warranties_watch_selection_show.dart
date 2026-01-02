@@ -14,9 +14,11 @@ class AfterCategoryOfWarrantiesWatchSelectionShow extends StatefulWidget {
   final String title;
   final String subtitle;
   final String child_sub_title;
+  final bool isCommercial;
 
   const AfterCategoryOfWarrantiesWatchSelectionShow({
     super.key,
+    required this.isCommercial,
     required this.title,
     required this.subtitle,
     required this.child_sub_title,
@@ -630,7 +632,9 @@ class _AfterCategoryOfWarrantiesWatchSelectionShowState extends State<AfterCateg
                                                          context,
                                                          MaterialPageRoute(
                                                            builder: (context) =>
-                                                               OfficialLandingPage(),
+                                                               OfficialLandingPage(
+                                                                 isCommercial: widget.isCommercial,
+                                                               ),
                                                          ),
                                                        );
                                                      },

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/features/pre_register_controller.dart';
+import 'package:vkaps_it_solution_project_tijori/services/functions/storage_area_of_access_token.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
+import '../../pages/official_landing_page.dart';
 import '../../utils/onboarding_background.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
@@ -20,11 +22,37 @@ class SplashScreen2 extends StatefulWidget {
 
 class _SplashScreen2State extends State<SplashScreen2>{
   late PreRegisterController _controller;
+  bool isCommercial = false;
 
   @override
   void initState(){
     super.initState();
+    Future.delayed(Duration(seconds: 1), (){
+      checkTokenAndRedirect();
+    });
     _controller = PreRegisterController(context);
+  }
+
+  void checkTokenAndRedirect() {
+    print('redirection: ${StorageAreaOfAccessToken.instance.getToken()}');
+    print('User Role: ${StorageAreaOfAccessToken.instance.getRole()}');
+    // Check if token exists and is not empty
+    String token = StorageAreaOfAccessToken.instance.getToken();
+    String role = StorageAreaOfAccessToken.instance.getRole();
+
+    if(token.isEmpty || token == "") {}
+    else {
+      // Token exists, go to main app screen (NOT SplashScreen2 again!)
+      if(role == "COMMERCIAL_USER".trim()) {
+        isCommercial = true;
+      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => OfficialLandingPage(
+          isCommercial: isCommercial,
+        )), // Or your main home page
+      );
+    }
   }
 
   @override
@@ -172,7 +200,9 @@ class _SplashScreen2State extends State<SplashScreen2>{
                         onPressed: (){
                           print('CLICKED ON LOGIN PAGE');
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SigninLoginPage()));
+                              MaterialPageRoute(builder: (context) => SigninLoginPage(
+                                isCommercial: isCommercial,
+                              )));
                         },
                         child: Text(
                           'LOG IN',

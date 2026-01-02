@@ -16,6 +16,7 @@ import '../pages/others/custom_header_1.dart';
 import '../pages/others/logo_container.dart';
 import '../services/settings/loadingIndicator.dart';
 import '../services/settings/print_value.dart';
+import 'features/password_validation_checklist.dart';
 import 'fields/Intl_custom_phone_field.dart';
 import 'fields/custom_password_field.dart';
 import 'otp_verification.dart';
@@ -31,6 +32,8 @@ class PersonalRegisterPage extends StatefulWidget {
 
 class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
   final _formKey = GlobalKey<FormState>();
+
+  bool _showPasswordValidation = false;
   bool _acceptItems = false;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
@@ -41,6 +44,22 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
   TextEditingController _confirmPasswordController = TextEditingController();
 
   List<String> _phoneController = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(() {
+      setState(() {
+        _showPasswordValidation = _passwordController.text.isNotEmpty;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,27 +91,6 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
       body: OnboardingBackground(
         child: Stack(
           children: [
-            // Back Button - SCALED
-            Positioned(
-              top: scaled(24) * limitedScale,
-              left: scaled(12) * limitedScale,
-              child: IconButton(
-                onPressed: () {
-                  print("Clicked On Personal Back Button");
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => SplashScreen2()),
-                        (route) => false,
-                  );
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: CustomColors.black87,
-                  size: scaled(24) * limitedScale,
-                ),
-              ),
-            ),
-
             // Main Content - SCALED
             Positioned(
               top: scaled(32) * limitedScale,
@@ -147,7 +145,9 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SigninLoginPage(),
+                                  builder: (context) => SigninLoginPage(
+                                    isCommercial: widget.isCommercial,
+                                  ),
                                 ),
                               );
                             },
@@ -207,6 +207,23 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                                 _phoneController = value;
                               });
                             },
+                            validator: (phone) {
+                              if (phone == null || phone.number.isEmpty) {
+                                return 'Please enter a phone number';
+                              }
+
+                              // Validate phone number length
+                              if (phone.number.length < 10) {
+                                return 'Phone number must be at least 10 digits';
+                              }
+
+                              // Additional validation if needed
+                              if (!RegExp(r'^[0-9]+$').hasMatch(phone.number)) {
+                                return 'Phone number must contain only digits';
+                              }
+
+                              return null;
+                            },
                           ),
 
                           SizedBox(
@@ -241,7 +258,7 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                                 limitedScale,
                           ),
 
-                          // Password Field
+                          // Password Field with comprehensive validation
                           CustomPasswordField(
                             label: 'Password',
                             controller: _passwordController,
@@ -251,23 +268,47 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                                 _obscurePassword = !_obscurePassword;
                               });
                             },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              }
+
+                              // Quick validation for form submission
+                              final isValid = value.length >= 8 &&
+                                  RegExp(r'[A-Z]').hasMatch(value) &&
+                                  RegExp(r'[a-z]').hasMatch(value) &&
+                                  RegExp(r'[0-9]').hasMatch(value) &&
+                                  RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value) &&
+                                  !value.contains(' ');
+
+                              return isValid ? null : 'Password does not meet all requirements';
+                            },
+                          ),
+
+                          // Animated Password Validation Box
+                          AnimatedCrossFade(
+                            duration: Duration(milliseconds: 200),
+                            crossFadeState: _showPasswordValidation
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
+                            firstChild: PasswordValidationChecklist(
+                              password: _passwordController.text,
+                            ),
+                            secondChild: SizedBox.shrink(),
                           ),
 
                           SizedBox(
-                            height:
-                                Constants.getSpacingSmall(context) *
-                                limitedScale,
+                            height: Constants.getSpacingSmall(context) * limitedScale,
                           ),
 
-                          // Confirm Password Field
+// Confirm Password Field
                           CustomPasswordField(
                             label: 'Confirm Password',
                             controller: _confirmPasswordController,
                             obscureText: _obscureConfirmPassword,
                             onToggle: () {
                               setState(() {
-                                _obscureConfirmPassword =
-                                    !_obscureConfirmPassword;
+                                _obscureConfirmPassword = !_obscureConfirmPassword;
                               });
                             },
                             validator: (value) {
@@ -385,6 +426,7 @@ class _PersonalRegisterScreenState extends State<PersonalRegisterPage> {
                                         // Call the provider
                                         await provider.signUpPersonalProvider(
                                           requestBody,
+                                          widget.isCommercial,
                                           context,
                                         );
                                       }

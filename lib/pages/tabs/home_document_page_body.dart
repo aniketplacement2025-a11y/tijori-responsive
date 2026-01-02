@@ -10,7 +10,11 @@ import 'features/grid_view_project_card.dart';
 import 'features/list_view_project_card.dart';
 
 class HomeDocumentPageBody extends StatefulWidget {
-  const HomeDocumentPageBody({super.key});
+  final bool isCommercial;
+  HomeDocumentPageBody({
+    super.key,
+    required this.isCommercial,
+  });
 
   @override
   State<HomeDocumentPageBody> createState() => _HomeDocumentPageBodyState();
@@ -59,9 +63,9 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                     constraints: BoxConstraints(
                       maxWidth: Responsive.value<double>(
                         context,
-                        mobile: 160,
-                        tablet: 180,
-                        desktop: 200,
+                        mobile: 172,
+                        tablet: 184,
+                        desktop: 196,
                       ),
                     ),
                     child: Text(
@@ -70,9 +74,9 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                         fontFamily: Constants.primaryfont,
                         fontSize: Responsive.value<double>(
                           context,
-                          mobile: 18,
-                          tablet: 19,
-                          desktop: 20,
+                          mobile: 20,
+                          tablet: 22,
+                          desktop: 24,
                         ),
                         fontWeight: FontWeight.bold,
                         color: CustomColors.black87,
@@ -87,9 +91,9 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                     constraints: BoxConstraints(
                       maxWidth: Responsive.value<double>(
                         context,
-                        mobile: 140,
-                        tablet: 150,
-                        desktop: 160,
+                        mobile: 164,
+                        tablet: 172,
+                        desktop: 184,
                       ),
                     ),
                     child: Row(
@@ -113,21 +117,14 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                             width: Constants.getSpacingHigh(context),
                             height: Responsive.value<double>(
                               context,
-                              mobile: 18,
-                              tablet: 20,
-                              desktop: 22,
+                              mobile: 24,
+                              tablet: 28,
+                              desktop: 32,
                             ),
                             child: Image.asset(
                               _isGridView
                                   ? Images.gridIcon
                                   : Images.menuIcon,
-                              width: Constants.getSpacingHigh(context),
-                              height: Responsive.value<double>(
-                                context,
-                                mobile: 18,
-                                tablet: 20,
-                                desktop: 22,
-                              ),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -170,16 +167,16 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                             child: Container(
                               height: Responsive.value<double>(
                                 context,
-                                mobile: 36,
-                                tablet: 38,
-                                desktop: 40,
+                                mobile: 40,
+                                tablet: 42,
+                                desktop: 44,
                               ),
                               constraints: BoxConstraints(
                                 maxWidth: Responsive.value<double>(
                                   context,
-                                  mobile: 120,
-                                  tablet: 130,
-                                  desktop: 140,
+                                  mobile: 130,
+                                  tablet: 140,
+                                  desktop: 150,
                                 ),
                               ),
                               padding: EdgeInsets.symmetric(
@@ -220,8 +217,8 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
-                                    width: Constants.getFontLittle(context),
-                                    height: Constants.getFontLittle(context),
+                                    width: Constants.getFontSmall(context),
+                                    height: Constants.getFontSmall(context),
                                     child: Image.asset(
                                       Images.plusIcon,
                                       fit: BoxFit.contain,
@@ -234,12 +231,7 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                                     'Add Bucket',
                                     style: TextStyle(
                                       fontFamily: Constants.primaryfont,
-                                      fontSize: Responsive.value<double>(
-                                        context,
-                                        mobile: 10,
-                                        tablet: 11,
-                                        desktop: 12,
-                                      ),
+                                      fontSize: Constants.getFontLittle(context),
                                       fontWeight: FontWeight.bold,
                                       color: CustomColors.black87,
                                     ),
@@ -306,6 +298,7 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ListOfDocumentsSelection(
+                          isCommercial: widget.isCommercial,
                           bucket_title: title,
                         ),
                       ),

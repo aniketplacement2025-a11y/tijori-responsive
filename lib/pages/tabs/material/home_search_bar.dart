@@ -21,9 +21,9 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
     return Container(
       height: Responsive.value<double>(
         context,
-        mobile: 40,
-        tablet: 44,
-        desktop: 48,
+        mobile: 48,
+        tablet: 52,
+        desktop: 56,
       ),
       width: Responsive.screenWidth(context) * (isMobile ? 0.9 : 0.85),
       decoration: BoxDecoration(
@@ -31,9 +31,9 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
         borderRadius: BorderRadius.circular(
           Responsive.value<double>(
             context,
-            mobile: 12,
-            tablet: 14,
-            desktop: 16,
+            mobile: 16,
+            tablet: 18,
+            desktop: 20,
           ),
         ),
         boxShadow: [
@@ -60,7 +60,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
                 hintText: 'Search...',
                 hintStyle: TextStyle(
                   fontFamily: Constants.primaryfont,
-                  fontSize: Constants.getFontMedium(context),
+                  fontSize: Constants.getFontSmall(context),
                   color: CustomColors.littleWhite,
                 ),
               ),
@@ -80,12 +80,12 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
             color: CustomColors.littleWhite,
             size: Responsive.value<double>(
               context,
-              mobile: 24,
-              tablet: 26,
-              desktop: 28,
+              mobile: 28,
+              tablet: 30,
+              desktop: 32,
             ),
           ),
-          SizedBox(width: Constants.getSpacingLittle(context)),
+          SizedBox(width: Constants.getSpacingSmall(context)),
         ],
       ),
     );

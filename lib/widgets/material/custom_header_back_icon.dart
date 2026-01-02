@@ -56,9 +56,9 @@ class CustomHeaderBackIcon extends StatelessWidget {
               color: iconColor,
               size: Responsive.value<double>(
                 context,
-                mobile: 20,
-                tablet: 22,
-                desktop: 24,
+                mobile: 28,
+                tablet: 32,
+                desktop: 36,
               ),
             ),
             padding: EdgeInsets.all(
@@ -74,27 +74,28 @@ class CustomHeaderBackIcon extends StatelessWidget {
           SizedBox(width: Constants.getSpacingHigh(context)),
 
           // Reminder Button
+          // Reminder Button
           GestureDetector(
-            onTap: onReminderPressed ?? () {
+            onTap: () {
               print('CLICKED ON BELL IMAGE');
             },
             child: Container(
               padding: EdgeInsets.symmetric(
                 horizontal: Responsive.value<double>(
                   context,
-                  mobile: 12,
-                  tablet: 14,
-                  desktop: 16,
+                  mobile: 16,
+                  tablet: 18,
+                  desktop: 20,
                 ),
                 vertical: Responsive.value<double>(
                   context,
-                  mobile: 6,
-                  tablet: 7,
-                  desktop: 8,
+                  mobile: 10,
+                  tablet: 12,
+                  desktop: 14,
                 ),
               ),
               decoration: BoxDecoration(
-                color: backgroundColor,
+                color: CustomColors.ghostWhite.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(
                   Responsive.value<double>(
                     context,
@@ -105,35 +106,39 @@ class CustomHeaderBackIcon extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: CustomColors.blackBS1,
+                    color: CustomColors.blackBS1.withOpacity(0.05),
                     blurRadius: Responsive.value<double>(
                       context,
-                      mobile: 8,
-                      tablet: 9,
-                      desktop: 10,
+                      mobile: 12,
+                      tablet: 14,
+                      desktop: 16,
                     ),
-                    offset: const Offset(0, 2),
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),
               child: Row(
                 children: [
+                  // Bell Image
                   Image.asset(
                     Images.bell,
                     width: Responsive.value<double>(
                       context,
-                      mobile: 16,
-                      tablet: 18,
-                      desktop: 20,
+                      mobile: 28,
+                      tablet: 32,
+                      desktop: 36,
                     ),
                     height: Responsive.value<double>(
                       context,
-                      mobile: 16,
-                      tablet: 18,
-                      desktop: 20,
+                      mobile: 28,
+                      tablet: 32,
+                      desktop: 36,
                     ),
                   ),
+
                   SizedBox(width: Constants.getSpacingLittle(context)),
+
+                  // "Create reminder" text
                   Text(
                     reminderText!,
                     style: TextStyle(
@@ -172,7 +177,9 @@ class CustomHeaderBackIcon extends StatelessWidget {
                 print("Clicked on Menu Button");
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                  MaterialPageRoute(builder: (context) => ProfilePage(
+                    isCommercial: false,
+                  )),
                 );
               },
               padding: EdgeInsets.all(

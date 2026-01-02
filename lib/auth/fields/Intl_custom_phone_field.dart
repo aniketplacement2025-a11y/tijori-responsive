@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
@@ -9,12 +10,14 @@ class IntlCustomPhoneField extends StatelessWidget {
   final String labelText;
   final Function(List<String>) onChanged;
   final Widget? suffixIcon;
+  final String? Function(PhoneNumber?)? validator; // Changed to PhoneNumber?
 
   const IntlCustomPhoneField({
     super.key,
     required this.labelText,
     required this.onChanged,
     this.suffixIcon,
+    this.validator,
   });
 
   @override
@@ -47,6 +50,7 @@ class IntlCustomPhoneField extends StatelessWidget {
         color: CustomColors.littleWhite,
         fontFamily: Constants.primaryfont,
       ),
+      validator: validator, // Validator goes here, not in decoration
       onChanged: (phone) {
         onChanged([
           phone.countryCode, // +91

@@ -16,6 +16,13 @@ enum HomePageTab {
 }
 
 class OfficialLandingPage extends StatefulWidget {
+  final bool isCommercial;
+
+  OfficialLandingPage({
+    super.key,
+    required this.isCommercial,
+  });
+
   @override
   _OfficialLandingPageState createState() => _OfficialLandingPageState();
 }
@@ -60,11 +67,17 @@ class _OfficialLandingPageState extends State<OfficialLandingPage> {
   Widget _getPageBody(int index) {
     switch (HomePageTab.values[index]) {
       case HomePageTab.home:
-        return const HomePageBody();
+        return HomePageBody(
+          isCommercial: widget.isCommercial,
+        );
       case HomePageTab.documents:
-        return const HomeDocumentPageBody();
+        return HomeDocumentPageBody(
+          isCommercial: widget.isCommercial,
+        );
       case HomePageTab.subscription:
-        return const HomeSubsPageBody();
+        return HomeSubsPageBody(
+          isCommercial: widget.isCommercial,
+        );
     }
   }
 
@@ -89,18 +102,20 @@ class _OfficialLandingPageState extends State<OfficialLandingPage> {
                 tablet: 24,
                 desktop: 28,
               ),
-              left: isMobile ? 4 : 8,
-              right: isMobile ? 0 : 8,
-              child: HomePageHeader(),
+              left: isMobile ? 8 : 12,
+              right: isMobile ? 8 : 12,
+              child: HomePageHeader(
+                isCommercial: widget.isCommercial,
+              ),
             ),
 
             // Search Bar - Responsive positioning
             Positioned(
               top: Responsive.value<double>(
                 context,
-                mobile: 64,
-                tablet: 72,
-                desktop: 80,
+                mobile: 72,
+                tablet: 80,
+                desktop: 88,
               ),
               left: isMobile ? 12 : 20,
               right: isMobile ? 12 : 20,
@@ -111,17 +126,17 @@ class _OfficialLandingPageState extends State<OfficialLandingPage> {
             Positioned(
               top: Responsive.value<double>(
                 context,
-                mobile: 116,
-                tablet: 128,
-                desktop: 140,
+                mobile: 136,
+                tablet: 144,
+                desktop: 152,
               ),
-              left: isMobile ? 0 : 8,
-              right: isMobile ? 0 : 8,
+              left: isMobile ? 8 : 12,
+              right: isMobile ? 8 : 12,
               bottom: Responsive.value<double>(
                 context,
-                mobile: 85,
-                tablet: 95,
-                desktop: 105,
+                mobile: 104,
+                tablet: 112,
+                desktop: 124,
               ),
               child: PageView.builder(
                 controller: _pageController,
@@ -135,13 +150,13 @@ class _OfficialLandingPageState extends State<OfficialLandingPage> {
 
             // Fixed Bottom Navigation Bar - Responsive positioning
             Positioned(
-              left: isMobile ? 0 : 20,
-              right: isMobile ? 0 : 20,
+              left: isMobile ? 10 : 20,
+              right: isMobile ? 10 : 20,
               bottom: Responsive.value<double>(
                 context,
-                mobile: 20,
-                tablet: 24,
-                desktop: 28,
+                mobile: 16,
+                tablet: 20,
+                desktop: 24,
               ),
               child: Center(
                 child: HomePageFooter(

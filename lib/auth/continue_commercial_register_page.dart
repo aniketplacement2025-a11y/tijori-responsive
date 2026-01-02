@@ -16,7 +16,7 @@ import '../utils/custom_colors.dart';
 import '../utils/responsive_media_query.dart';
 
 class ContinueCommercialRegisterPage extends StatefulWidget {
-  final String phoneNumber;
+  final List<String> phoneNumber;
   final String email;
   final String fullName;
   final bool isCommercial;
@@ -59,21 +59,17 @@ class _ContinueCommercialRegisterPageState
 
   final _formKey = GlobalKey<FormState>();
 
-  void _handleRegister() {
-    print('Phone: ${widget.phoneNumber.toString()}');
-    print('Full Name: ${widget.fullName.toString()}');
-    print('Email: ${widget.email.toString()}');
-
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => OTPVerificationPage(
-    //       phoneNumber: widget.phoneNumber.toString(),
-    //       email: widget.fullName.toString(),
-    //       fullName: widget.email.toString(),
-    //     ),
-    //   ),
-    // );
+  @override
+  void dispose() {
+    _commercialRegisterNo.dispose();
+    _licenceNo.dispose();
+    _companyAddress.dispose();
+    _nameOfTheCompany.dispose();
+    _companyActivity.dispose();
+    _companyEstablishmentData.dispose();
+    _uploadFile.dispose();
+    _nameOfFolder.dispose();
+    super.dispose();
   }
 
   @override
@@ -158,7 +154,7 @@ class _ContinueCommercialRegisterPageState
               top: scaled(60) * limitedScale,
               left: 0,
               right: 0,
-              bottom: 0,
+              bottom: 20,
               child: ChangeNotifierProvider(
                 create: (BuildContext context) => SignUpScreenCommercialProvider(),
                 child: Consumer<SignUpScreenCommercialProvider>(
@@ -195,6 +191,12 @@ class _ContinueCommercialRegisterPageState
                               OnlyCustomFormField(
                                 controller: _commercialRegisterNo,
                                 hintText: 'Commercial registration number',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Enter Your Commercial registration number';
+                                  }
+                                  return null;
+                                },
                               ),
 
                               SizedBox(
@@ -205,17 +207,12 @@ class _ContinueCommercialRegisterPageState
                               OnlyCustomFormField(
                                 controller: _licenceNo,
                                 hintText: 'License Number (رقم الترخيص)',
-                              ),
-
-                              SizedBox(
-                                height: Constants.getSpacingSmall(context) *
-                                    limitedScale,
-                              ),
-
-                              OnlyCustomFormField(
-                                suffixIcon: Icon(Icons.location_on),
-                                controller: _companyAddress,
-                                hintText: 'Company Address',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Enter Your License Number';
+                                  }
+                                  return null;
+                                },
                               ),
 
                               SizedBox(
@@ -227,6 +224,29 @@ class _ContinueCommercialRegisterPageState
                                 suffixIcon: Icon(Icons.person_pin),
                                 controller: _nameOfTheCompany,
                                 hintText: 'Name of the Company',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your full name';
+                                  }
+                                  return null;
+                                },
+                              ),
+
+                              SizedBox(
+                                height: Constants.getSpacingSmall(context) *
+                                    limitedScale,
+                              ),
+
+                              OnlyCustomFormField(
+                                suffixIcon: Icon(Icons.location_on),
+                                controller: _companyAddress,
+                                hintText: 'Company Address',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Enter Your Company Address';
+                                  }
+                                  return null;
+                                },
                               ),
 
                               SizedBox(
@@ -241,6 +261,23 @@ class _ContinueCommercialRegisterPageState
                                   setState(() {
                                     companyPhoneNo = value;
                                   });
+                                },
+                                validator: (phone) {
+                                  if (phone == null || phone.number.isEmpty) {
+                                    return 'Please enter a phone number';
+                                  }
+
+                                  // Validate phone number length
+                                  if (phone.number.length < 10) {
+                                    return 'Phone number must be at least 10 digits';
+                                  }
+
+                                  // Additional validation if needed
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(phone.number)) {
+                                    return 'Phone number must contain only digits';
+                                  }
+
+                                  return null;
                                 },
                               ),
 
@@ -257,6 +294,23 @@ class _ContinueCommercialRegisterPageState
                                     companyWhatsappNo = value;
                                   });
                                 },
+                                validator: (phone) {
+                                  if (phone == null || phone.number.isEmpty) {
+                                    return 'Please enter a phone number';
+                                  }
+
+                                  // Validate phone number length
+                                  if (phone.number.length < 10) {
+                                    return 'Phone number must be at least 10 digits';
+                                  }
+
+                                  // Additional validation if needed
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(phone.number)) {
+                                    return 'Phone number must contain only digits';
+                                  }
+
+                                  return null;
+                                },
                               ),
 
                               OnlyCustomFormField(
@@ -272,6 +326,16 @@ class _ContinueCommercialRegisterPageState
                               OnlyCustomFormField(
                                 controller: _companyEstablishmentData,
                                 hintText: 'Company establishment date (Optional)',
+                                validator: (value) {
+                                  if (value != null && value.isNotEmpty) {
+                                    // Validate date format if entered (YYYY-MM-DD)
+                                    final dateRegex = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+                                    if (!dateRegex.hasMatch(value)) {
+                                      return 'Please enter date in YYYY-MM-DD format';
+                                    }
+                                  }
+                                  return null;
+                                },
                               ),
 
                               SizedBox(
@@ -313,63 +377,85 @@ class _ContinueCommercialRegisterPageState
                                     SizedBox(height: Constants.getSpacingLittle(
                                         context)),
 
-                                    TextButton(
-                                      onPressed: () async {
-                                        FilePickerResult? result =
-                                        await FilePicker.platform.pickFiles(
-                                          type: FileType.custom,
-                                          allowedExtensions: [
-                                            'pdf',
-                                            'jpg',
-                                            'jpeg',
-                                            'png',
-                                            'webp'
-                                          ],
-                                        );
-                                        if (result != null &&
-                                            result.files.single.path != null) {
-                                          String filePath = result.files.single
-                                              .path!;
-                                          UploadedFile = filePath;
-                                          // Fixed file name extraction
-                                          ReplacementUploadedFile = filePath
-                                              .split('/')
-                                              .last;
-
-                                          // Check file extension
-                                          String extension = filePath
-                                              .split('.')
-                                              .last
-                                              .toLowerCase();
-                                          print('File extension: $extension');
-
-                                          // Check file size
-                                          File file = File(filePath);
-                                          int fileSize = await file.length();
-                                          print('File size: $fileSize bytes');
-
-                                          // Optional: Show file name to user
-                                          ScaffoldMessenger
-                                              .of(context)
-                                              .showSnackBar(
-                                            SnackBar(content: Text(
-                                                'File selected: ${ReplacementUploadedFile} ($extension, ${fileSize ~/
-                                                    1024} KB)')),
-                                          );
-                                        }
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceBetween,
-                                        children: [
-                                          Text(
-                                            UploadedFile != null
-                                                ? 'File: ${ReplacementUploadedFile ??
-                                                "Selected"}'
-                                                : 'Click to Upload Company Files',
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          Responsive.value<double>(
+                                            context,
+                                            mobile: 8,
+                                            tablet: 10,
+                                            desktop: 12,
                                           ),
-                                          Icon(Icons.upload),
-                                        ],
+                                        ),
+                                        border: Border.all(color: CustomColors.lightWhite),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          FilePickerResult? result =
+                                          await FilePicker.platform.pickFiles(
+                                            type: FileType.custom,
+                                            allowedExtensions: [
+                                              'pdf',
+                                              'jpg',
+                                              'jpeg',
+                                              'png',
+                                              'webp'
+                                            ],
+                                          );
+                                          if (result != null &&
+                                              result.files.single.path != null) {
+                                            String filePath = result.files.single
+                                                .path!;
+                                            UploadedFile = filePath;
+                                            // Fixed file name extraction
+                                            ReplacementUploadedFile = filePath
+                                                .split('/')
+                                                .last;
+
+                                            // Check file extension
+                                            String extension = filePath
+                                                .split('.')
+                                                .last
+                                                .toLowerCase();
+                                            print('File extension: $extension');
+
+                                            // Check file size
+                                            File file = File(filePath);
+                                            int fileSize = await file.length();
+                                            print('File size: $fileSize bytes');
+
+                                            // Optional: Show file name to user
+                                            ScaffoldMessenger
+                                                .of(context)
+                                                .showSnackBar(
+                                              SnackBar(content: Text(
+                                                  'File selected: ${ReplacementUploadedFile} ($extension, ${fileSize ~/
+                                                      1024} KB)')),
+                                            );
+                                          }
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Text(
+                                              UploadedFile != null
+                                                  ? 'File: ${ReplacementUploadedFile ??
+                                                  "Selected"}'
+                                                  : 'Click to Upload Company Files',
+                                              style: TextStyle(
+                                                fontSize: Constants.getFontLittle(context),
+                                                color: CustomColors.littleWhite,
+                                                fontFamily: Constants.primaryfont,
+                                              ),
+                                            ),
+                                            Icon(
+                                                Icons.upload,
+                                                color: CustomColors.black87,
+                                                fontWeight: .bold,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
 
@@ -580,7 +666,7 @@ class _ContinueCommercialRegisterPageState
                                         print('$key: $value');
                                       });
 
-                                      provider.signUpScreenCommercial(completeData, context);
+                                      provider.signUpScreenCommercial(completeData, widget.isCommercial, context);
                                     }
                                   },
                                   child: Text(

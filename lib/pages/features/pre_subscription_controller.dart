@@ -7,8 +7,12 @@ import '../official_landing_page.dart';
 
 class PreSubscriptionController {
   final BuildContext context;
+  final bool isCommercial;
 
-  PreSubscriptionController(this.context);
+  PreSubscriptionController(
+      this.context,
+      this.isCommercial,
+      );
 
   // Handle Register Button press
   void handleSubscriptionPress({required String planName, required String planPrice}) {
@@ -72,7 +76,9 @@ class PreSubscriptionController {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => OfficialLandingPage(),
+                builder: (context) => OfficialLandingPage(
+                  isCommercial: isCommercial,
+                ),
               ),
             );
           },

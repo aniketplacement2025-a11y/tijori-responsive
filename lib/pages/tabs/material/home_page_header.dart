@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vkaps_it_solution_project_tijori/pages/features/commercial_premium_page.dart';
+import 'package:vkaps_it_solution_project_tijori/services/functions/storage_area_of_access_token.dart';
 import '../../../utils/Images.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/custom_colors.dart';
@@ -6,13 +8,27 @@ import '../../../utils/responsive_media_query.dart';
 import '../../features/profile_page.dart';
 
 class HomePageHeader extends StatefulWidget {
-  const HomePageHeader({super.key});
+  final bool isCommercial;
+
+  HomePageHeader({
+    super.key,
+    required this.isCommercial,
+  });
 
   @override
   State<HomePageHeader> createState() => _HomePageHeaderState();
 }
 
 class _HomePageHeaderState extends State<HomePageHeader> {
+
+  String checkName(){
+    print("Name : ${StorageAreaOfAccessToken.instance.getName()}");
+    String name = StorageAreaOfAccessToken.instance.getName();
+    List<String> firstName = name.split(" ");
+    name = firstName[0];
+    return name;
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isMobile = Responsive.isMobile(context);
@@ -24,9 +40,9 @@ class _HomePageHeaderState extends State<HomePageHeader> {
     return SizedBox(
       height: Responsive.value<double>(
         context,
-        mobile: 36,
-        tablet: 40,
-        desktop: 44,
+        mobile: 44,
+        tablet: 48,
+        desktop: 52,
       ),
       width: Responsive.screenWidth(context) * (isMobile ? 0.95 : 0.9),
       child: Row(
@@ -44,15 +60,15 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                 child: Container(
                   width: Responsive.value<double>(
                     context,
-                    mobile: 36,
-                    tablet: 40,
-                    desktop: 44,
+                    mobile: 44,
+                    tablet: 48,
+                    desktop: 52,
                   ),
                   height: Responsive.value<double>(
                     context,
-                    mobile: 36,
-                    tablet: 40,
-                    desktop: 44,
+                    mobile: 44,
+                    tablet: 48,
+                    desktop: 52,
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -80,15 +96,15 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                     'Welcome',
                     style: TextStyle(
                       fontFamily: Constants.primaryfont,
-                      fontSize: Constants.getFontLittle(context),
+                      fontSize: Constants.getFontSmall(context),
                       color: CustomColors.black87,
                     ),
                   ),
                   Text(
-                    'Abderahman',
+                    checkName(),
                     style: TextStyle(
                       fontFamily: Constants.primaryfont,
-                      fontSize: Constants.getFontLittle(context),
+                      fontSize: Constants.getFontSmall(context),
                       fontWeight: FontWeight.bold,
                       color: CustomColors.black87,
                     ),
@@ -150,15 +166,15 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                     Images.bell,
                     width: Responsive.value<double>(
                       context,
-                      mobile: 16,
-                      tablet: 18,
-                      desktop: 20,
+                      mobile: 24,
+                      tablet: 28,
+                      desktop: 32,
                     ),
                     height: Responsive.value<double>(
                       context,
-                      mobile: 16,
-                      tablet: 18,
-                      desktop: 20,
+                      mobile: 28,
+                      tablet: 32,
+                      desktop: 36,
                     ),
                   ),
 
@@ -194,17 +210,28 @@ class _HomePageHeaderState extends State<HomePageHeader> {
                 color: CustomColors.black87,
                 size: Responsive.value<double>(
                   context,
-                  mobile: 16,
-                  tablet: 18,
-                  desktop: 20,
+                  mobile: 24,
+                  tablet: 28,
+                  desktop: 32,
                 ),
               ),
               onPressed: () {
                 print("Clicked on Menu Button");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
+                if(widget.isCommercial){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CommercialPremiumPage(
+                        isCommercial: widget.isCommercial,
+                    )),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage(
+                      isCommercial: widget.isCommercial,
+                    )),
+                  );
+                }
               },
               padding: EdgeInsets.all(
                 Responsive.value<double>(

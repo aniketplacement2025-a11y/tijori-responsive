@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/features/otp_manager.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/forgot_password_page.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/verify_otp_forgot_password.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/send_otp_by_phone_provider.dart';
 
+import '../services/settings/loadingIndicator.dart';
+import '../services/settings/print_value.dart';
 import '../utils/constants.dart';
 import '../utils/custom_colors.dart';
 import '../utils/onboarding_background.dart';
@@ -9,7 +15,12 @@ import '../utils/responsive_media_query.dart';
 import 'fields/Intl_custom_phone_field.dart';
 
 class SendOtpByPhone extends StatefulWidget {
-  const SendOtpByPhone({super.key});
+  final bool isCommercial;
+
+  SendOtpByPhone({
+    super.key,
+    required this.isCommercial,
+  });
 
   @override
   State<SendOtpByPhone> createState() => _SendOtpByPhoneState();
@@ -49,7 +60,9 @@ class _SendOtpByPhoneState extends State<SendOtpByPhone> {
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (_) => SigninLoginPage()),
+                    MaterialPageRoute(builder: (_) => SigninLoginPage(
+                      isCommercial: widget.isCommercial,
+                    )),
                         (route) => false,
                   );
                 },
@@ -187,26 +200,36 @@ class _SendOtpByPhoneState extends State<SendOtpByPhone> {
                                 ),
                               ],
                             ),
-                            child: TextButton(
-                              onPressed: () {
-                                print('CLICKED ON SEND OTP BUTTON');
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => EmailOtpVerification(
-                                //       email: _emailController.text,
-                                //     ),
-                                //   ),
-                                // );
-                              },
-                              child: Text(
-                                'SEND OTP',
-                                style: TextStyle(
-                                  fontFamily: Constants.primaryfont,
-                                  fontSize: Constants.getFontSmall(context),
-                                  fontWeight: FontWeight.bold,
-                                  color: CustomColors.ghostWhite,
-                                ),
+                            child: ChangeNotifierProvider(
+                              create: (BuildContext context) => SendOtpByPhoneProvider(),
+                              child: Consumer<SendOtpByPhoneProvider>(
+                                builder: (context, provider, child) {
+                                  return TextButton(
+                                    onPressed: () {
+                                      print('CLICKED ON SEND OTP BUTTON');
+                                      printValue(send_otp_phone_number,
+                                          tag: 'LIST OF STING VALUE');
+                                      if(!provider.isLoading){
+                                       provider.sendOtpByPhoneProvider(
+                                           send_otp_phone_number,
+                                           widget.isCommercial,
+                                           context
+                                       );
+                                      }
+                                    },
+                                    child: provider.isLoading
+                                        ? loadingIndicator()
+                                        : Text(
+                                            'SEND OTP',
+                                      style: TextStyle(
+                                        fontFamily: Constants.primaryfont,
+                                        fontSize: Constants.getFontSmall(context),
+                                        fontWeight: FontWeight.bold,
+                                        color: CustomColors.ghostWhite,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -236,7 +259,7 @@ class _SendOtpByPhoneState extends State<SendOtpByPhone> {
 
                               SizedBox(height: Constants.getSpacingMedium(context)),
 
-                              // SEND OTP BY PHONE BUTTON - Responsive
+                              // SEND OTP BY EMAIL BUTTON - Responsive
                               Container(
                                 width: double.infinity,
                                 height: Responsive.value<double>(
@@ -270,10 +293,18 @@ class _SendOtpByPhoneState extends State<SendOtpByPhone> {
                                 ),
                                 child: TextButton(
                                   onPressed: () {
-                                    print('CLICKED ON SEND OTP BY PHONE BUTTON');
+                                    print('CLICKED ON SEND OTP BY EMAIL BUTTON');
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ForgotPasswordPage(
+                                              isCommercial: widget.isCommercial
+                                          ),
+                                      ),
+                                    );
                                   },
                                   child: Text(
-                                    'SEND OTP BY PHONE',
+                                    'SEND OTP BY EMAIL',
                                     style: TextStyle(
                                       fontFamily: Constants.primaryfont,
                                       fontSize: Constants.getFontLittle(context),

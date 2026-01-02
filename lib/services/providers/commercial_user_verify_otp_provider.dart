@@ -10,6 +10,7 @@ class CommercialUserVerifyOtpProvider extends ChangeNotifier {
 
   verifyOtpCommercialSignUp(
       Map<String, dynamic> userData, // Changed to Map<String, dynamic>
+      bool isCommercial,
       BuildContext context,
       ) async {
     try {
@@ -27,9 +28,11 @@ class CommercialUserVerifyOtpProvider extends ChangeNotifier {
         print("MISSION COMMERCIAL PAGE REGISTRATION USER SUCCESS");
 
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => OtpSuccessPopup()
+            builder: (context) => OtpSuccessPopup(isCommercial: isCommercial),
         ));
       } else {
+        isLoading = false;
+        notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(value['message'] ?? 'Registration failed'),
@@ -43,7 +46,7 @@ class CommercialUserVerifyOtpProvider extends ChangeNotifier {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: ${e.toString()}'),
+          content: Text('Commrecial Registration Failed Because Of ${e.toString()} ERROR'),
           backgroundColor: Colors.red,
         ),
       );

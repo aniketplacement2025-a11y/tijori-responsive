@@ -8,6 +8,7 @@ class PersonalOtpVerificationProvider with ChangeNotifier {
 
   personalUserVerifyOtp(
     Map<dynamic, dynamic> requestBody,
+    bool isCommercial,
     BuildContext context,
   ) {
     isLoading = true;
@@ -24,10 +25,14 @@ class PersonalOtpVerificationProvider with ChangeNotifier {
             // Navigate to success screen
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => OtpSuccessPopup()),
+              MaterialPageRoute(builder: (context) => OtpSuccessPopup(
+                isCommercial: isCommercial,
+              )),
             );
           } else {
             // Show error message
+            isLoading = false;
+            notifyListeners();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(value['message'] ?? 'Verification failed'),
@@ -37,6 +42,14 @@ class PersonalOtpVerificationProvider with ChangeNotifier {
         })
         .onError((error, stackTrace) {
           print("API ERROR => ${error.toString()}");
+          isLoading = false;
+          notifyListeners();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Registration failed Please Recheck Otp'),
+              backgroundColor: Colors.red,
+            ),
+          );
         });
   }
 }

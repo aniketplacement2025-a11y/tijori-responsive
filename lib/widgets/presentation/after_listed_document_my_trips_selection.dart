@@ -14,9 +14,11 @@ import '../material/positioned_header_back_icon.dart';
 class AfterListedDocumentMyTripsSelection extends StatefulWidget {
   final String title;
   final String subtitle;
+  final bool isCommercial;
 
   const AfterListedDocumentMyTripsSelection({
     super.key,
+    required this.isCommercial,
     required this.title,
     required this.subtitle,
   });
@@ -1089,7 +1091,9 @@ class _AfterListedDocumentMyTripsSelectionState
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      OfficialLandingPage(),
+                                                      OfficialLandingPage(
+                                                        isCommercial: widget.isCommercial,
+                                                      ),
                                                 ),
                                               );
                                             },

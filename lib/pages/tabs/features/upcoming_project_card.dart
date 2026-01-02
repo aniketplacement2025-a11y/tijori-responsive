@@ -41,13 +41,13 @@ class _UpcomingProjectCardState extends State<UpcomingProjectCard> {
       children: UpcomingCardListTitles.up_projects.map((project) {
         return Container(
           alignment: .center,
-          margin: EdgeInsets.only(bottom: Constants.getSpacingSmall(context)),
+          margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
           padding: EdgeInsets.all(
             Responsive.value<double>(
               context,
-              mobile: Constants.getSpacingSmall(context),
-              tablet: Constants.getSpacingSmall(context) * 1.1,
-              desktop: Constants.getSpacingSmall(context) * 1.2,
+              mobile: Constants.getSpacingMedium(context),
+              tablet: Constants.getSpacingMedium(context) * 1.1,
+              desktop: Constants.getSpacingMedium(context) * 1.2,
             ),
           ),
           decoration: BoxDecoration(

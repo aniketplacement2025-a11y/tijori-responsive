@@ -13,7 +13,9 @@ import 'features/list_view_project_card.dart';
 import 'features/upcoming_project_card.dart';
 
 class HomePageBody extends StatefulWidget {
-  const HomePageBody({super.key});
+  final bool isCommercial;
+
+  HomePageBody({super.key, required this.isCommercial});
 
   @override
   State<HomePageBody> createState() => _HomePageBodyState();
@@ -62,12 +64,34 @@ class _HomePageBodyState extends State<HomePageBody> {
                 tablet: 100,
                 desktop: 104,
               ),
-              margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
+              margin: EdgeInsets.only(
+                bottom: Constants.getSpacingMedium(context),
+              ),
               padding: EdgeInsets.fromLTRB(
-                Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
-                Responsive.value<double>(context, mobile: 13, tablet: 14, desktop: 15),
-                Responsive.value<double>(context, mobile: 20, tablet: 22, desktop: 24),
-                Responsive.value<double>(context, mobile: 13, tablet: 14, desktop: 15),
+                Responsive.value<double>(
+                  context,
+                  mobile: 20,
+                  tablet: 22,
+                  desktop: 24,
+                ),
+                Responsive.value<double>(
+                  context,
+                  mobile: 13,
+                  tablet: 14,
+                  desktop: 15,
+                ),
+                Responsive.value<double>(
+                  context,
+                  mobile: 20,
+                  tablet: 22,
+                  desktop: 24,
+                ),
+                Responsive.value<double>(
+                  context,
+                  mobile: 13,
+                  tablet: 14,
+                  desktop: 15,
+                ),
               ),
               decoration: BoxDecoration(
                 color: CustomColors.white,
@@ -216,11 +240,13 @@ class _HomePageBodyState extends State<HomePageBody> {
               width: mainWidth,
               height: Responsive.value<double>(
                 context,
-                mobile: 148,
-                tablet: 160,
-                desktop: 172,
+                mobile: 160,
+                tablet: 172,
+                desktop: 184,
               ),
-              margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
+              margin: EdgeInsets.only(
+                bottom: Constants.getSpacingMedium(context),
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(
                   Responsive.value<double>(
@@ -249,11 +275,13 @@ class _HomePageBodyState extends State<HomePageBody> {
               width: mainWidth,
               height: Responsive.value<double>(
                 context,
-                mobile: 110,
-                tablet: 120,
-                desktop: 130,
+                mobile: 120,
+                tablet: 130,
+                desktop: 140,
               ),
-              margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
+              margin: EdgeInsets.only(
+                bottom: Constants.getSpacingMedium(context),
+              ),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
@@ -286,13 +314,11 @@ class _HomePageBodyState extends State<HomePageBody> {
               color: CustomColors.littleWhite.withOpacity(0.5),
             ),
 
-            SizedBox(height: Constants.getSpacingLittle(context)),
+            SizedBox(height: Constants.getSpacingSmall(context)),
 
             // Ongoing Projects and Buckets
             Container(
               width: double.infinity,
-              margin: EdgeInsets.only(bottom: 2),
-              padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
@@ -310,9 +336,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                           constraints: BoxConstraints(
                             maxWidth: Responsive.value<double>(
                               context,
-                              mobile: 148,
-                              tablet: 160,
-                              desktop: 172,
+                              mobile: 164,
+                              tablet: 172,
+                              desktop: 184,
                             ),
                           ),
                           child: Text(
@@ -321,9 +347,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                               fontFamily: Constants.primaryfont,
                               fontSize: Responsive.value<double>(
                                 context,
-                                mobile: 18,
-                                tablet: 19,
-                                desktop: 20,
+                                mobile: 20,
+                                tablet: 22,
+                                desktop: 24,
                               ),
                               fontWeight: FontWeight.bold,
                               color: CustomColors.black87,
@@ -338,9 +364,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                           constraints: BoxConstraints(
                             maxWidth: Responsive.value<double>(
                               context,
-                              mobile: 140,
-                              tablet: 150,
-                              desktop: 160,
+                              mobile: 164,
+                              tablet: 172,
+                              desktop: 184,
                             ),
                           ),
                           child: Row(
@@ -364,27 +390,22 @@ class _HomePageBodyState extends State<HomePageBody> {
                                   width: Constants.getSpacingHigh(context),
                                   height: Responsive.value<double>(
                                     context,
-                                    mobile: 18,
-                                    tablet: 20,
-                                    desktop: 22,
+                                    mobile: 24,
+                                    tablet: 28,
+                                    desktop: 32,
                                   ),
                                   child: Image.asset(
                                     _isGridView
                                         ? Images.gridIcon
                                         : Images.menuIcon,
-                                    width: Constants.getSpacingHigh(context),
-                                    height: Responsive.value<double>(
-                                      context,
-                                      mobile: 18,
-                                      tablet: 20,
-                                      desktop: 22,
-                                    ),
                                     fit: BoxFit.contain,
                                   ),
                                 ),
                               ),
 
-                              SizedBox(width: Constants.getSpacingSmall(context)),
+                              SizedBox(
+                                width: Constants.getSpacingSmall(context),
+                              ),
 
                               // Vertical Line Divider
                               Container(
@@ -400,18 +421,23 @@ class _HomePageBodyState extends State<HomePageBody> {
                                 ),
                               ),
 
-                              SizedBox(width: Constants.getSpacingSmall(context)),
+                              SizedBox(
+                                width: Constants.getSpacingSmall(context),
+                              ),
 
                               // Add Bucket Button
                               Material(
                                 color: Colors.transparent,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Context mounted: ${context.mounted}');
+                                    print(
+                                      'Context mounted: ${context.mounted}',
+                                    );
                                     if (context.mounted) {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => AddBucketClickEvent(),
+                                          builder: (context) =>
+                                              AddBucketClickEvent(),
                                         ),
                                       );
                                     } else {
@@ -421,20 +447,22 @@ class _HomePageBodyState extends State<HomePageBody> {
                                   child: Container(
                                     height: Responsive.value<double>(
                                       context,
-                                      mobile: 36,
-                                      tablet: 38,
-                                      desktop: 40,
+                                      mobile: 40,
+                                      tablet: 42,
+                                      desktop: 44,
                                     ),
                                     constraints: BoxConstraints(
                                       maxWidth: Responsive.value<double>(
                                         context,
-                                        mobile: 120,
-                                        tablet: 130,
-                                        desktop: 140,
+                                        mobile: 130,
+                                        tablet: 140,
+                                        desktop: 150,
                                       ),
                                     ),
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: Constants.getFontLittle(context),
+                                      horizontal: Constants.getFontLittle(
+                                        context,
+                                      ),
                                       vertical: Responsive.value<double>(
                                         context,
                                         mobile: 6,
@@ -467,29 +495,36 @@ class _HomePageBodyState extends State<HomePageBody> {
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Container(
-                                          width: Constants.getFontLittle(context),
-                                          height: Constants.getFontLittle(context),
+                                          width: Constants.getFontSmall(
+                                            context,
+                                          ),
+                                          height: Constants.getFontSmall(
+                                            context,
+                                          ),
                                           child: Image.asset(
                                             Images.plusIcon,
                                             fit: BoxFit.contain,
                                           ),
                                         ),
 
-                                        SizedBox(width: Constants.getSpacingLittle(context)),
+                                        SizedBox(
+                                          width: Constants.getSpacingLittle(
+                                            context,
+                                          ),
+                                        ),
 
                                         Text(
                                           'Add Bucket',
                                           style: TextStyle(
                                             fontFamily: Constants.primaryfont,
-                                            fontSize: Responsive.value<double>(
+                                            fontSize: Constants.getFontLittle(
                                               context,
-                                              mobile: 10,
-                                              tablet: 11,
-                                              desktop: 12,
                                             ),
                                             fontWeight: FontWeight.bold,
                                             color: CustomColors.black87,
@@ -511,7 +546,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                   Container(
                     width: double.infinity,
                     child: Text(
-                      'My documents of actual projects',
+                      ' My documents of actual projects',
                       style: TextStyle(
                         fontFamily: Constants.primaryfont,
                         fontSize: Constants.getFontLittle(context),
@@ -521,46 +556,48 @@ class _HomePageBodyState extends State<HomePageBody> {
                     ),
                   ),
 
-                  SizedBox(height: Constants.getSpacingLittle(context)),
+                  SizedBox(height: Constants.getSpacingSmall(context)),
 
                   // PROJECT CARDS - DYNAMIC LAYOUT BASED ON _isGridView
                   _isGridView
                       ? GridViewProjectCard() // Grid Layout after click
                       : Column(
-                    children: ProjectsListTitles.projects
-                        .asMap()
-                        .entries
-                        .map((entry) {
-                      final index = entry.key;
-                      Map<String, String> project = entry.value;
-                      String title = project['title']!;
+                          children: ProjectsListTitles.projects
+                              .asMap()
+                              .entries
+                              .map((entry) {
+                                final index = entry.key;
+                                Map<String, String> project = entry.value;
+                                String title = project['title']!;
 
-                      return ListViewProjectCard(
-                        project: project,
-                        isExpanded: _expandedIndex == index,
-                        onToggle: () {
-                          setState(() {
-                            if (_expandedIndex == index) {
-                              _expandedIndex = null;
-                            } else {
-                              _expandedIndex = index;
-                            }
-                          });
-                        },
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ListOfDocumentsSelection(
-                                bucket_title: title,
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    })
-                        .toList(),
-                  ),
+                                return ListViewProjectCard(
+                                  project: project,
+                                  isExpanded: _expandedIndex == index,
+                                  onToggle: () {
+                                    setState(() {
+                                      if (_expandedIndex == index) {
+                                        _expandedIndex = null;
+                                      } else {
+                                        _expandedIndex = index;
+                                      }
+                                    });
+                                  },
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ListOfDocumentsSelection(
+                                              isCommercial: widget.isCommercial,
+                                              bucket_title: title,
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              })
+                              .toList(),
+                        ),
                 ],
               ),
             ),
@@ -574,7 +611,7 @@ class _HomePageBodyState extends State<HomePageBody> {
               color: CustomColors.littleWhite.withOpacity(0.5),
             ),
 
-            SizedBox(height: Constants.getSpacingLittle(context)),
+            SizedBox(height: Constants.getSpacingSmall(context)),
 
             // Upcoming Milestones and Sub Containers
             Container(
@@ -598,9 +635,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                           constraints: BoxConstraints(
                             maxWidth: Responsive.value<double>(
                               context,
-                              mobile: 184,
-                              tablet: 200,
-                              desktop: 216,
+                              mobile: 208,
+                              tablet: 216,
+                              desktop: 224,
                             ),
                           ),
                           child: Text(
@@ -609,9 +646,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                               fontFamily: Constants.primaryfont,
                               fontSize: Responsive.value<double>(
                                 context,
-                                mobile: 18,
-                                tablet: 19,
-                                desktop: 20,
+                                mobile: 20,
+                                tablet: 22,
+                                desktop: 24,
                               ),
                               fontWeight: FontWeight.bold,
                               color: CustomColors.black87,
@@ -725,7 +762,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                       tablet: 130,
                       desktop: 140,
                     ),
-                    margin: EdgeInsets.only(bottom: Constants.getSpacingMedium(context)),
+                    margin: EdgeInsets.only(
+                      bottom: Constants.getSpacingMedium(context),
+                    ),
                     padding: EdgeInsets.all(Constants.getSpacingSmall(context)),
                     decoration: BoxDecoration(
                       color: CustomColors.ghostWhite,
@@ -776,10 +815,30 @@ class _HomePageBodyState extends State<HomePageBody> {
                                   desktop: 40,
                                 ),
                                 padding: EdgeInsets.fromLTRB(
-                                  Responsive.value<double>(context, mobile: 8, tablet: 9, desktop: 10),
-                                  Responsive.value<double>(context, mobile: 4, tablet: 5, desktop: 6),
-                                  Responsive.value<double>(context, mobile: 8, tablet: 9, desktop: 10),
-                                  Responsive.value<double>(context, mobile: 4, tablet: 5, desktop: 6),
+                                  Responsive.value<double>(
+                                    context,
+                                    mobile: 8,
+                                    tablet: 9,
+                                    desktop: 10,
+                                  ),
+                                  Responsive.value<double>(
+                                    context,
+                                    mobile: 4,
+                                    tablet: 5,
+                                    desktop: 6,
+                                  ),
+                                  Responsive.value<double>(
+                                    context,
+                                    mobile: 8,
+                                    tablet: 9,
+                                    desktop: 10,
+                                  ),
+                                  Responsive.value<double>(
+                                    context,
+                                    mobile: 4,
+                                    tablet: 5,
+                                    desktop: 6,
+                                  ),
                                 ),
                                 decoration: BoxDecoration(
                                   color: CustomColors.littleWhite,
@@ -790,7 +849,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                                     'Payment',
                                     style: TextStyle(
                                       fontFamily: Constants.primaryfont,
-                                      fontSize: Constants.getFontLittle(context),
+                                      fontSize: Constants.getFontLittle(
+                                        context,
+                                      ),
                                       fontWeight: FontWeight.bold,
                                       color: CustomColors.black87,
                                     ),
@@ -839,7 +900,11 @@ class _HomePageBodyState extends State<HomePageBody> {
                                       ),
                                     ),
 
-                                    SizedBox(width: Constants.getSpacingLittle(context)),
+                                    SizedBox(
+                                      width: Constants.getSpacingLittle(
+                                        context,
+                                      ),
+                                    ),
 
                                     // Date Text
                                     Container(
@@ -886,7 +951,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                             tablet: 58,
                             desktop: 62,
                           ),
-                          padding: EdgeInsets.all(Constants.getSpacingSmall(context)),
+                          padding: EdgeInsets.all(
+                            Constants.getSpacingSmall(context),
+                          ),
                           decoration: BoxDecoration(
                             color: CustomColors.ghostWhite,
                             borderRadius: BorderRadius.circular(
@@ -920,7 +987,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                                 ),
                               ),
 
-                              SizedBox(width: Constants.getSpacingSmall(context)),
+                              SizedBox(
+                                width: Constants.getSpacingSmall(context),
+                              ),
 
                               // Right: Amount + Icon
                               Row(

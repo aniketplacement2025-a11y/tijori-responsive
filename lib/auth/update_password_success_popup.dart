@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/features/button_with_thumsup.dart';
+import 'package:vkaps_it_solution_project_tijori/pages/official_landing_page.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';
@@ -7,8 +8,11 @@ import '../../utils/Images.dart';
 import '../../utils/responsive_media_query.dart';
 
 class UpdatePasswordSuccessPopup extends StatelessWidget {
+  final bool isCommercial;
+
   UpdatePasswordSuccessPopup({
-    super.key
+    super.key,
+    required this.isCommercial,
   });
 
   @override
@@ -185,6 +189,11 @@ class UpdatePasswordSuccessPopup extends StatelessWidget {
                         onPressed: () {
                           print("Successfully Done Sign Up");
                           // Add navigation or other actions here
+                          Navigator.push(
+                            context,
+                           MaterialPageRoute(
+                               builder: (context) => OfficialLandingPage(isCommercial: isCommercial,)
+                           ), );
                         },
                       ),
 

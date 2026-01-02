@@ -8,6 +8,7 @@ class SignUpScreenCommercialProvider extends ChangeNotifier{
 
   signUpScreenCommercial(
       Map<dynamic, dynamic> userData,
+      bool isCommercial,
       BuildContext context,
       ) async {
     try {
@@ -27,11 +28,17 @@ class SignUpScreenCommercialProvider extends ChangeNotifier{
         Navigator.push(
             context,
             MaterialPageRoute(builder: (context) =>
-                CommercialOtpVerification(requestBody: userData),
+                CommercialOtpVerification(
+                    requestBody: userData,
+                   isCommercial: isCommercial,
+                ),
             ),
         );
         // Handle success
       } else {
+        // Show error message
+        isLoading = false;
+        notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(value['message'] ?? 'Registration failed'),
@@ -45,7 +52,7 @@ class SignUpScreenCommercialProvider extends ChangeNotifier{
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: ${e.toString()}'),
+          content: Text('SIGN UP COMMERCIAL FAILED BECAUSE OF ${e.toString()} ERROR'),
           backgroundColor: Colors.red,
         ),
       );

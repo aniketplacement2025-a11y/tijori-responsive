@@ -8,7 +8,12 @@ import 'package:flutter/material.dart';
 import '../../utils/responsive_media_query.dart';
 
 class OtpSuccessPopup extends StatelessWidget {
-  OtpSuccessPopup({super.key});
+  final bool isCommercial;
+
+  OtpSuccessPopup({
+    super.key,
+    required this.isCommercial,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +188,9 @@ class OtpSuccessPopup extends StatelessWidget {
                           print("Successfully Done Sign Up");
                           Navigator.push(context,
                               MaterialPageRoute(builder:
-                              (context) => OfficialLandingPage())
+                              (context) => OfficialLandingPage(
+                                isCommercial: isCommercial,
+                              ))
                           );
                           // Add navigation or other actions here
                         },

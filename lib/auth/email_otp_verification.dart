@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/features/otp_manager.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/otp_success_popup.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/otp_verification.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/send_otp_by_phone.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/update_new_password.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
@@ -16,6 +17,7 @@ import '../auth/features/outline_button.dart';
 import '../auth/features/back_button.dart';
 
 class EmailOtpVerification extends StatefulWidget {
+  final bool isCommercial;
   final String email;
   final VoidCallback? onVerificationSuccess;
   final VoidCallback? onSendOtpByPhone;
@@ -23,6 +25,7 @@ class EmailOtpVerification extends StatefulWidget {
   const EmailOtpVerification({
     super.key,
     required this.email,
+    required this.isCommercial,
     this.onVerificationSuccess,
     this.onSendOtpByPhone,
   });
@@ -54,18 +57,24 @@ class _EmailOtpVerificationState extends State<EmailOtpVerification> {
     if (widget.onVerificationSuccess != null) {
       widget.onVerificationSuccess!();
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => UpdateNewPassword()),
-      );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => UpdateNewPassword()),
+      // );
+      print('VERIFY OTP BY EMAIL NUMBER');
     }
   }
 
   void _handleSendOtpByPhone() {
-    print('SEND OTP BY PHONE');
-    if (widget.onSendOtpByPhone != null) {
-      widget.onSendOtpByPhone!();
-    }
+    print('CLICKED ON SEND OTP BY PHONE BUTTON');
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder:
+            (context) => SendOtpByPhone(
+              isCommercial: widget.isCommercial,
+            )
+        ),
+    );
   }
 
   String _getMaskedEmail({int showFirstChars = 2, int showLastChars = 2}) {
@@ -293,6 +302,14 @@ class _EmailOtpVerificationState extends State<EmailOtpVerification> {
     return Container(
       width: imageSize,
       height: imageSize * 0.6, // Maintain aspect ratio
+      decoration: BoxDecoration(
+        color: CustomColors.ghostWhite.withOpacity(0.6),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: CustomColors.lightWhite,
+          width: 1,
+        ),
+      ),
       child: Image.asset(
         Images.otp,
         fit: BoxFit.contain,

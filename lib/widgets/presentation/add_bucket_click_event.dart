@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/features/gradient_button.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/fields/Custom_Form_Field_For_Write_Description.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_form_field.dart';
+import 'package:vkaps_it_solution_project_tijori/auth/fields/document_upload_button.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/others/categories_data.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/tabs/features/home_category_card.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/material/positioned_header_back_icon.dart';
@@ -256,7 +258,7 @@ class _AddBucketClickEventState extends State<AddBucketClickEvent> {
                               SizedBox(height: Constants.spacingSmall),
 
                               // Form Field For Description
-                              CustomFormField(
+                              CustomFormFieldForWriteDescription(
                                   label: 'Informations about the Bucket',
                                   hintText: 'Describe the Bucket in few words...',
                                   controller: _infoAboutBucket,
@@ -265,7 +267,8 @@ class _AddBucketClickEventState extends State<AddBucketClickEvent> {
                                      return 'Please enter your full name';
                                    }
                                    return null;
-                                 },
+                                  },
+                                  minLines: 3,
                               ),
 
                               SizedBox(height: Constants.spacingMedium),
@@ -439,15 +442,11 @@ class _AddBucketClickEventState extends State<AddBucketClickEvent> {
                                ),
 
                                // Form Field For Description
-                               CustomFormField(
-                                 label: 'Enter a document',
+                               DocumentUploadButton(
+                                 labelText: 'Enter a document',
                                  hintText: 'Upload the file (PDF, Word...)',
-                                 controller: _infoAboutBucket,
-                                 validator: (value) {
-                                   if (value == null || value.isEmpty) {
-                                     return 'Please enter your full name';
-                                   }
-                                   return null;
+                                 onPressed: () {
+                                   print("Clicked On Upload A File");
                                  },
                                ),
 

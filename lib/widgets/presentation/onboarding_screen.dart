@@ -20,17 +20,61 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final int _totalPages = 4;
+  Timer? _autoPaginationTimer;
 
+  @override
+  void initState(){
+    super.initState();
+    // Start auto-pagination after a small delay
+    _startAutoPagination();
+  }
   @override
   void dispose() {
     _pageController.dispose();
+    _stopAutoPagination();
     super.dispose();
+  }
+
+  // Start auto - pagination timer
+  void _startAutoPagination(){
+    _autoPaginationTimer = Timer.periodic(Duration(seconds: 2), (timer){
+      if(_currentPage < _totalPages -1){
+        // Move To next Page
+        _pageController.nextPage(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+        );
+      } else {
+        // Reset to first page for infinite loop effect
+        // Or stop timer if u want it to stop at last page
+        _pageController.animateToPage(
+            0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  // Stop auto - pagination timer
+  void _stopAutoPagination(){
+    _autoPaginationTimer?.cancel();
+    _autoPaginationTimer = null;
+  }
+
+  // Restart auto-pagination (useful after user interaction)
+  void _restartAutoPagination(){
+    _stopAutoPagination();
+    _startAutoPagination();
   }
 
   void _handlePageChange(int page) {
     setState(() {
       _currentPage = page;
     });
+
+    // Restart timer on page change to reset the 2 - second interval
+    _restartAutoPagination();
   }
 
   void _handleSkipPress() {
@@ -43,11 +87,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     } else {
       _navigateToMainApp(context);
     }
+    // Restart timer after user interaction
+    _restartAutoPagination();
   }
 
   void _navigateToMainApp(BuildContext context) {
+    // Stop timer before navigation
+    _stopAutoPagination();
+
     // Navigate to your main app screen
      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SplashScreen2()));
+  }
+
+  // Method for manual navigation (if user taps on indicator dots)
+  void _goToPage(int page){
+    _pageController.animateToPage(
+        page,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+    );
+    _restartAutoPagination();
   }
 
   Widget _buildContent(int page) {
@@ -74,91 +133,97 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       },
     ];
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Responsive Image
-        Container(
-          width: Responsive.value<double>(
-            context,
-            mobile: 400,
-            tablet: 450,
-            desktop: 500,
-          ),
-          height: Responsive.value<double>(
-            context,
-            mobile: 350,
-            tablet: 400,
-            desktop: 450,
-          ),
-          child: Image.asset(
-            pageContents[page]['image']!,
-            fit: BoxFit.contain,
-          ),
-        ),
-
-
-        // Title
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: Responsive.value<double>(
+    return GestureDetector(
+      onTap: (){
+        // Optionally, allow tapping on content to pause/resume or skip
+        _restartAutoPagination();
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Responsive Image
+          Container(
+            width: Responsive.value<double>(
               context,
-              mobile: 24,
-              tablet: 40,
-              desktop: 60,
+              mobile: 400,
+              tablet: 450,
+              desktop: 500,
+            ),
+            height: Responsive.value<double>(
+              context,
+              mobile: 350,
+              tablet: 400,
+              desktop: 450,
+            ),
+            child: Image.asset(
+              pageContents[page]['image']!,
+              fit: BoxFit.contain,
             ),
           ),
-          child: Text(
-            pageContents[page]['title']!,
-            style: TextStyle(
-              fontFamily: Constants.primaryfont,
-              fontSize: Responsive.value<double>(
+
+
+          // Title
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: Responsive.value<double>(
                 context,
                 mobile: 24,
-                tablet: 28,
-                desktop: 32,
+                tablet: 40,
+                desktop: 60,
               ),
-              fontWeight: FontWeight.bold,
-              color: CustomColors.black87,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-
-        SizedBox(height: Responsive.value<double>(
-          context,
-          mobile: 12,
-          tablet: 16,
-          desktop: 20,
-        )),
-
-        // Description
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: Responsive.value<double>(
-              context,
-              mobile: 24,
-              tablet: 40,
-              desktop: 60,
+            child: Text(
+              pageContents[page]['title']!,
+              style: TextStyle(
+                fontFamily: Constants.primaryfont,
+                fontSize: Responsive.value<double>(
+                  context,
+                  mobile: 24,
+                  tablet: 28,
+                  desktop: 32,
+                ),
+                fontWeight: FontWeight.bold,
+                color: CustomColors.black87,
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
-          child: Text(
-            pageContents[page]['description']!,
-            style: TextStyle(
-              fontFamily: Constants.primaryfont,
-              fontSize: Responsive.value<double>(
+
+          SizedBox(height: Responsive.value<double>(
+            context,
+            mobile: 12,
+            tablet: 16,
+            desktop: 20,
+          )),
+
+          // Description
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: Responsive.value<double>(
                 context,
-                mobile: 14,
-                tablet: 16,
-                desktop: 18,
+                mobile: 24,
+                tablet: 40,
+                desktop: 60,
               ),
-              color: CustomColors.black87,
-              height: 1.5,
             ),
-            textAlign: TextAlign.center,
+            child: Text(
+              pageContents[page]['description']!,
+              style: TextStyle(
+                fontFamily: Constants.primaryfont,
+                fontSize: Responsive.value<double>(
+                  context,
+                  mobile: 14,
+                  tablet: 16,
+                  desktop: 18,
+                ),
+                color: CustomColors.black87,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -242,7 +307,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
 
-                    // Page Indicator
+                    // Page Indicator (now clickable)
                     Container(
                       height: Responsive.value<double>(
                         context,
@@ -253,25 +318,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(_totalPages, (index) {
-                          return Container(
-                            width: Responsive.value<double>(
-                              context,
-                              mobile: 10,
-                              tablet: 12,
-                              desktop: 14,
-                            ),
-                            height: Responsive.value<double>(
-                              context,
-                              mobile: 10,
-                              tablet: 12,
-                              desktop: 14,
-                            ),
-                            margin: EdgeInsets.symmetric(horizontal: 4),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _currentPage == index
-                                  ? CustomColors.darkPink
-                                  : Colors.grey[300],
+                          return GestureDetector(
+                            onTap: () => _goToPage(index),
+                            child: Container(
+                              width: Responsive.value<double>(
+                                context,
+                                mobile: 10,
+                                tablet: 12,
+                                desktop: 14,
+                              ),
+                              height: Responsive.value<double>(
+                                context,
+                                mobile: 10,
+                                tablet: 12,
+                                desktop: 14,
+                              ),
+                              margin: EdgeInsets.symmetric(horizontal: 4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _currentPage == index
+                                    ? CustomColors.darkPink
+                                    : Colors.grey[300],
+                              ),
                             ),
                           );
                         }),

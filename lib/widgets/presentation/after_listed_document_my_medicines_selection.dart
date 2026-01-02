@@ -23,9 +23,11 @@ class MedicinesTimePeriodData {
 class AfterListedDocumentMyMedicinesSelection extends StatefulWidget {
   final String title;
   final String subtitle;
+  final bool isCommercial;
 
   const AfterListedDocumentMyMedicinesSelection({
     super.key,
+    required this.isCommercial,
     required this.title,
     required this.subtitle,
   });
@@ -1090,7 +1092,9 @@ class _AfterListedDocumentMyMedicinesSelectionState
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          OfficialLandingPage(),
+                                          OfficialLandingPage(
+                                            isCommercial: widget.isCommercial,
+                                          ),
                                     ),
                                   );
                                 },

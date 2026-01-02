@@ -36,17 +36,18 @@ class OTPInputField extends StatelessWidget {
       desktop: Constants.getFontMedium(context) * 1.2,
     );
 
-    final double contentPadding = Responsive.value<double>(
+    final double circlePadding = Responsive.value<double>(
       context,
-      mobile: 18.0,
-      tablet: 20.0,
-      desktop: 22.0,
+      mobile: 8.0,
+      tablet: 10.0,
+      desktop: 12.0,
     );
 
     return Container(
       width: fieldSize,
       height: fieldSize * 1.2, // Maintain aspect ratio
       decoration: BoxDecoration(
+        color: CustomColors.ghostWhite.withOpacity(0.6),
         shape: BoxShape.circle,
         border: Border.all(
           color: CustomColors.littleWhite,
@@ -58,28 +59,33 @@ class OTPInputField extends StatelessWidget {
           ),
         ),
       ),
-      child: TextField(
-        controller: controller,
-        focusNode: focusNode,
-        autofocus: autoFocus,
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        maxLength: 1,
-        style: TextStyle(
-          fontFamily: Constants.primaryfont,
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          color: CustomColors.black87,
-        ),
-        decoration: InputDecoration(
-          counterText: '',
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.only(
-            top: contentPadding,
-            bottom: contentPadding,
+      child: Center(
+        child: TextField(
+          controller: controller,
+          focusNode: focusNode,
+          autofocus: autoFocus,
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          textAlignVertical: TextAlignVertical.center, // Add this
+          maxLength: 1,
+          style: TextStyle(
+            fontFamily: Constants.primaryfont,
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: CustomColors.black87,
+            height: 1.0, // Ensure line height is exactly 1
           ),
+          decoration: InputDecoration(
+            counterText: '',
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.zero, // Remove all padding
+            isDense: true, // Makes the TextField smaller
+            constraints: BoxConstraints(
+              maxHeight: fieldSize - circlePadding * 2,
+            ),
+          ),
+          onChanged: onChanged,
         ),
-        onChanged: onChanged,
       ),
     );
   }
