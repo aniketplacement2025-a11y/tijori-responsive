@@ -5,7 +5,7 @@ import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dar
 import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/custom_colors.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
-import '../services/providers/personal_otp_verification_provider.dart';
+import '../services/providers/auth/personal_otp_verification_provider.dart';
 import '../services/settings/print_value.dart';
 import '../utils/Images.dart';
 

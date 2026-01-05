@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mime/mime.dart'; // Add this import for MIME type detection
+import 'package:vkaps_it_solution_project_tijori/services/functions/storage_area_of_access_token.dart';
 import '../settings/print_value.dart';
 import '../settings/toast_message.dart';
 
@@ -17,7 +16,7 @@ class HttpHelper {
       // return {"Content-Type":"Application/Json"};
       return {
         "Content-Type": "Application/Json",
-       // "Authorization": 'Bearer ${StorageHelper().getToken()}',
+       "Authorization": 'Bearer ${StorageAreaOfAccessToken.instance.getToken()}',
       };
     } else {
       return {"Content-Type": "Application/Json"};

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/official_landing_page.dart';
 import 'package:vkaps_it_solution_project_tijori/services/functions/storage_area_of_access_token.dart';
-import '../settings/print_value.dart';
-import '../models/rest_client.dart';
+import '../../settings/print_value.dart';
+import '../../models/rest_client.dart';
 
 class LoginProvider with ChangeNotifier{
   bool isLoading = false;

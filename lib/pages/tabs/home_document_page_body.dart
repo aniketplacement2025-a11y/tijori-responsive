@@ -157,7 +157,9 @@ class _HomeDocumentPageBodyState extends State<HomeDocumentPageBody> {
                               if (context.mounted) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => AddBucketClickEvent(),
+                                    builder: (context) => AddBucketClickEvent(
+                                      isCommercial: widget.isCommercial,
+                                    ),
                                   ),
                                 );
                               } else {

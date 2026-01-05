@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/Intl_custom_phone_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/only_custom_form_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/otp_verification.dart';
-import 'package:vkaps_it_solution_project_tijori/services/providers/sign_up_screen_commercial_provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/auth/sign_up_screen_commercial_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/SplashScreen2.dart';
 

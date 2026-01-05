@@ -212,4 +212,14 @@ class RestClient {
     printValue(response);
     return response;
   }
+
+  static Future<dynamic> MyCategories(dynamic requestBody) async {
+    Map<String, dynamic> response = await _httpHelper.get(
+        url: '$baseUrl/categories/my-categories',
+        isRequireAuthentication: true,
+    );
+    // If response from api come as List '[]' then we write List<dynamic>
+    printValue(response, tag: "My Categories API Response");
+    return response;
+  }
 }

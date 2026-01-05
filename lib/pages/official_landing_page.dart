@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/tabs/material/home_page_footer.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/tabs/home_document_page_body.dart';
@@ -8,6 +9,8 @@ import 'package:vkaps_it_solution_project_tijori/pages/tabs/material/home_page_h
 import 'package:vkaps_it_solution_project_tijori/pages/tabs/material/home_search_bar.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
+
+import '../services/providers/provider/my_categories_provider.dart';
 
 enum HomePageTab {
   home,
@@ -90,82 +93,87 @@ class _OfficialLandingPageState extends State<OfficialLandingPage> {
     // Update constants with context
     Constants.updateFromContext(context);
 
-    return Scaffold(
-      body: OnboardingBackground(
-        child: Stack(
-          children: [
-            // Header Fixed at top - Responsive positioning
-            Positioned(
-              top: Responsive.value<double>(
-                context,
-                mobile: 20,
-                tablet: 24,
-                desktop: 28,
-              ),
-              left: isMobile ? 8 : 12,
-              right: isMobile ? 8 : 12,
-              child: HomePageHeader(
-                isCommercial: widget.isCommercial,
-              ),
-            ),
-
-            // Search Bar - Responsive positioning
-            Positioned(
-              top: Responsive.value<double>(
-                context,
-                mobile: 72,
-                tablet: 80,
-                desktop: 88,
-              ),
-              left: isMobile ? 12 : 20,
-              right: isMobile ? 12 : 20,
-              child: HomeSearchBar(),
-            ),
-
-            // Main Body - Swipable PageView
-            Positioned(
-              top: Responsive.value<double>(
-                context,
-                mobile: 136,
-                tablet: 144,
-                desktop: 152,
-              ),
-              left: isMobile ? 8 : 12,
-              right: isMobile ? 8 : 12,
-              bottom: Responsive.value<double>(
-                context,
-                mobile: 104,
-                tablet: 112,
-                desktop: 124,
-              ),
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: _onPageChanged,
-                itemCount: HomePageTab.values.length,
-                itemBuilder: (context, index) {
-                  return _getPageBody(index);
-                },
-              ),
-            ),
-
-            // Fixed Bottom Navigation Bar - Responsive positioning
-            Positioned(
-              left: isMobile ? 10 : 20,
-              right: isMobile ? 10 : 20,
-              bottom: Responsive.value<double>(
-                context,
-                mobile: 16,
-                tablet: 20,
-                desktop: 24,
-              ),
-              child: Center(
-                child: HomePageFooter(
-                  currentTab: _currentTab,
-                  onTabChanged: _changeTab,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => MyCategoriesProvider()),
+      ],
+      child: Scaffold(
+        body: OnboardingBackground(
+          child: Stack(
+            children: [
+              // Header Fixed at top - Responsive positioning
+              Positioned(
+                top: Responsive.value<double>(
+                  context,
+                  mobile: 20,
+                  tablet: 24,
+                  desktop: 28,
+                ),
+                left: isMobile ? 8 : 12,
+                right: isMobile ? 8 : 12,
+                child: HomePageHeader(
+                  isCommercial: widget.isCommercial,
                 ),
               ),
-            ),
-          ],
+
+              // Search Bar - Responsive positioning
+              Positioned(
+                top: Responsive.value<double>(
+                  context,
+                  mobile: 72,
+                  tablet: 80,
+                  desktop: 88,
+                ),
+                left: isMobile ? 12 : 20,
+                right: isMobile ? 12 : 20,
+                child: HomeSearchBar(),
+              ),
+
+              // Main Body - Swipable PageView
+              Positioned(
+                top: Responsive.value<double>(
+                  context,
+                  mobile: 136,
+                  tablet: 144,
+                  desktop: 152,
+                ),
+                left: isMobile ? 8 : 12,
+                right: isMobile ? 8 : 12,
+                bottom: Responsive.value<double>(
+                  context,
+                  mobile: 104,
+                  tablet: 112,
+                  desktop: 124,
+                ),
+                child: PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: _onPageChanged,
+                  itemCount: HomePageTab.values.length,
+                  itemBuilder: (context, index) {
+                    return _getPageBody(index);
+                  },
+                ),
+              ),
+
+              // Fixed Bottom Navigation Bar - Responsive positioning
+              Positioned(
+                left: isMobile ? 10 : 20,
+                right: isMobile ? 10 : 20,
+                bottom: Responsive.value<double>(
+                  context,
+                  mobile: 16,
+                  tablet: 20,
+                  desktop: 24,
+                ),
+                child: Center(
+                  child: HomePageFooter(
+                    currentTab: _currentTab,
+                    onTabChanged: _changeTab,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

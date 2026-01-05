@@ -2,12 +2,11 @@ import 'package:vkaps_it_solution_project_tijori/utils/images.dart'; // adjust p
 
 class CategoriesData {
   static final List<Map<String, String>> categories = [
-    {'icon': Images.contractsIcon, 'title': 'CONTRACTS'},
-    {'icon': Images.warrantiesIcon, 'title': 'WARRANTIES'},
-    {'icon': Images.insuranceIcon, 'title': 'INSURANCE'},
-    {'icon': Images.personalDocIcon, 'title': 'PERSONAL DOC'},
-    {'icon': Images.tripsIcon, 'title': 'MY TRIPS'},
-    {'icon': Images.appointmentIcon, 'title': 'Appointments'},
-    {'icon': Images.medicineIcon, 'title': 'My Medicine'},
+    {'icon': Images.warrantiesIcon, 'name': 'WARRANTIES'},
+    {'icon': Images.insuranceIcon, 'name': 'INSURANCE'},
+    {'icon': Images.personalDocIcon, 'name': 'PERSONAL DOC'},
+    {'icon': Images.tripsIcon, 'name': 'MY TRIPS'},
+    {'icon': Images.appointmentIcon, 'name': 'Appointments'},
+    {'icon': Images.medicineIcon, 'name': 'My Medicine'},
   ];
 }

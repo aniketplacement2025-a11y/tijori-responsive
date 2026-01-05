@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/verify_otp_forgot_password.dart';
 import 'package:vkaps_it_solution_project_tijori/services/models/rest_client.dart';
 
-import '../../utils/Images.dart';
-import '../../widgets/dialogs/success_dialog.dart';
-import '../settings/print_value.dart';
+import '../../../utils/Images.dart';
+import '../../../widgets/dialogs/success_dialog.dart';
+import '../../settings/print_value.dart';
 
 class SendOtpByPhoneProvider with ChangeNotifier {
   bool isLoading = false;

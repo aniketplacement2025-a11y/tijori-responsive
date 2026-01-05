@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/email_otp_verification.dart';
-import '../settings/print_value.dart';
-import '../models/rest_client.dart';
+import '../../settings/print_value.dart';
+import '../../models/rest_client.dart';
 
 class SendOtpEmailProvider with ChangeNotifier{
   bool isLoading = false;

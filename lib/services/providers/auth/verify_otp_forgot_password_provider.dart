@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/update_new_password.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/dialogs/success_dialog.dart';
-import '../../auth/otp_success_popup.dart';
-import '../../utils/Images.dart';
-import '../models/rest_client.dart';
-import '../settings/print_value.dart';
+import '../../../auth/otp_success_popup.dart';
+import '../../../utils/Images.dart';
+import '../../models/rest_client.dart';
+import '../../settings/print_value.dart';
 
 class VerifyOtpForgotPasswordProvider with ChangeNotifier {
   bool isLoading = false;

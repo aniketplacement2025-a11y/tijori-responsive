@@ -4,7 +4,7 @@ import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_form_field.d
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_phone_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_social_button.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
-import 'package:vkaps_it_solution_project_tijori/services/providers/sign_up_provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/auth/sign_up_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/SplashScreen2.dart';

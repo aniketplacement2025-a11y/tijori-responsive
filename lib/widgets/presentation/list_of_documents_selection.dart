@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/provider/my_categories_provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/settings/loadingIndicator.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/dialogs/add_new_category_response.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/add_new_category_click_event.dart';
@@ -34,21 +37,23 @@ class ListOfDocumentsSelection extends StatefulWidget {
 class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
   int? _selectedCategoryIndex; // Track selected Category index
   TextEditingController controller = TextEditingController();
+  late MyCategoriesProvider _myCategoriesProvider;
+
+  @override
+  void initState(){
+    super.initState();
+    _myCategoriesProvider = MyCategoriesProvider();
+    _fetchCategories();
+  }
+
+  void _fetchCategories() async {
+    await _myCategoriesProvider.fetchCategories();
+  }
 
   // Navigation method based on category title
   void _navigateToProjectPage(String subtitle, String title, BuildContext context) {
     switch (subtitle) {
       case 'CONTRACTS':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AfterListedDocumentContractSelection(
-              subtitle: subtitle,
-              isCommercial: widget.isCommercial,
-              title: title,
-            ),
-          ),
-        );
         break;
       case 'WARRANTIES':
         Navigator.push(
@@ -417,51 +422,118 @@ class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
                             SizedBox(height: Constants.getSpacingMedium(context)),
 
                             // Vertical Scrollable Cards Using GridView.builder
-                            Container(
-                              width: mainWidth,
-                              height: gridViewHeight,
-                              margin: EdgeInsets.symmetric(
-                                horizontal: Constants.getSpacingLittle(context),
-                                vertical: Constants.getSpacingLittle(context),
-                              ),
-                              child: GridView.count(
-                                crossAxisCount: Responsive.value<int>(
-                                  context,
-                                  mobile: 2,
-                                  tablet: 3,
-                                  desktop: 4,
-                                ),
-                                crossAxisSpacing: Constants.getSpacingSmall(context),
-                                mainAxisSpacing: Constants.getSpacingSmall(context),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                childAspectRatio: Responsive.value<double>(
-                                  context,
-                                  mobile: 194 / 108,
-                                  tablet: 200 / 110,
-                                  desktop: 210 / 115,
-                                ),
-                                children: CategoriesData.categories.asMap().entries.map((entry) {
-                                  int index = entry.key;
-                                  Map<String, String> category = entry.value;
-                                  String subtitle = category['title']!;
-                                  String icon = category['icon']!;
+                            ChangeNotifierProvider.value(
+                              value: _myCategoriesProvider,
+                              child: Consumer<MyCategoriesProvider>(
+                                 builder: (context, myCategoriesProvider, child) {
+                                   // Show Loading Indicator
+                                   if(myCategoriesProvider.isLoading){
+                                     return Container(
+                                       width: mainWidth,
+                                       height: Responsive.value<double>(
+                                         context,
+                                         mobile: 480,
+                                         tablet: 520,
+                                         desktop: 560,
+                                       ),
+                                       margin: EdgeInsets.symmetric(
+                                         horizontal: Constants.getSpacingLittle(
+                                             context),
+                                         vertical: Constants.getSpacingLittle(context),
+                                       ),
+                                       child: loadingIndicator(),
+                                     );
+                                   }
+                                   // Show error if any
+                                   if(myCategoriesProvider.error != null){
+                                     return Container(
+                                       width: mainWidth,
+                                       height: Responsive.value<double>(
+                                         context,
+                                         mobile: 480,
+                                         tablet: 520,
+                                         desktop: 560,
+                                       ),
+                                       margin: EdgeInsets.symmetric(
+                                         horizontal: Constants.getSpacingLittle(
+                                             context),
+                                         vertical: Constants.getSpacingLittle(context),
+                                       ),
+                                       child: Center(
+                                         child: Text(
+                                           'Error loading categories',
+                                           style: TextStyle(color: Colors.red),
+                                         ),
+                                       ),
+                                     );
+                                   }
 
-                                  return Container(
-                                    child: HomeCategoryCard(
-                                      imageAsset: icon,
-                                      title: subtitle,
-                                      isSelected: _selectedCategoryIndex == index,
-                                      onTap: () {
-                                        setState(() {
-                                          _selectedCategoryIndex = _selectedCategoryIndex == index ? null : index;
-                                        });
-                                        print('$subtitle tapped');
-                                        _navigateToProjectPage(subtitle, widget.bucket_title, context);
-                                      },
+                                   // Show categories or fallback to static data
+                                   final categoriesList = myCategoriesProvider.categories.isNotEmpty
+                                       ? myCategoriesProvider.categories : CategoriesData.categories;
+
+
+                                   return
+                                   Container(
+                                     width: mainWidth,
+                                     height: gridViewHeight,
+                                     margin: EdgeInsets.symmetric(
+                                       horizontal: Constants.getSpacingLittle(
+                                           context),
+                                       vertical: Constants.getSpacingLittle(context),
+                                     ),
+                                     child: GridView.count(
+                                       crossAxisCount: Responsive.value<int>(
+                                         context,
+                                         mobile: 2,
+                                         tablet: 3,
+                                         desktop: 4,
+                                       ),
+                                       crossAxisSpacing: Constants.getSpacingSmall(
+                                           context),
+                                       mainAxisSpacing: Constants.getSpacingSmall(
+                                           context),
+                                       shrinkWrap: true,
+                                       physics: const NeverScrollableScrollPhysics(),
+                                       childAspectRatio: Responsive.value<double>(
+                                         context,
+                                         mobile: 194 / 108,
+                                         tablet: 200 / 110,
+                                         desktop: 210 / 115,
+                                       ),
+                                       children: categoriesList
+                                          .asMap()
+                                          .entries
+                                          .map((entry) {
+                                        int index = entry.key;
+                                        Map<String, dynamic> category = entry.value;
+                                        String subtitle = category['name']!;
+                                        String icon = category['icon']!;
+
+                                        return Container(
+                                          child: HomeCategoryCard(
+                                            imageAsset: icon,
+                                            title: subtitle,
+                                            isSelected: _selectedCategoryIndex ==
+                                                index,
+                                            onTap: () {
+                                              setState(() {
+                                                _selectedCategoryIndex =
+                                                _selectedCategoryIndex == index
+                                                    ? null
+                                                    : index;
+                                              });
+                                              print('$subtitle tapped');
+                                              _navigateToProjectPage(
+                                                  subtitle, widget.bucket_title,
+                                                  context);
+                                            },
+                                          ),
+                                        );
+                                      }).toList(),
                                     ),
                                   );
-                                }).toList(),
+                                },
                               ),
                             ),
                           ],

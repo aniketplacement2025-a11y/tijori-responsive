@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/services/models/rest_client.dart';
 import 'package:vkaps_it_solution_project_tijori/services/settings/print_value.dart';
 
-import '../../auth/update_password_success_popup.dart';
+import '../../../auth/update_password_success_popup.dart';
 
 class UpdateNewPasswordProvider with ChangeNotifier{
   bool isLoading = false;

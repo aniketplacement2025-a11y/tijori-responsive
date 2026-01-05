@@ -4,7 +4,7 @@ import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_form_field.d
 import 'package:vkaps_it_solution_project_tijori/auth/forgot_password_page.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/send_otp_by_phone.dart';
 import 'package:vkaps_it_solution_project_tijori/pages/official_landing_page.dart';
-import 'package:vkaps_it_solution_project_tijori/services/providers/login_provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/auth/login_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
 import 'package:vkaps_it_solution_project_tijori/widgets/presentation/SplashScreen2.dart';

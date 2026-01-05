@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vkaps_it_solution_project_tijori/services/settings/loadingIndicator.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/constants.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/custom_colors.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/responsive_media_query.dart';
@@ -17,6 +18,8 @@ class HomeCategoryCard extends StatelessWidget {
     required this.title,
   });
 
+  bool get _isNetworkImage => imageAsset.startsWith('http');
+
   @override
   Widget build(BuildContext context) {
     Constants.updateFromContext(context);
@@ -26,9 +29,9 @@ class HomeCategoryCard extends StatelessWidget {
       child: Container(
         width: Responsive.value<double>(
           context,
-          mobile: 156,
-          tablet: 170,
-          desktop: 184,
+          mobile: 185,
+          tablet: 195,
+          desktop: 205,
         ),
         padding: EdgeInsets.all(
           Responsive.value<double>(
@@ -69,7 +72,40 @@ class HomeCategoryCard extends StatelessWidget {
             Container(
               width: Constants.getSpacingHigh(context),
               height: Constants.getSpacingHigh(context),
-              child: Image.asset(
+              child: _isNetworkImage
+                 ? Image.network(
+                imageAsset,
+                width: Constants.getSpacingHigh(context),
+                height: Constants.getSpacingHigh(context),
+                fit: BoxFit.contain,
+                loadingBuilder: (context, child, loadingProgress){
+                  if(loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null?
+                          loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                           :null
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: Constants.getSpacingHigh(context),
+                    height: Constants.getSpacingHigh(context),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.category,
+                      size: 24,
+                      color: Colors.grey[400],
+                    ),
+                  );
+                },
+              ):
+              Image.asset(
                 imageAsset,
                 width: Constants.getSpacingHigh(context),
                 height: Constants.getSpacingHigh(context),
@@ -81,12 +117,6 @@ class HomeCategoryCard extends StatelessWidget {
 
             // Title Text
             Container(
-              width: Responsive.value<double>(
-                context,
-                mobile: 120,
-                tablet: 130,
-                desktop: 140,
-              ),
               height: Constants.getSpacingHigh(context),
               child: Text(
                 title,

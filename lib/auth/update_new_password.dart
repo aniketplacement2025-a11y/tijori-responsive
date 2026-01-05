@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/fields/custom_password_field.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/update_password_success_popup.dart';
-import 'package:vkaps_it_solution_project_tijori/services/providers/update_new_password_provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/auth/update_new_password_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';

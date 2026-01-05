@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/features/otp_manager.dart';
-import 'package:vkaps_it_solution_project_tijori/services/providers/commercial_user_verify_otp_provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/auth/commercial_user_verify_otp_provider.dart';
 
 import '../utils/Images.dart';
 import '../utils/constants.dart';

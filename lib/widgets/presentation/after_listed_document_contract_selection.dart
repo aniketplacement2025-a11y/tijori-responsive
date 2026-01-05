@@ -15,12 +15,18 @@ class AfterListedDocumentContractSelection extends StatefulWidget {
   final String title;
   final String subtitle;
   final bool isCommercial;
+  final String? UpdateFile;
+  final String folderName;
+  final String id;
 
   AfterListedDocumentContractSelection({
     super.key,
     required this.isCommercial,
     required this.title,
     required this.subtitle,
+    required this.UpdateFile,
+    required this.folderName,
+    required this.id,
   });
 
   @override

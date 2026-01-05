@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/email_otp_verification.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/send_otp_by_phone.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
-import 'package:vkaps_it_solution_project_tijori/services/providers/send_otp_email_provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/auth/send_otp_email_provider.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 import '../../utils/constants.dart';
 import '../../utils/custom_colors.dart';

@@ -4,7 +4,7 @@ import 'package:vkaps_it_solution_project_tijori/auth/features/otp_manager.dart'
 import 'package:vkaps_it_solution_project_tijori/auth/forgot_password_page.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/signin_login_page.dart';
 import 'package:vkaps_it_solution_project_tijori/auth/verify_otp_forgot_password.dart';
-import 'package:vkaps_it_solution_project_tijori/services/providers/send_otp_by_phone_provider.dart';
+import 'package:vkaps_it_solution_project_tijori/services/providers/auth/send_otp_by_phone_provider.dart';
 
 import '../services/settings/loadingIndicator.dart';
 import '../services/settings/print_value.dart';

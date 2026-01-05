@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vkaps_it_solution_project_tijori/utils/onboarding_background.dart';
 
-import '../services/providers/verify_otp_forgot_password_provider.dart';
+import '../services/providers/auth/verify_otp_forgot_password_provider.dart';
 import '../services/settings/print_value.dart';
 import '../utils/Images.dart';
 import '../utils/constants.dart';
