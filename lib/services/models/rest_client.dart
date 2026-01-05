@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import '../settings/print_value.dart';
 import 'http_helper.dart';
@@ -217,6 +216,16 @@ class RestClient {
     Map<String, dynamic> response = await _httpHelper.get(
         url: '$baseUrl/categories/my-categories',
         isRequireAuthentication: true,
+    );
+    // If response from api come as List '[]' then we write List<dynamic>
+    printValue(response, tag: "My Categories API Response");
+    return response;
+  }
+
+  static Future<dynamic> GetSubCategoryByCategoryId(dynamic requestBody, String categoryId) async {
+    Map<String, dynamic> response = await _httpHelper.get(
+        url: '$baseUrl/subcategories/category/$categoryId',
+       isRequireAuthentication: true,
     );
     // If response from api come as List '[]' then we write List<dynamic>
     printValue(response, tag: "My Categories API Response");

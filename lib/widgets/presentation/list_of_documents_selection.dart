@@ -430,12 +430,7 @@ class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
                                    if(myCategoriesProvider.isLoading){
                                      return Container(
                                        width: mainWidth,
-                                       height: Responsive.value<double>(
-                                         context,
-                                         mobile: 480,
-                                         tablet: 520,
-                                         desktop: 560,
-                                       ),
+                                       height: gridViewHeight,
                                        margin: EdgeInsets.symmetric(
                                          horizontal: Constants.getSpacingLittle(
                                              context),
@@ -448,12 +443,7 @@ class _ListOfDocumentsSelectionState extends State<ListOfDocumentsSelection> {
                                    if(myCategoriesProvider.error != null){
                                      return Container(
                                        width: mainWidth,
-                                       height: Responsive.value<double>(
-                                         context,
-                                         mobile: 480,
-                                         tablet: 520,
-                                         desktop: 560,
-                                       ),
+                                       height: gridViewHeight,
                                        margin: EdgeInsets.symmetric(
                                          horizontal: Constants.getSpacingLittle(
                                              context),
